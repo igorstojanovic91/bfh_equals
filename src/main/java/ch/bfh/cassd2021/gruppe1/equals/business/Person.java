@@ -14,6 +14,23 @@ public class Person {
   private String userName;
   private int password;
 
+  /**
+   * Berechnet eine einfache Quersumme aus Tag, Monat und Jahr des Geburtsdatums (dateOfBirth).
+   *
+   * Beispiel: dateOfBirth = 23.04.2001, checksum = 23 + 04 + 2001 = 2028
+   * @return Die vereinfachte, aus Tag, Monat und Jahr gebildete Quersumme des Geburtsdatums.
+   */
+  public Integer calculateChecksumOfDateOfBirth() {
+    Objects.requireNonNull(dateOfBirth, "dateOfBirth must not be null");
+    Integer checksumOfDateOfBirth = 0;
+
+    checksumOfDateOfBirth += dateOfBirth.getYear();
+    checksumOfDateOfBirth += dateOfBirth.getMonthValue();
+    checksumOfDateOfBirth += dateOfBirth.getDayOfMonth();
+
+    return checksumOfDateOfBirth;
+  }
+
   public long getId() {
     return id;
   }

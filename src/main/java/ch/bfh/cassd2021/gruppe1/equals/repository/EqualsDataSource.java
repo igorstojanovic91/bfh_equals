@@ -10,6 +10,7 @@ public class EqualsDataSource {
   private static final HikariConfig config = new HikariConfig();
   private static final HikariDataSource ds;
 
+  // Infos zu statischem Initializer siehe https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html
   static {
     config.setDriverClassName("com.mysql.cj.jdbc.Driver");
     config.setJdbcUrl("jdbc:mysql://localhost:3306/equalsdb");
