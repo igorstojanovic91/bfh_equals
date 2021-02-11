@@ -1,5 +1,14 @@
+### Personenliste holen
 GET http://localhost:8080/equals_war/api/person/persons
 Accept: application/json
 Cache-Control: no-cache
 
-###
+### Personenliste mit weniger Attributen holen
+GET http://localhost:8080/equals_war/api/person/persons/short
+Accept: application/json
+Cache-Control: no-cache
+
+### Beispiel fuer einen Pfad, den es noch nicht gibt
+GET http://localhost:8080/equals_war/api/person/gugus
+Accept: application/json
+Cache-Control: no-cache
