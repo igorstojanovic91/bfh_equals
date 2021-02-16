@@ -3,8 +3,7 @@ package ch.bfh.cassd2021.gruppe1.equals.business.model;
 import java.time.LocalDate;
 
 public class Module {
-    //TODO Refactor ID
-    private int id;
+    private int moduleId;
     private String name;
     private String shortName;
     private LocalDate startDate;
@@ -12,12 +11,12 @@ public class Module {
     private int headId;
     private int assistantId;
 
-    public int getId() {
-        return id;
+    public int getModuleId() {
+        return moduleId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setModuleId(int moduleId) {
+        this.moduleId = moduleId;
     }
 
     public String getName() {
@@ -68,8 +67,16 @@ public class Module {
         this.assistantId = assistantId;
     }
 
-    //TODO Tostring
-
-
-
+    @Override
+    public String toString() {
+        return "Module{" +
+            "moduleId=" + moduleId +
+            ", name='" + name + '\'' +
+            ", shortName='" + shortName + '\'' +
+            ", startDate=" + startDate +
+            ", endDate=" + endDate +
+            ", headId=" + headId +
+            ", assistantId=" + assistantId +
+            '}';
+    }
 }
