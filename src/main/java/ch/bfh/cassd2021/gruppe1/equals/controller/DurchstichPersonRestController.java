@@ -1,6 +1,7 @@
 package ch.bfh.cassd2021.gruppe1.equals.controller;
 
-import ch.bfh.cassd2021.gruppe1.equals.business.Person;
+
+import ch.bfh.cassd2021.gruppe1.equals.business.model.Person;
 import ch.bfh.cassd2021.gruppe1.equals.repository.DurchstichPersonRepository;
 import ch.bfh.cassd2021.gruppe1.equals.repository.PersonShortDTO;
 import com.fasterxml.jackson.core.JsonEncoding;
