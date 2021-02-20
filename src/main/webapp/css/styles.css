@@ -36,3 +36,10 @@
 .card {
     cursor: pointer;
 }
+
+.input-grade {
+    font-family: inherit;
+    font-size: inherit;
+    width: 50px;
+    margin-right: 4px;
+}
