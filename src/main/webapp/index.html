@@ -1,8 +1,52 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Hello, world</title>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>EQualS - Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+          integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+          rel="stylesheet"/>
 </head>
 <body>
-    <h1>Hello, world</h1>
+<div class="columns is-vcentered" style="height: 100vh">
+    <div class="column is-two-thirds p-0 background">
+            &nbsp;
+    </div>
+    <div class="column">
+        <h1 class="title pl-6">
+            Welcome to EQualS! <span><i class="fas fa-graduation-cap"></i></span>
+        </h1>
+        <form class="pl-6 pr-6 pb-6">
+            <div class="field">
+                <p class="control has-icons-left has-icons-right">
+                    <input class="input" placeholder="Username" type="text">
+                    <span class="icon is-small is-left">
+                         <i class="fas fa-user"></i>
+                     </span>
+                </p>
+            </div>
+            <div class="field">
+                <p class="control has-icons-left">
+                    <input class="input" placeholder="Password" type="password">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-lock"></i>
+                    </span>
+                </p>
+            </div>
+            <div class="field">
+                <p class="control">
+                    <button class="button is-success">
+                        Login
+                    </button>
+                </p>
+            </div>
+        </form>
+        <div class="loader"></div>
+    </div>
+</div>
+
 </body>
 </html>
