@@ -1,5 +1,6 @@
 package ch.bfh.cassd2021.gruppe1.equals.business.model;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -60,16 +61,16 @@ public class Module {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate.toLocalDate();
     }
 
     public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate.toLocalDate();
     }
 
     public Person getHead() {

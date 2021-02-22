@@ -1,5 +1,7 @@
 package ch.bfh.cassd2021.gruppe1.equals.business.model;
 
+import ch.bfh.cassd2021.gruppe1.equals.repository.ModuleOverviewRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +62,12 @@ public class test {
 
         //TODO => How we want to incoportae the ratings
         //does each course store a list of Rating objects?
+
+        ModuleOverviewRepository rep = new ModuleOverviewRepository();
+
+        List<Module> moduleList = rep.getModules(1);
+
+        System.out.println(moduleList);
 
 
     }
