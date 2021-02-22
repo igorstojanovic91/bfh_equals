@@ -42,11 +42,8 @@ public class test {
         student.setLastName("Stojanovic");
         student.setRole(Role.STUDENT);
 
-        Rating ratingIgor = new Rating();
-        ratingIgor.setStudent(student);
-        ratingIgor.setCourse(java);
-        ratingIgor.setSuccessRate(82);
-        ratingIgor.setVersion(1);
+        Rating ratingIgor = new Rating(student, 82, 1 );
+        java.addRating(ratingIgor);
 
         List<Person> students = new ArrayList<>();
         students.add(student);

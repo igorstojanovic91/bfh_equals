@@ -1,5 +1,6 @@
 package ch.bfh.cassd2021.gruppe1.equals.business.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Course {
@@ -8,7 +9,7 @@ public class Course {
     private String shortName;
     private Person professor;
     private double weight;
-    private List<Rating> ratingList;
+    private List<Rating> ratingList = new ArrayList<>();
 
     public int getCourseId() {
         return courseId;
@@ -51,6 +52,10 @@ public class Course {
         this.weight = weight;
     }
 
+    public void addRating(Rating rating) {
+        ratingList.add(rating);
+    }
+
     @Override
     public String toString() {
         return "Course{" +
@@ -59,6 +64,7 @@ public class Course {
             ", shortName='" + shortName + '\'' +
             ", professorId=" + professor +
             ", weight=" + weight +
+            ", ratings=" + ratingList +
             '}';
     }
 }
