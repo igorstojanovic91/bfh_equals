@@ -2,6 +2,7 @@ package ch.bfh.cassd2021.gruppe1.equals.business.model;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -93,6 +94,46 @@ public class Module {
             this.assistant = assistant;
         }
         // TODO THROW ERROR HERE?
+    }
+
+    //TODO CHECK FOR LOGIC -> NOT YET RIGHT
+    public Map<Person, Integer> calcFinalGrade() {
+        Map<Person, Integer> gradeMap = new HashMap<>();
+
+        for(Person p : students) {
+            int grade = 0;
+            for(Course course: courses) {
+                List<Rating> ratingList = course.getRatingList();
+                for(Rating rating : ratingList) {
+                    if(rating.getStudent().getPersonId() == p.getPersonId()) {
+                        grade += course.getWeight() / 10 * rating.getSuccessRate();
+                    }
+                }
+            }
+            gradeMap.put(p, grade);
+        }
+        return gradeMap;
+    }
+
+    //TODO CHECK FOR LOGIC -> NOT YET RIGHT
+    public Map<Person, Integer> calcPrimilinaryGrade() {
+        Map<Person, Integer> gradeMap = new HashMap<>();
+        for(Person p : students) {
+            int grade = 0;
+            int weight = 0;
+            for(Course course: courses) {
+                List<Rating> ratingList = course.getRatingList();
+                for(Rating rating : ratingList) {
+                    if(rating.getStudent().getPersonId() == p.getPersonId()) {
+                        weight += course.getWeight();
+                        grade += course.getWeight() * rating.getSuccessRate();
+                    }
+                }
+            }
+            grade = grade / weight;
+            gradeMap.put(p, grade);
+        }
+        return gradeMap;
     }
 
 

@@ -4,6 +4,7 @@ import ch.bfh.cassd2021.gruppe1.equals.repository.ModuleOverviewRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class test {
     public static void main(String[] args) {
@@ -47,6 +48,9 @@ public class test {
         Rating ratingIgor = new Rating(student, 82, 1 );
         java.addRating(ratingIgor);
 
+        Rating ratingIgor2 = new Rating(student, 20, 1 );
+        webapp.addRating(ratingIgor2);
+
         List<Person> students = new ArrayList<>();
         students.add(student);
 
@@ -63,12 +67,24 @@ public class test {
         //TODO => How we want to incoportae the ratings
         //does each course store a list of Rating objects?
 
+        // TEST WITH RDB
         ModuleOverviewRepository rep = new ModuleOverviewRepository();
 
         List<Module> moduleList = rep.getModules(1);
 
         System.out.println(moduleList);
+        // TEST GRADE CALCULATION
+        Map<Person, Integer> gradeTest = sd.calcFinalGrade();
 
+        for (Map.Entry<Person, Integer> entry : gradeTest.entrySet()) {
+            System.out.println("Key: " + entry.getKey() + ". Value: " + entry.getValue());
+        }
+
+        Map<Person, Integer> gradePriminilary = sd.calcPrimilinaryGrade();
+
+        for (Map.Entry<Person, Integer> entry : gradePriminilary.entrySet()) {
+            System.out.println("Key: " + entry.getKey() + ". Value: " + entry.getValue());
+        }
 
     }
 }

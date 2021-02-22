@@ -56,6 +56,14 @@ public class Course {
         ratingList.add(rating);
     }
 
+    public List<Rating> getRatingList() {
+        return ratingList;
+    }
+
+    public void setRatingList(List<Rating> ratingList) {
+        this.ratingList = ratingList;
+    }
+
     @Override
     public String toString() {
         return "Course{" +
