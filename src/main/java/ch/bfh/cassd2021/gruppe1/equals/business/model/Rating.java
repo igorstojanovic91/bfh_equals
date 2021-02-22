@@ -1,25 +1,25 @@
 package ch.bfh.cassd2021.gruppe1.equals.business.model;
 
 public class Rating {
-    private int studentId;
-    private int courseId;
+    private Person student;
+    private Course course;
     private int successRate;
     private int version;
 
-    public int getStudentId() {
-        return studentId;
+    public Person getStudent() {
+        return student;
     }
 
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
+    public void setStudent(Person student) {
+        this.student = student;
     }
 
-    public int getCourseId() {
-        return courseId;
+    public Course getCourse() {
+        return course;
     }
 
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public int getSuccessRate() {
@@ -41,8 +41,8 @@ public class Rating {
     @Override
     public String toString() {
         return "Rating{" +
-            "studentId=" + studentId +
-            ", courseId=" + courseId +
+            "studentId=" + student +
+            ", courseId=" + course +
             ", successRate=" + successRate +
             ", version=" + version +
             '}';

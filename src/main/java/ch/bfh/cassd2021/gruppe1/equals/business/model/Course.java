@@ -1,12 +1,14 @@
 package ch.bfh.cassd2021.gruppe1.equals.business.model;
 
+import java.util.List;
+
 public class Course {
     private int courseId;
     private String name;
     private String shortName;
-    private int moduleId;
-    private int professorId;
+    private Person professor;
     private double weight;
+    private List<Rating> ratingList;
 
     public int getCourseId() {
         return courseId;
@@ -32,20 +34,13 @@ public class Course {
         this.shortName = shortName;
     }
 
-    public int getModuleId() {
-        return moduleId;
+
+    public Person getProfessor() {
+        return professor;
     }
 
-    public void setModuleId(int moduleId) {
-        this.moduleId = moduleId;
-    }
-
-    public int getProfessorId() {
-        return professorId;
-    }
-
-    public void setProfessorId(int professorId) {
-        this.professorId = professorId;
+    public void setProfessor(Person professor) {
+        this.professor = professor;
     }
 
     public double getWeight() {
@@ -62,8 +57,7 @@ public class Course {
             "courseId=" + courseId +
             ", name='" + name + '\'' +
             ", shortName='" + shortName + '\'' +
-            ", moduleId=" + moduleId +
-            ", professorId=" + professorId +
+            ", professorId=" + professor +
             ", weight=" + weight +
             '}';
     }

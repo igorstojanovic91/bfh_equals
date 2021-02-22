@@ -1,6 +1,9 @@
 package ch.bfh.cassd2021.gruppe1.equals.business.model;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Module {
     private int moduleId;
@@ -8,8 +11,10 @@ public class Module {
     private String shortName;
     private LocalDate startDate;
     private LocalDate endDate;
-    private int headId;
-    private int assistantId;
+    private Person head;
+    private Person assistant;
+    private List<Course> courses;
+    private List<Person> students;
 
     public int getModuleId() {
         return moduleId;
@@ -17,6 +22,22 @@ public class Module {
 
     public void setModuleId(int moduleId) {
         this.moduleId = moduleId;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public List<Person> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Person> students) {
+        this.students = students;
     }
 
     public String getName() {
@@ -51,32 +72,41 @@ public class Module {
         this.endDate = endDate;
     }
 
-    public int getHeadId() {
-        return headId;
+    public Person getHead() {
+        return head;
     }
 
-    public void setHeadId(int headId) {
-        this.headId = headId;
+    public void setHead(Person head) {
+        if(head.getRole() == Role.HEAD) {
+            this.head = head;
+        }
+        // TODO THROW ERROR HERE?
     }
 
-    public int getAssistantId() {
-        return assistantId;
+    public Person getAssistant() {
+        return assistant;
     }
 
-    public void setAssistantId(int assistantId) {
-        this.assistantId = assistantId;
+    public void setAssistant(Person assistant) {
+        if(assistant.getRole() == Role.ASSISTANT) {
+            this.assistant = assistant;
+        }
+        // TODO THROW ERROR HERE?
     }
+
+
 
     @Override
     public String toString() {
         return "Module{" +
             "moduleId=" + moduleId +
-            ", name='" + name + '\'' +
-            ", shortName='" + shortName + '\'' +
-            ", startDate=" + startDate +
-            ", endDate=" + endDate +
-            ", headId=" + headId +
-            ", assistantId=" + assistantId +
+            ", name='" + name + '\n' +
+            ", shortName='" + shortName + '\n' +
+            ", startDate=" + startDate + '\n' +
+            ", endDate=" + endDate + '\n' +
+            ", head = " + head + '\n' +
+            ", assistant = " + assistant + '\n' +
+            ", students = " + students + '\n' +
             '}';
     }
 }
