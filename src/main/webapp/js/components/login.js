@@ -1,6 +1,7 @@
 import service from '../service.js';
 import router from '../router.js';
 import store from '../store.js';
+import util from "../util.js";
 
 
 export default {
@@ -45,6 +46,7 @@ function initAfterLogin(userData) {
 
 function  setModules(moduleList) {
     store.setModules(moduleList)
+    util.showAuthContent(true);
     router.go('/modules'); //TODO: REMOVE THIS
 }
 
