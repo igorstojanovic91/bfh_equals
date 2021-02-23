@@ -1,8 +1,9 @@
-const BASE_URL = 'https://locher.ti.bfh.ch/todo/api/';
+const BASE_URL = 'http://localhost:8080/equals_war/api/';
 
 export default {
 
     authenticate: function (user) {
+
         return $.ajax({
             url: BASE_URL + 'authenticate',
             type: 'GET',

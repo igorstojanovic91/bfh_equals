@@ -1,9 +1,9 @@
 import router from './router.js';
 import login from './components/login.js';
-import casOverview from './components/casoverview.js';
+import modules from './components/modules.js';
 
 
 router.register('/', login);
-router.register('/casoverview', casOverview);
+router.register('/modules', modules);
 
 router.go('/');

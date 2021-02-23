@@ -37,7 +37,7 @@ function processLogin($view) {
 
 function initAfterLogin(user) {
     store.setUser(user);
-    router.go('/casoverview');
+    router.go('/modules');
 }
 
 function getFormData() {

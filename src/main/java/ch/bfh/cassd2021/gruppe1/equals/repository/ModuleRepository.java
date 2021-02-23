@@ -132,8 +132,8 @@ public class ModuleRepository {
 
                 studentCourseRating.setCourseRating(courseRatingList);
 
-                studentCourseRating.setPreliminaryGrade(0); // TODO Calculate Preliminary Grade
-                studentCourseRating.setOverallGrade(0); // TODO Calculate Overall Grade
+                studentCourseRating.calculatePreliminaryGrade();
+                studentCourseRating.calculateOverallGrade();
 
                 if (isNewStudent) {
                     studentCourseRatingList.add(studentCourseRating);

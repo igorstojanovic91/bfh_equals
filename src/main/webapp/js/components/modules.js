@@ -6,12 +6,12 @@ import store from '../store.js';
 export default {
 
     getTitle: function() {
-        return "Successfull";
+        return "Modules";
     },
 
     render: function() {
         const $view = $($('#successful').html());
-        
+
         return $view;
     }
 };

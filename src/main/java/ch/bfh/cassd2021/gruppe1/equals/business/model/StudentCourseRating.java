@@ -49,4 +49,14 @@ public class StudentCourseRating {
     public void setOverallGrade(double overallGrade) {
         this.overallGrade = overallGrade;
     }
+
+    // TODO Calculate Preliminary Grade
+    public void calculatePreliminaryGrade() {
+        this.preliminaryGrade = 0;
+    }
+
+    // TODO Calculate Overall Grade
+    public void calculateOverallGrade() {
+        this.overallGrade = 0;
+    }
 }
