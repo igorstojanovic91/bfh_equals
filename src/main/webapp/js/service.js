@@ -2,12 +2,12 @@ const BASE_URL = 'https://locher.ti.bfh.ch/todo/api/';
 
 export default {
 
-    authenticate: function () {
+    authenticate: function (user) {
         return $.ajax({
             url: BASE_URL + 'authenticate',
             type: 'GET',
             headers: {
-                'Authorization': getAuthHeader(),
+                'Authorization': getAuthHeader(user),
                 'accept': 'application/json'
             }
         }).fail(jqXHR => console.log(`An error occurred: (${jqXHR.status}) ${jqXHR.responseText}`));
@@ -27,6 +27,5 @@ export default {
 }
 
 function getAuthHeader(user) {
-    const credentials = user || document.forms[0];
-    return 'Basic ' + btoa(credentials.username + ':' + credentials.password);
+    return 'Basic ' + btoa(user.username + ':' + user.password);
 }
