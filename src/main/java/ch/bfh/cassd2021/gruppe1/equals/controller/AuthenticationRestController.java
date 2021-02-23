@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Base64;
 
-@WebServlet(urlPatterns = "api/authenticate")
+@WebServlet(urlPatterns = "/api/authenticate")
 public class AuthenticationRestController extends HttpServlet {
     private static final String JSON_MEDIA_TYPE = "application/json; charset=UTF-8";
 
