@@ -2,6 +2,7 @@ package ch.bfh.cassd2021.gruppe1.equals.controller;
 
 import ch.bfh.cassd2021.gruppe1.equals.business.model.Module;
 import ch.bfh.cassd2021.gruppe1.equals.business.model.Person;
+import ch.bfh.cassd2021.gruppe1.equals.business.model.StudentCourseRating;
 import ch.bfh.cassd2021.gruppe1.equals.repository.AuthenticationRepository;
 import ch.bfh.cassd2021.gruppe1.equals.repository.ModuleRepository;
 import com.fasterxml.jackson.core.JsonEncoding;
@@ -24,7 +25,7 @@ import java.util.List;
 public class ModuleRestController extends HttpServlet {
     private static final String JSON_MEDIA_TYPE = "application/json; charset=UTF-8";
     private static final String ROOT_PATH = "/";
-    private static final String MODULES_PATH = "/modules";
+    private static final String OVERALL_PATH = "/overall";
 
     private final Logger logger = LoggerFactory.getLogger(ModuleRestController.class);
 
@@ -55,15 +56,53 @@ public class ModuleRestController extends HttpServlet {
         } else {
             Person person = authenticationRepository.authenticateUser(credentials[0], Integer.parseInt(credentials[1]));
             if (person != null) {
-                List<Module> moduleList = moduleRepository.getModulesForPerson(person.getPersonId());
+                String path = request.getPathInfo() != null ? request.getPathInfo() : "/";
 
-                response.setContentType(JSON_MEDIA_TYPE);
-                response.setStatus(HttpServletResponse.SC_OK);
+                if (path.matches(ROOT_PATH)) {
+                    logger.debug("Entering /api/modules.");
 
-                JsonGenerator generator = jsonMapper
-                    .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
+                    List<Module> moduleList = moduleRepository.getModulesForPerson(person.getPersonId());
 
-                generator.writeObject(moduleList);
+                    response.setContentType(JSON_MEDIA_TYPE);
+                    response.setStatus(HttpServletResponse.SC_OK);
+
+                    JsonGenerator generator = jsonMapper
+                        .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
+
+                    generator.writeObject(moduleList);
+
+                } else if (path.contains(OVERALL_PATH)) {
+                    logger.debug("Entering /api/modules/overall.");
+
+                    String pathInfo = request.getPathInfo();
+                    logger.debug("pathInfo: " + pathInfo);
+                    if (pathInfo != null && !pathInfo.isEmpty()) {
+                        int moduleId = Integer.parseInt(pathInfo.split("/")[2]);
+                        logger.debug("moduleId: " + moduleId);
+                        List<StudentCourseRating> studentCourseRatingList = moduleRepository.getSuccessRateOverviewForModule(moduleId, person.getPersonId());
+
+                        response.setContentType(JSON_MEDIA_TYPE);
+                        response.setStatus(HttpServletResponse.SC_OK);
+
+                        JsonGenerator generator = jsonMapper
+                            .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
+
+                        generator.writeObject(studentCourseRatingList);
+                    }
+
+                } else {
+                    logger.debug("path {} not implemented.", path);
+                    String error = "Path " + path.toString() + " not implemented.";
+
+                    response.setContentType(JSON_MEDIA_TYPE);
+                    response.setCharacterEncoding("UTF-8");
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+
+                    JsonGenerator generator = jsonMapper
+                        .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
+
+                    generator.writeObject(error);
+                }
 
             } else {
                 response.setContentType(JSON_MEDIA_TYPE);
