@@ -1,7 +1,9 @@
 package ch.bfh.cassd2021.gruppe1.equals.controller;
 
+import ch.bfh.cassd2021.gruppe1.equals.business.model.Module;
 import ch.bfh.cassd2021.gruppe1.equals.business.model.Person;
 import ch.bfh.cassd2021.gruppe1.equals.repository.AuthenticationRepository;
+import ch.bfh.cassd2021.gruppe1.equals.repository.ModuleRepository;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,20 +18,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.List;
 
-@WebServlet(urlPatterns = "/api/authenticate")
-public class AuthenticationRestController extends HttpServlet {
+@WebServlet(urlPatterns = "/api/modules/*")
+public class ModuleRestController extends HttpServlet {
     private static final String JSON_MEDIA_TYPE = "application/json; charset=UTF-8";
+    private static final String ROOT_PATH = "/";
+    private static final String MODULES_PATH = "/modules";
 
-    private final Logger logger = LoggerFactory.getLogger(AuthenticationRestController.class);
+    private final Logger logger = LoggerFactory.getLogger(ModuleRestController.class);
 
     ObjectMapper jsonMapper;
 
+    ModuleRepository moduleRepository;
     AuthenticationRepository authenticationRepository;
 
-    public AuthenticationRestController() {
+    public ModuleRestController() {
         jsonMapper = new ObjectMapper();
         jsonMapper.registerModule(new JavaTimeModule());
+        moduleRepository = new ModuleRepository();
         authenticationRepository = new AuthenticationRepository();
     }
 
@@ -48,13 +55,16 @@ public class AuthenticationRestController extends HttpServlet {
         }else{
             Person person = authenticationRepository.authenticateUser(credentials[0], Integer.parseInt(credentials[1]));
             if(person != null){
+                List<Module> moduleList = moduleRepository.getModulesForPerson(person.getPersonId());
+
                 response.setContentType(JSON_MEDIA_TYPE);
                 response.setStatus(HttpServletResponse.SC_OK);
 
                 JsonGenerator generator = jsonMapper
-                        .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
+                    .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
 
-                generator.writeObject(person);
+                generator.writeObject(moduleList);
+
             }else{
                 response.setContentType(JSON_MEDIA_TYPE);
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

@@ -1,6 +1,7 @@
 package ch.bfh.cassd2021.gruppe1.equals.business.model;
 
 import java.time.LocalDate;
+import java.sql.Date;
 
 public class Module {
     private int moduleId;
@@ -11,14 +12,6 @@ public class Module {
     private int headId;
     private int assistantId;
     private Role role;
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
     public int getModuleId() {
         return moduleId;
@@ -48,16 +41,16 @@ public class Module {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate.toLocalDate();
     }
 
     public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate.toLocalDate();
     }
 
     public int getHeadId() {
@@ -74,6 +67,14 @@ public class Module {
 
     public void setAssistantId(int assistantId) {
         this.assistantId = assistantId;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = Role.valueOf(role.toUpperCase());
     }
 
     @Override
