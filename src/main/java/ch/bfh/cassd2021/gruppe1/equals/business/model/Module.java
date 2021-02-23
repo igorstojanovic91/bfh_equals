@@ -10,6 +10,15 @@ public class Module {
     private LocalDate endDate;
     private int headId;
     private int assistantId;
+    private Role role;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     public int getModuleId() {
         return moduleId;

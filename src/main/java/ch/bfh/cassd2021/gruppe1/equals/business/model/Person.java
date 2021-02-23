@@ -12,7 +12,6 @@ public class Person {
     private String sex;
     private String userName;
     private int password;
-    private Role role;
 
     public int getPersonId() {
         return personId;
@@ -78,14 +77,6 @@ public class Person {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     @Override
     public String toString() {
         return "Person{" +
@@ -96,7 +87,6 @@ public class Person {
                 ", placeOfOrigin='" + placeOfOrigin + '\'' +
                 ", sex='" + sex + '\'' +
                 ", userName='" + userName + '\'' +
-                ", role='" + role + '\'' +
                 '}';
     }
 }
