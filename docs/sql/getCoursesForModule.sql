@@ -1,16 +1,7 @@
-SELECT  DISTINCT c.id as courseId, c.name, c.shortName, c.moduleId,
-                 CONCAT(p.lastName, ' ', p.firstName) AS professor,
-                 c.weight,
-                 CASE
-                    WHEN m.headId = 1 THEN 'Head'
-                    WHEN c.professorId = 1 THEN 'Professor'
-                    WHEN m.assistantId = 1 THEN 'Assistant'
-                    ELSE 'Student'
-                 END AS role
-FROM    Module m
-        LEFT JOIN Course c ON m.id = c.moduleId
-        INNER JOIN Person p ON c.professorId = p.id
+SELECT  DISTINCT c.id, c.name, c.shortName, c.moduleId, c.professorId, c.weight
+FROM    Course c
+        LEFT JOIN Module m ON c.moduleId = m.id
         LEFT JOIN Registration r on m.id = r.moduleId
-WHERE   m.id = 38
-AND     (c.professorId = 1 OR m.assistantId = 1 OR m.headId = 1 OR r.studentId = 1)
+WHERE   m.id = 36
+AND     (c.professorId = 268 OR m.assistantId = 268 OR m.headId = 268 OR r.studentId = 268)
 ORDER BY c.id asc;

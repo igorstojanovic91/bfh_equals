@@ -44,7 +44,7 @@ public class DurchstichPersonRepository {
       }
 
     } catch (SQLException e) {
-      logger.error("Problem reading Database, mesage was {}", e.getMessage());
+      logger.error("Problem reading Database, message was {}", e.getMessage());
       throw new RepositoryException(e.getMessage());
     }
 

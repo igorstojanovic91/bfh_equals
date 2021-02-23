@@ -1,9 +1,9 @@
 package ch.bfh.cassd2021.gruppe1.equals.controller;
 
-import ch.bfh.cassd2021.gruppe1.equals.business.model.Module;
+import ch.bfh.cassd2021.gruppe1.equals.business.model.Course;
 import ch.bfh.cassd2021.gruppe1.equals.business.model.Person;
 import ch.bfh.cassd2021.gruppe1.equals.repository.AuthenticationRepository;
-import ch.bfh.cassd2021.gruppe1.equals.repository.ModuleRepository;
+import ch.bfh.cassd2021.gruppe1.equals.repository.CourseRepository;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,23 +20,23 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 
-@WebServlet(urlPatterns = "/api/modules/*")
-public class ModuleRestController extends HttpServlet {
+@WebServlet(urlPatterns = "/api/courses/*")
+public class CourseRestController extends HttpServlet {
     private static final String JSON_MEDIA_TYPE = "application/json; charset=UTF-8";
     private static final String ROOT_PATH = "/";
-    private static final String MODULES_PATH = "/modules";
+    private static final String COURSES_PATH = "/courses";
 
-    private final Logger logger = LoggerFactory.getLogger(ModuleRestController.class);
+    private final Logger logger = LoggerFactory.getLogger(CourseRestController.class);
 
     ObjectMapper jsonMapper;
 
-    ModuleRepository moduleRepository;
+    CourseRepository courseRepository;
     AuthenticationRepository authenticationRepository;
 
-    public ModuleRestController() {
+    public CourseRestController() {
         jsonMapper = new ObjectMapper();
         jsonMapper.registerModule(new JavaTimeModule());
-        moduleRepository = new ModuleRepository();
+        courseRepository = new CourseRepository();
         authenticationRepository = new AuthenticationRepository();
     }
 
@@ -55,15 +55,22 @@ public class ModuleRestController extends HttpServlet {
         } else {
             Person person = authenticationRepository.authenticateUser(credentials[0], Integer.parseInt(credentials[1]));
             if (person != null) {
-                List<Module> moduleList = moduleRepository.getModulesForPerson(person.getPersonId());
+                String pathInfo = request.getPathInfo();
+                if (pathInfo != null && !pathInfo.isEmpty()) {
+                    int moduleId = Integer.parseInt(pathInfo.split("/")[1]);
+                    List<Course> courseList = courseRepository.getCoursesForModule(moduleId, person.getPersonId());
 
-                response.setContentType(JSON_MEDIA_TYPE);
-                response.setStatus(HttpServletResponse.SC_OK);
+                    response.setContentType(JSON_MEDIA_TYPE);
+                    response.setStatus(HttpServletResponse.SC_OK);
 
-                JsonGenerator generator = jsonMapper
-                    .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
+                    JsonGenerator generator = jsonMapper
+                        .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
 
-                generator.writeObject(moduleList);
+                    generator.writeObject(courseList);
+                } else {
+                    response.setContentType(JSON_MEDIA_TYPE);
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                }
 
             } else {
                 response.setContentType(JSON_MEDIA_TYPE);

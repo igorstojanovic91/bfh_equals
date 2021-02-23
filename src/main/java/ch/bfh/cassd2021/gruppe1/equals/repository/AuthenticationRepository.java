@@ -39,7 +39,7 @@ public class AuthenticationRepository {
             }
 
         } catch (SQLException throwables) {
-            logger.error("Problem reading Database, mesage was {}", throwables.getMessage());
+            logger.error("Problem reading Database, message was {}", throwables.getMessage());
             throw new RepositoryException(throwables.getMessage());
         }
         return person;
