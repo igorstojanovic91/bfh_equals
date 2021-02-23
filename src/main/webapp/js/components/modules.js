@@ -10,7 +10,8 @@ export default {
     },
 
     render: function() {
-        const $view = $($('#successful').html());
+        const $view = $($('#tpl-header').html());
+
 
         return $view;
     }

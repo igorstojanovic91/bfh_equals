@@ -1,6 +1,7 @@
 import store from './store.js';
 
 const $main = $('main');
+const $header = $('header');
 
 const routes = Object.create(null);
 

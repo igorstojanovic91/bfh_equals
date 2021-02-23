@@ -13,7 +13,9 @@
     <script src="js/main.js" type="module"></script>
 </head>
 <body>
+    <header>
 
+    </header>
     <main>
         <p>Loading, please wait...</p>
     </main>
@@ -58,10 +60,24 @@
         </div>
     </template>
 
-
-    <template id="tpl-successful">
-        <h1>Login successfull</h1>
+    <!-- H E A D E R -->
+    <template id="tpl-header">
+        <section class="hero is-small is-info">
+            <div class="hero-body">
+                <nav class="level is-mobile">
+                    <div class="level-left">
+                        <h1 class="title">EQualS</h1>
+                    </div>
+                    <div class="level-right">
+                        <p class="level-item" data-field="user.userName"></p>
+                        <p class="level-item"><a href="logout" class="button">Logout</a></p>
+                    </div>
+                </nav>
+            </div>
+        </section>
     </template>
+
+
 
 </body>
 </html>

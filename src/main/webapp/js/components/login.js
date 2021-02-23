@@ -25,19 +25,27 @@ export default {
 function processLogin($view) {
     const user = getFormData();
     service.authenticate(user)
-        .then(data =>  initAfterLogin(user, data))
+        .then(data => {
+            initAfterLogin(data)
+            return service.getModules(user)
+        })
         .catch(jqXHR => {
             let msg =  jqXHR.status === 401
                 ? "Wrong username or password, please try again!"
                 : "Ups, something failed!"
             $('[data-field=error]', $view).html(msg);
-        });
+        })
+        .then(moduleList => setModules(moduleList));
 }
 
 
-function initAfterLogin(user) {
-    store.setUser(user);
-    router.go('/modules');
+function initAfterLogin(userData) {
+    store.setUser(userData);
+}
+
+function  setModules(moduleList) {
+    store.setModules(moduleList)
+    router.go('/modules'); //TODO: REMOVE THIS
 }
 
 function getFormData() {
