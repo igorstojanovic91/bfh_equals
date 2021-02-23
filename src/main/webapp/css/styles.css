@@ -22,13 +22,6 @@
     100% { transform: rotate(360deg); }
 }
 
-@media(max-width: 767px) { /* <== You can change this break point as per your  needs */
-    .column-reverse {
-        flex-direction: column-reverse;
-        display: flex;
-    }
-}
-
 .hero {
     overflow: hidden !important;
 }

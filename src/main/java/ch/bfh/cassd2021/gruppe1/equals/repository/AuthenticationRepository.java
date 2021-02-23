@@ -10,18 +10,18 @@ public class AuthenticationRepository {
 
     final Logger logger = LoggerFactory.getLogger(AuthenticationRepository.class);
 
-    public Person authenticateUser(String username, int password){
+    public Person authenticateUser(String username, int password) {
         logger.debug("Entering authenticateUser()...");
         Person person = null;
 
-        try (Connection connection = EqualsDataSource.getConnection()){
+        try (Connection connection = EqualsDataSource.getConnection()) {
             String query = "SELECT * FROM Person WHERE userName = ? AND password = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, username);
             statement.setInt(2, password);
             ResultSet resultSet = statement.executeQuery();
 
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 person = new Person();
                 person.setPersonId(resultSet.getInt("id"));
                 person.setLastName(resultSet.getString("lastName"));

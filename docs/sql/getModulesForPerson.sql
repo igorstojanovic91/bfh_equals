@@ -1,12 +1,12 @@
-SELECT  DISTINCT m.id as moduleId, m.name, m.shortName, m.startDate, m.endDate,
-                 CONCAT(h.lastName, ' ', h.firstName) AS head,
-                 CONCAT(a.lastName, ' ', a.firstName) AS assistant,
-                 CASE
-                    WHEN m.headId = 1 THEN 'Head'
-                    WHEN c.professorId = 1 THEN 'Professor'
-                    WHEN m.assistantId = 1 THEN 'Assistant'
-                    ELSE 'Student'
-                 END AS role
+SELECT  DISTINCT m.id, m.name, m.shortName, m.startDate, m.endDate, m.headId, m.assistantId,
+        CONCAT(h.lastName, ' ', h.firstName) AS head,
+        CONCAT(a.lastName, ' ', a.firstName) AS assistant,
+        CASE
+            WHEN m.headId = 1 THEN 'Head'
+            WHEN c.professorId = 1 THEN 'Professor'
+            WHEN m.assistantId = 1 THEN 'Assistant'
+            ELSE 'Student'
+        END AS role
 FROM    Module m
         LEFT JOIN Course c ON m.id = c.moduleId
         INNER JOIN Person h ON m.headId = h.id

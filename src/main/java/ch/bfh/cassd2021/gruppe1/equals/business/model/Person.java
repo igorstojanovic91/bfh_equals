@@ -80,13 +80,13 @@ public class Person {
     @Override
     public String toString() {
         return "Person{" +
-                "id=" + personId +
-                ", lastName='" + lastName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", placeOfOrigin='" + placeOfOrigin + '\'' +
-                ", sex='" + sex + '\'' +
-                ", userName='" + userName + '\'' +
-                '}';
+            "id=" + personId +
+            ", lastName='" + lastName + '\'' +
+            ", firstName='" + firstName + '\'' +
+            ", dateOfBirth=" + dateOfBirth +
+            ", placeOfOrigin='" + placeOfOrigin + '\'' +
+            ", sex='" + sex + '\'' +
+            ", userName='" + userName + '\'' +
+            '}';
     }
 }

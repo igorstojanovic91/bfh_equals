@@ -87,6 +87,7 @@ public class Module {
             ", endDate=" + endDate +
             ", headId=" + headId +
             ", assistantId=" + assistantId +
+            ", role=" + role +
             '}';
     }
 }

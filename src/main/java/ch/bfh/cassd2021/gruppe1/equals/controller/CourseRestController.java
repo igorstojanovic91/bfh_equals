@@ -42,6 +42,7 @@ public class CourseRestController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        logger.debug("Entering /api/coursess");
         String header = request.getHeader("Authorization");
         String[] tokens = header.split(" ");
         if (!tokens[0].equals("Basic")) {

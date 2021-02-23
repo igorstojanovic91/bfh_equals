@@ -3,5 +3,5 @@ FROM    Course c
         LEFT JOIN Module m ON c.moduleId = m.id
         LEFT JOIN Registration r on m.id = r.moduleId
 WHERE   m.id = 33
-AND     (c.professorId = 1 OR m.assistantId = 1 OR m.headId = 1 OR r.studentId = 1)
-ORDER BY c.id asc;
+AND     AND (m.headId = 1 OR m.assistantId = 1 OR c.professorId = 1 OR r.studentId = 1)
+ORDER BY c.shortName asc;

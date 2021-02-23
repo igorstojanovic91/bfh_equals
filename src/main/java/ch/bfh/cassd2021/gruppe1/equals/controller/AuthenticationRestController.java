@@ -35,6 +35,7 @@ public class AuthenticationRestController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        logger.debug("Entering /api/authenticate");
         String header = request.getHeader("Authorization");
         String[] tokens = header.split(" ");
         if (!tokens[0].equals("Basic")) {
@@ -42,20 +43,20 @@ public class AuthenticationRestController extends HttpServlet {
         }
         byte[] decoded = Base64.getDecoder().decode(tokens[1]);
         String[] credentials = new String(decoded).split(":");
-        if(credentials.length != 2){
+        if (credentials.length != 2) {
             response.setContentType(JSON_MEDIA_TYPE);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        }else{
+        } else {
             Person person = authenticationRepository.authenticateUser(credentials[0], Integer.parseInt(credentials[1]));
-            if(person != null){
+            if (person != null) {
                 response.setContentType(JSON_MEDIA_TYPE);
                 response.setStatus(HttpServletResponse.SC_OK);
 
                 JsonGenerator generator = jsonMapper
-                        .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
+                    .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
 
                 generator.writeObject(person);
-            }else{
+            } else {
                 response.setContentType(JSON_MEDIA_TYPE);
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }

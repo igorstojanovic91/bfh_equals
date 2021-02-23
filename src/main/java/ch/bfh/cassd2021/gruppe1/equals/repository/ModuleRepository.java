@@ -23,7 +23,7 @@ public class ModuleRepository {
         logger.debug("Entering getModulesForPerson()...");
         List<Module> moduleList = new ArrayList<>();
 
-        String query = "SELECT  DISTINCT m.id, m.name, m.shortName, m.startDate, m.endDate, m.headId, m.assistantId,"
+        String query = "SELECT DISTINCT m.id, m.name, m.shortName, m.startDate, m.endDate, m.headId, m.assistantId,"
             + " CASE"
             + " WHEN m.headId = ? THEN 'Head'"
             + " WHEN c.professorId = ? THEN 'Professor'"
@@ -32,8 +32,6 @@ public class ModuleRepository {
             + " END AS role"
             + " FROM Module m"
             + " LEFT JOIN Course c ON m.id = c.moduleId"
-            + " INNER JOIN Person h ON m.headId = h.id"
-            + " INNER JOIN Person a ON m.assistantId = a.id"
             + " LEFT JOIN Registration r on m.id = r.moduleId"
             + " WHERE m.headId = ? OR c.professorId = ? OR m.assistantId = ? OR r.studentId = ?"
             + " ORDER BY m.shortName asc, m.startDate asc";

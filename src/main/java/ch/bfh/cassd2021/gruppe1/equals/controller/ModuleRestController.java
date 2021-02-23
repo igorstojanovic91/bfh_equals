@@ -75,10 +75,8 @@ public class ModuleRestController extends HttpServlet {
                     logger.debug("Entering /api/modules/overall.");
 
                     String pathInfo = request.getPathInfo();
-                    logger.debug("pathInfo: " + pathInfo);
                     if (pathInfo != null && !pathInfo.isEmpty()) {
                         int moduleId = Integer.parseInt(pathInfo.split("/")[2]);
-                        logger.debug("moduleId: " + moduleId);
                         List<StudentCourseRating> studentCourseRatingList = moduleRepository.getSuccessRateOverviewForModule(moduleId, person.getPersonId());
 
                         response.setContentType(JSON_MEDIA_TYPE);
