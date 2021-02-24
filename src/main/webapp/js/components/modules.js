@@ -12,7 +12,6 @@ export default {
     render: function() {
 
         let $view = $($('#tpl-module-container').html());
-        //$view = $view.append($($('#tpl-module-container').html()));
 
         let modules = store.getModules();
         let additionalRows = Math.floor(modules.length / 3);
