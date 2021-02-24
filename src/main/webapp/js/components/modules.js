@@ -11,18 +11,18 @@ export default {
 
     render: function() {
 
-        let $view = $($('#tpl-module-container').html())
+        let $view = $($('#tpl-module-container').html() * 2);
 
         for(let i = 0; i < store.getModules().length; i++) {
             const module = store.getModules()[i];
-            console.log(module)
-            /**
-            if(i % 3 === 0 && i > 0) {
-                console.log("got in modulo")
-                $view.append($($('#tpl-module-container').html()));
+
+            if(i % 3 === 0 && i > 0 ) {
+                //$view.append($($('#tpl-module-container').html()));
+                //$($('#tpl-module-container').html()).insertAfter(".columns", $view);
+                console.log($view)
+                //$view = $($view[0].outerHTML + ($('#tpl-module-container').html()));
+
             }
-             */
-            console.log("render")
             renderCardItem($view, module)
         }
 
@@ -48,16 +48,14 @@ function renderCardItem($view, module) {
         case "ASSISTANT": tag = "is-info"; break;
         case "STUDENT" : tag = "is-link"; break;
     }
-    console.log(module.role)
-    console.log(tag)
+
     $('span.tag', $item).addClass(tag);
     $('span.tag', $item).text(capitalize(module.role));
     $('date', $item).first().text(module.startDate.join("-"))
     $('date', $item).first().attr("datetime",module.startDate.join("-"))
     $('date', $item).last().text(module.endDate.join("-"))
     $('date', $item).last().attr("datetime",module.endDate.join("-"))
-
-    $view.append($item);
+    $($view).append($item);
 }
 
 function capitalize(str) {
