@@ -11,28 +11,30 @@ export default {
 
     render: function() {
 
-        let $view = $($('#tpl-module-container').html() * 2);
+        let $view = $($('#tpl-module-container').html());
+        //$view = $view.append($($('#tpl-module-container').html()));
 
-        for(let i = 0; i < store.getModules().length; i++) {
-            const module = store.getModules()[i];
-
-            if(i % 3 === 0 && i > 0 ) {
-                //$view.append($($('#tpl-module-container').html()));
-                //$($('#tpl-module-container').html()).insertAfter(".columns", $view);
-                console.log($view)
-                //$view = $($view[0].outerHTML + ($('#tpl-module-container').html()));
-
-            }
-            renderCardItem($view, module)
+        let modules = store.getModules();
+        let additionalRows = Math.floor(modules.length / 3);
+        for(let i = 0; i < additionalRows; i++) {
+            $view = $view.add($($('#tpl-module-container').html()))
         }
 
+        for(let i = 0; i < modules.length; i++) {
+            const module = modules[i];
+            let j = 0;
+            // TODO: BETTER SOLUTION HERE
+            if (i > 2) j = 1;
+            if (i > 5) j = 2;
+            renderCardItem($view[j], module)
+        }
 
         return $view;
     }
 };
 
 
-function renderCardItem($view, module) {
+function renderCardItem($view, module, i) {
     const $item = $($('#tpl-module-item').html());
     const imgName = "img/" + module.shortName.split("-")[0].toLowerCase() + ".jpg"
 
@@ -55,7 +57,8 @@ function renderCardItem($view, module) {
     $('date', $item).first().attr("datetime",module.startDate.join("-"))
     $('date', $item).last().text(module.endDate.join("-"))
     $('date', $item).last().attr("datetime",module.endDate.join("-"))
-    $($view).append($item);
+
+    $('div:empty:first', $view).append($item);
 }
 
 function capitalize(str) {
