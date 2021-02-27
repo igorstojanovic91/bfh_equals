@@ -15,6 +15,7 @@ export default {
 
         $('[data-action=login]', $view).click(e => {
             e.preventDefault();
+            $('[data-field=error]', $view).empty();
             processLogin($view);
         });
 
@@ -25,18 +26,24 @@ export default {
 
 function processLogin($view) {
     const user = getFormData();
+    $('form', $view).fadeOut(100, function () {
+        $('form', $view).empty().append($($('#tpl-loader')).html()).fadeIn(100)
+    })
+
     service.authenticate(user)
         .then(data => {
             initAfterLogin(data)
+
             return service.getModules(user)
         })
+        .then(moduleList => {if(moduleList) setModules(moduleList)})
         .catch(jqXHR => {
             let msg =  jqXHR.status === 401
                 ? "Wrong username or password, please try again!"
                 : "Ups, something failed!"
             $('[data-field=error]', $view).html(msg);
-        })
-        .then(moduleList => setModules(moduleList));
+        });
+
 }
 
 

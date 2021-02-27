@@ -32,7 +32,7 @@
         </div>
     </header>
     <main>
-        <p>Loading, please wait...</p>
+
     </main>
 
 <!-- TEMPLATES -->
@@ -62,6 +62,7 @@
                         </span>
                         </p>
                     </div>
+                    <p data-field="error" class="has-text-danger"></p>
                     <div class="field">
                         <p class="control">
                             <button  data-action="login" class="button is-success">
@@ -70,7 +71,6 @@
                         </p>
                     </div>
                 </form>
-                <div class="loader"></div>
             </div>
         </div>
     </template>
@@ -106,6 +106,15 @@
                         </div>
                     </div>
                 </div>
+    </template>
+
+    <!-- L O A D E R -->
+    <template id="tpl-loader">
+        <section class="hero is-fullheight">
+            <div class="hero-body">
+                <div class="loader"></div>
+            </div>
+        </section>
     </template>
 
 
