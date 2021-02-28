@@ -36,10 +36,7 @@ function processLogin($view) {
                 ? "Wrong username or password, please try again!"
                 : "Ups, something failed!"
             const $template = $($('#tpl-login').html());
-            /**
-            $('div.column:last', $view).fadeOut(300, function () {
-                $('div.column:last', $view).empty().append($($('div.column:last', $template)).html()).fadeIn(300)
-            })*/
+
             $('div.column:last', $view).empty().append($($('div.column:last', $template)).html()).fadeIn(300)
             $('[data-field=error]', $view).html(msg);
         }).done()
