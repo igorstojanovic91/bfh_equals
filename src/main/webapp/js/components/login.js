@@ -27,28 +27,36 @@ export default {
 function processLogin($view) {
     const user = getFormData();
     $('form', $view).fadeOut(100, function () {
-        $('form', $view).empty().append($($('#tpl-loader')).html()).fadeIn(100)
+        $('form', $view).parent().empty()
+        $('div.column:last', $view).append($($('#tpl-loader')).html()).show().fadeIn(100)
     })
-
     service.authenticate(user)
-        .then(data => {
-            initAfterLogin(data)
-
-            return service.getModules(user)
-        })
-        .then(moduleList => {if(moduleList) setModules(moduleList)})
         .catch(jqXHR => {
             let msg =  jqXHR.status === 401
                 ? "Wrong username or password, please try again!"
                 : "Ups, something failed!"
+            const $template = $($('#tpl-login').html());
+            /**
+            $('div.column:last', $view).fadeOut(300, function () {
+                $('div.column:last', $view).empty().append($($('div.column:last', $template)).html()).fadeIn(300)
+            })*/
+            $('div.column:last', $view).empty().append($($('div.column:last', $template)).html()).fadeIn(300)
             $('[data-field=error]', $view).html(msg);
-        });
+        }).done()
+        .then(data => {
+            initAfterLogin(data)
+            return service.getModules(user)
+        })
+        .then(moduleList => {
+            if(moduleList) setModules(moduleList)
+        })
+
 
 }
 
 
 function initAfterLogin(userData) {
-    store.setUser(userData);
+    if(userData) store.setUser(userData);
 }
 
 function  setModules(moduleList) {
