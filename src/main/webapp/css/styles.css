@@ -1,0 +1,42 @@
+.background {
+    background-image: url(../img/bg.jpg);
+    background-position: center center;
+    background-repeat:  no-repeat;
+    background-size:  cover;
+    background-color: #999;
+    height: 100%;
+}
+
+.loader {
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #48c774; /* Primary */
+    border-radius: 100%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+    margin: auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.hero {
+    overflow: hidden !important;
+}
+
+.card {
+    cursor: pointer;
+}
+
+.input-grade {
+    font-family: inherit;
+    font-size: inherit;
+    width: 50px;
+    margin-right: 4px;
+}
+
+[data-auth=true] {
+    display: none;
+}

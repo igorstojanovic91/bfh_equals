@@ -1,6 +1,10 @@
 package ch.bfh.cassd2021.gruppe1.equals.repository;
 
-import ch.bfh.cassd2021.gruppe1.equals.business.Person;
+
+import ch.bfh.cassd2021.gruppe1.equals.business.model.Person;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -8,8 +12,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DurchstichPersonRepository {
 
@@ -26,7 +28,7 @@ public class DurchstichPersonRepository {
 
       while (resultSet.next()) {
         Person person = new Person();
-        person.setId(resultSet.getInt("id"));
+        person.setPersonId(resultSet.getInt("id"));
         person.setLastName(resultSet.getString("lastName"));
         person.setFirstName(resultSet.getString("firstName"));
 
@@ -42,7 +44,7 @@ public class DurchstichPersonRepository {
       }
 
     } catch (SQLException e) {
-      logger.error("Problem reading Database, mesage was {}", e.getMessage());
+      logger.error("Problem reading Database, message was {}", e.getMessage());
       throw new RepositoryException(e.getMessage());
     }
 

@@ -1,0 +1,50 @@
+package ch.bfh.cassd2021.gruppe1.equals.business.model;
+
+public class Rating {
+    private int studentId;
+    private int courseId;
+    private int successRate;
+    private int version;
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
+    public int getSuccessRate() {
+        return successRate;
+    }
+
+    public void setSuccessRate(int successRate) {
+        this.successRate = successRate;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    @Override
+    public String toString() {
+        return "Rating{" +
+            "studentId=" + studentId +
+            ", courseId=" + courseId +
+            ", successRate=" + successRate +
+            ", version=" + version +
+            '}';
+    }
+}
