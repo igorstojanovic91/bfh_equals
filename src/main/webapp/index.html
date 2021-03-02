@@ -13,9 +13,26 @@
     <script src="js/main.js" type="module"></script>
 </head>
 <body>
-
+    <header data-auth="true">
+        <section class="hero is-small is-info">
+            <div class="hero-body">
+                <nav class="level is-mobile">
+                    <div class="level-left">
+                        <h1 class="title">EQualS</h1>
+                    </div>
+                    <div class="level-right">
+                        <p class="level-item" data-field="user.userName"></p>
+                        <p class="level-item"><a href="logout" class="button">Logout</a></p>
+                    </div>
+                </nav>
+            </div>
+        </section>
+        <div class="container pt-6 has-text-centered">
+            <h1 class="title">Your Module Overview:</h1>
+        </div>
+    </header>
     <main>
-        <p>Loading, please wait...</p>
+
     </main>
 
 <!-- TEMPLATES -->
@@ -39,12 +56,13 @@
                     </div>
                     <div class="field">
                         <p class="control has-icons-left">
-                            <input class="input" placeholder="Password" name="password" type="password">
+                            <input class="input" placeholder="Password" name="password" type="password" pattern="[0-9]+">
                             <span class="icon is-small is-left">
                           <i class="fas fa-lock"></i>
                         </span>
                         </p>
                     </div>
+                    <p data-field="error" class="has-text-danger"></p>
                     <div class="field">
                         <p class="control">
                             <button  data-action="login" class="button is-success">
@@ -53,15 +71,53 @@
                         </p>
                     </div>
                 </form>
-                <div class="loader"></div>
             </div>
         </div>
     </template>
 
-
-    <template id="tpl-successful">
-        <h1>Login successfull</h1>
+    <!-- C A R D C O N T A I N E R -->
+    <template id="tpl-module-container">
+        <div class="columns">
+            <div class="column p-6"></div>
+            <div class="column p-6"></div>
+            <div class="column p-6"></div>
+        </div>
     </template>
+
+    <!-- C A R D I T E M-->
+    <template id="tpl-module-item">
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image is-4by3">
+                            <img src="?" alt="?">
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                <p class="title is-4"></p>
+                                <p class="subtitle is-6"></p>
+                            </div>
+                        </div>
+
+                        <div class="content">
+                            <p><span class="tag is-light"></span></p>
+                            <date datetime=""></date> &ndash; <date datetime="">?</date>
+                        </div>
+                    </div>
+                </div>
+    </template>
+
+    <!-- L O A D E R -->
+    <template id="tpl-loader">
+        <section class="hero is-fullheight">
+            <div class="hero-body">
+                <div class="loader"></div>
+            </div>
+        </section>
+    </template>
+
+
 
 </body>
 </html>
