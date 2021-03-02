@@ -15,7 +15,7 @@ export default {
         $('[data-action=login]', $view).on('click', e => {
             e.preventDefault();
             console.log("got here");
-            $('[data-field=error]', $view).empty();
+            //$('[data-field=error]', $view).empty();
             processLogin($view);
         });
 
@@ -27,8 +27,8 @@ export default {
 function processLogin($view) {
     const user = getFormData();
     $('form', $view).fadeOut(100, function () {
-        $('form', $view).parent().empty()
-        $('div.column:last', $view).append($($('#tpl-loader')).html()).show().fadeIn(100)
+        $('form', $view).parent().hide();
+        $('div.column:last', $view).append($($('#tpl-loader')).html()).show().fadeIn(100);
     })
     service.authenticate(user)
         .catch(jqXHR => {
@@ -36,9 +36,11 @@ function processLogin($view) {
                 ? "Wrong username or password, please try again!"
                 : "Ups, something failed!"
             //router.go('/')
-            const $template = $($('#tpl-login').html());
-            $('div.column:last', $view).empty().append($($('div.column:last', $template)).html()).fadeIn(300)
+            //const $template = $($('#tpl-login').html());
+            //$('div.column:last', $view).empty().append($($('div.column:last', $template)).html()).fadeIn(300)
             $('[data-field=error]', $view).html(msg);
+            $('.hero .is-fullheight', $view).detach();
+            $('form', $view).parent().show();
         }).done()
         .then(data => {
             initAfterLogin(data)
