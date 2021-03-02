@@ -13,7 +13,7 @@ export default {
         }).fail(jqXHR => console.log(`An error occurred: (${jqXHR.status}) ${jqXHR.responseText}`));
     },
 
-    getModules: function(user) {
+    getModules: function (user) {
         return $.ajax({
             url: BASE_URL + 'modules',
             type: 'GET',
@@ -24,7 +24,7 @@ export default {
         }).fail(jqXHR => console.log(`An error occurred: (${jqXHR.status}) ${jqXHR.responseText}`));
     },
 
-    getModulesOverall: function(user, moduleId) {
+    getModulesOverall: function (user, moduleId) {
         return $.ajax({
             url: BASE_URL + 'modules/overall/' + moduleId,
             type: 'GET',

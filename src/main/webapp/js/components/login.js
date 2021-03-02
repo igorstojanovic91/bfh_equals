@@ -3,14 +3,13 @@ import router from '../router.js';
 import store from '../store.js';
 import util from "../util.js";
 
-
 export default {
 
-    getTitle: function() {
+    getTitle: function () {
         return "Login";
     },
 
-    render: function() {
+    render: function () {
         const $view = $($('#tpl-login').html());
         $('[data-action=login]', $view).on('click', e => {
             e.preventDefault();
@@ -20,7 +19,6 @@ export default {
         return $view;
     }
 };
-
 
 function processLogin($view) {
     const user = getFormData();
@@ -36,7 +34,7 @@ function processLogin($view) {
         })
         .catch(jqXHR => {
             setTimeout(function () {
-                let msg =  jqXHR.status === 401
+                let msg = jqXHR.status === 401
                     ? "Wrong username or password, please try again!"
                     : "Ups, something failed!"
                 $('[data-field=error]', $view).html(msg);
@@ -46,12 +44,11 @@ function processLogin($view) {
         })
 }
 
-
 function initAfterLogin(userData) {
-    if(userData) store.setUser(userData);
+    if (userData) store.setUser(userData);
 }
 
-function  setModules(moduleList) {
+function setModules(moduleList) {
     store.setModules(moduleList)
     util.showAuthContent(true);
     router.go('/modules'); //TODO: REMOVE THIS

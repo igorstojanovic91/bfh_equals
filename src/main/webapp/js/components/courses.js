@@ -1,25 +1,31 @@
 import service from '../service.js';
 import router from '../router.js';
 import store from '../store.js';
-import util from "../util.js";
 
 export default {
-    getTitle: function() {
+    getTitle: function () {
         return "Courses"; //TODO: dynamic title
     },
 
-    render: function(moduleId) {
+    render: function (moduleId) {
         let $view = $($('#tpl-courses').html());
-        if(!moduleId){
+        if (!moduleId) {
             return $('<p>Invalid parameter! Expecting moduleId.</p>'); //TODO: define error class
         }
+        const module = store.getModule(moduleId);
+        if (module) {
+            $('[data-field=title]').html(module.name);
+        } else {
+            router.go('/modules');
+        }
+
         service.getModulesOverall(store.getUser(), moduleId)
             .then(data => initView($view, data))
         return $view;
     }
 };
 
-function initView($view, data){
+function initView($view, data) {
     const firstElement = data[0];
     createHeader($view, firstElement.courseRating);
     data.forEach(item => {
@@ -36,14 +42,14 @@ function initView($view, data){
     createFooter($view, firstElement.courseRating);
 }
 
-function createHeader($view, courseRating){
+function createHeader($view, courseRating) {
     courseRating.reverse().forEach(item => {
         $('thead tr', $view).prepend($(`<th><abbr title="${item.course.name}">${item.course.shortName}</abbr></th>`));
     })
     $('thead tr', $view).prepend($('<th>Student</th>'));
 }
 
-function createFooter($view, courseRating){
+function createFooter($view, courseRating) {
     courseRating.forEach(item => {
         $('tfoot tr:last', $view).prepend($(`<th><abbr title="${item.course.name}">${item.course.shortName}</abbr></th>`));
     })
