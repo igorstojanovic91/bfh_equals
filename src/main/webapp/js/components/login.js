@@ -43,7 +43,6 @@ function processLogin($view) {
                 $('.hero.is-fullheight', $view).remove();
                 $('form', $view).fadeIn(400).show();
             }, 500)
-
         })
 }
 
