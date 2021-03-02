@@ -12,6 +12,8 @@ function replaceView($view) {
 function render() {
     const hash = location.hash.replace('#/', '').split('/');
     const path = '/' + (hash[0] || '');
+    console.log(path);
+    console.log(routes[path]);
     if (!routes[path]) {
         replaceView($('<h2>404 Not Found</h2><p>Sorry, page not found....</p>'));
         return;

@@ -86,7 +86,8 @@
 
     <!-- C A R D I T E M-->
     <template id="tpl-module-item">
-        <a data-action="overview" href="#">
+        <div>
+        <a href="#">
                 <div class="card">
                     <div class="card-image">
                         <figure class="image is-4by3">
@@ -108,7 +109,8 @@
                     </div>
                 </div>
         </a>
-    </template>
+        </div>
+        </template>
 
     <!-- L O A D E R -->
     <template id="tpl-loader">
@@ -126,17 +128,18 @@
                 <div class="table-container">
                     <table class="table is-striped is-hoverable is-fullwidth">
                         <thead>
-                        <tr>
-                            <th>?</th>
-                        </tr>
+                            <tr>
+                                <th><abbr title="Preliminary grade">Prelim</abbr></th>
+                                <th><abbr title="Overall grade">Overall</abbr></th>
+                            </tr>
                         </thead>
                         <tfoot>
-                        <tr class="has-background-info-light">
-                            <th>?</th>
-                        </tr>
-                        <tr>
-                            <th></th>
-                        </tr>
+                            <tr class="has-background-info-light">
+                            </tr>
+                            <tr>
+                                <th><abbr title="Preliminary grade">Prelim</abbr></th>
+                                <th><abbr title="Overall grade">Overall</abbr></th>
+                            </tr>
                         </tfoot>
                         <tbody>
                         </tbody>

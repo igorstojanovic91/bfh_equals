@@ -33,9 +33,9 @@ export default {
 function renderCardItem($view, module) {
     const $item = $($('#tpl-module-item').html());
     const imgName = "img/" + module.shortName.split("-")[0].toLowerCase() + ".jpg"
-    const link = "/#/module-overview/" + module.moduleId;
+    const link = "#/module-overview/" + module.moduleId;
 
-    $('[data-action=overview]', $item).attr("href", link);
+    $('a', $item).attr('href', link);
     $('img', $item).attr("src", imgName);
     $('img', $item).attr("alt", module.name);
 
