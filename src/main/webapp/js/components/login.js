@@ -14,8 +14,6 @@ export default {
         const $view = $($('#tpl-login').html());
         $('[data-action=login]', $view).on('click', e => {
             e.preventDefault();
-            console.log("got here");
-            //$('[data-field=error]', $view).empty();
             processLogin($view);
         });
 
@@ -26,21 +24,19 @@ export default {
 
 function processLogin($view) {
     const user = getFormData();
-    $('form', $view).fadeOut(100, function () {
+    // TODO: check time for fade in /out
+    $('form', $view).fadeOut(1, function () {
         $('form', $view).parent().hide();
-        $('div.column:last', $view).append($($('#tpl-loader')).html()).show().fadeIn(100);
+        $('div.column:last', $view).append($($('#tpl-loader')).html()).show().fadeIn(1);
     })
     service.authenticate(user)
         .catch(jqXHR => {
             let msg =  jqXHR.status === 401
                 ? "Wrong username or password, please try again!"
                 : "Ups, something failed!"
-            //router.go('/')
-            //const $template = $($('#tpl-login').html());
-            //$('div.column:last', $view).empty().append($($('div.column:last', $template)).html()).fadeIn(300)
             $('[data-field=error]', $view).html(msg);
-            $('.hero .is-fullheight', $view).detach();
-            $('form', $view).parent().show();
+            $('.hero.is-fullheight', $view).remove();
+            $('form', $view).show();
         }).done()
         .then(data => {
             initAfterLogin(data)
@@ -49,8 +45,6 @@ function processLogin($view) {
         .then(moduleList => {
             if(moduleList) setModules(moduleList)
         })
-
-
 }
 
 
@@ -66,7 +60,6 @@ function  setModules(moduleList) {
 
 function getFormData() {
     const form = document.forms[0];
-    console.log(form);
     return {
         username: form.username.value,
         password: form.password.value
