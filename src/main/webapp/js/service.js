@@ -2,10 +2,10 @@ const BASE_URL = 'http://localhost:8080/equals_war/api/';
 
 export default {
 
-    authenticate: function (user) {
+    getPerson: function (user) {
 
         return $.ajax({
-            url: BASE_URL + 'authenticate',
+            url: BASE_URL + 'persons',
             type: 'GET',
             headers: {
                 'Authorization': getAuthHeader(user),

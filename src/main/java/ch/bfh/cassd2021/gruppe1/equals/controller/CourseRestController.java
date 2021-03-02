@@ -1,7 +1,6 @@
 package ch.bfh.cassd2021.gruppe1.equals.controller;
 
 import ch.bfh.cassd2021.gruppe1.equals.business.model.Course;
-import ch.bfh.cassd2021.gruppe1.equals.business.model.Person;
 import ch.bfh.cassd2021.gruppe1.equals.repository.AuthenticationRepository;
 import ch.bfh.cassd2021.gruppe1.equals.repository.CourseRepository;
 import com.fasterxml.jackson.core.JsonEncoding;
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 
 @WebServlet(urlPatterns = "/api/courses/*")
@@ -42,41 +40,22 @@ public class CourseRestController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        logger.debug("Entering /api/coursess");
-        String header = request.getHeader("Authorization");
-        String[] tokens = header.split(" ");
-        if (!tokens[0].equals("Basic")) {
-            throw new IllegalArgumentException();
-        }
-        byte[] decoded = Base64.getDecoder().decode(tokens[1]);
-        String[] credentials = new String(decoded).split(":");
-        if (credentials.length != 2) {
+        logger.debug("Entering /api/courses");
+        String pathInfo = request.getPathInfo();
+        if (pathInfo != null && !pathInfo.isEmpty()) {
+            int moduleId = Integer.parseInt(pathInfo.split("/")[1]);
+            List<Course> courseList = courseRepository.getCoursesForModule(moduleId, (Integer) request.getAttribute("personId"));
+
+            response.setContentType(JSON_MEDIA_TYPE);
+            response.setStatus(HttpServletResponse.SC_OK);
+
+            JsonGenerator generator = jsonMapper
+                .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
+
+            generator.writeObject(courseList);
+        } else {
             response.setContentType(JSON_MEDIA_TYPE);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        } else {
-            Person person = authenticationRepository.authenticateUser(credentials[0], Integer.parseInt(credentials[1]));
-            if (person != null) {
-                String pathInfo = request.getPathInfo();
-                if (pathInfo != null && !pathInfo.isEmpty()) {
-                    int moduleId = Integer.parseInt(pathInfo.split("/")[1]);
-                    List<Course> courseList = courseRepository.getCoursesForModule(moduleId, person.getPersonId());
-
-                    response.setContentType(JSON_MEDIA_TYPE);
-                    response.setStatus(HttpServletResponse.SC_OK);
-
-                    JsonGenerator generator = jsonMapper
-                        .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
-
-                    generator.writeObject(courseList);
-                } else {
-                    response.setContentType(JSON_MEDIA_TYPE);
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                }
-
-            } else {
-                response.setContentType(JSON_MEDIA_TYPE);
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            }
         }
     }
 }

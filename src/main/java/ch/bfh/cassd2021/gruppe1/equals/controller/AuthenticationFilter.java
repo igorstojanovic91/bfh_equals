@@ -1,6 +1,5 @@
 package ch.bfh.cassd2021.gruppe1.equals.controller;
 
-import ch.bfh.cassd2021.gruppe1.equals.business.model.Person;
 import ch.bfh.cassd2021.gruppe1.equals.repository.AuthenticationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,9 +39,9 @@ public class AuthenticationFilter extends HttpFilter {
                 response.setContentType(JSON_MEDIA_TYPE);
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             } else {
-                Person person = authenticationRepository.authenticateUser(credentials[0], Integer.parseInt(credentials[1]));
-                if (person != null) {
-                    request.setAttribute("personId", person.getPersonId());
+                int personId = authenticationRepository.authenticateUser(credentials[0], Integer.parseInt(credentials[1]));
+                if (personId > -1) {
+                    request.setAttribute("personId", personId);
                     chain.doFilter(request, response);
                 } else {
                     response.setContentType(JSON_MEDIA_TYPE);

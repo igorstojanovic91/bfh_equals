@@ -1,7 +1,6 @@
 package ch.bfh.cassd2021.gruppe1.equals.controller;
 
 import ch.bfh.cassd2021.gruppe1.equals.business.model.Module;
-import ch.bfh.cassd2021.gruppe1.equals.business.model.Person;
 import ch.bfh.cassd2021.gruppe1.equals.business.model.StudentCourseRating;
 import ch.bfh.cassd2021.gruppe1.equals.repository.AuthenticationRepository;
 import ch.bfh.cassd2021.gruppe1.equals.repository.ModuleRepository;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 
 @WebServlet(urlPatterns = "/api/modules/*")
@@ -43,69 +41,51 @@ public class ModuleRestController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String header = request.getHeader("Authorization");
-        String[] tokens = header.split(" ");
-        if (!tokens[0].equals("Basic")) {
-            throw new IllegalArgumentException();
-        }
-        byte[] decoded = Base64.getDecoder().decode(tokens[1]);
-        String[] credentials = new String(decoded).split(":");
-        if (credentials.length != 2) {
+        String path = request.getPathInfo() != null ? request.getPathInfo() : "/";
+        int personId = (Integer) request.getAttribute("personId");
+
+        if (path.matches(ROOT_PATH)) {
+            logger.debug("Entering /api/modules.");
+
+            List<Module> moduleList = moduleRepository.getModulesForPerson(personId);
+
             response.setContentType(JSON_MEDIA_TYPE);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        } else {
-            Person person = authenticationRepository.authenticateUser(credentials[0], Integer.parseInt(credentials[1]));
-            if (person != null) {
-                String path = request.getPathInfo() != null ? request.getPathInfo() : "/";
+            response.setStatus(HttpServletResponse.SC_OK);
 
-                if (path.matches(ROOT_PATH)) {
-                    logger.debug("Entering /api/modules.");
+            JsonGenerator generator = jsonMapper
+                .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
 
-                    List<Module> moduleList = moduleRepository.getModulesForPerson(person.getPersonId());
+            generator.writeObject(moduleList);
 
-                    response.setContentType(JSON_MEDIA_TYPE);
-                    response.setStatus(HttpServletResponse.SC_OK);
+        } else if (path.contains(OVERALL_PATH)) {
+            logger.debug("Entering /api/modules/overall.");
 
-                    JsonGenerator generator = jsonMapper
-                        .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
+            String pathInfo = request.getPathInfo();
+            if (pathInfo != null && !pathInfo.isEmpty()) {
+                int moduleId = Integer.parseInt(pathInfo.split("/")[2]);
+                List<StudentCourseRating> studentCourseRatingList = moduleRepository.getSuccessRateOverviewForModule(moduleId, personId);
 
-                    generator.writeObject(moduleList);
-
-                } else if (path.contains(OVERALL_PATH)) {
-                    logger.debug("Entering /api/modules/overall.");
-
-                    String pathInfo = request.getPathInfo();
-                    if (pathInfo != null && !pathInfo.isEmpty()) {
-                        int moduleId = Integer.parseInt(pathInfo.split("/")[2]);
-                        List<StudentCourseRating> studentCourseRatingList = moduleRepository.getSuccessRateOverviewForModule(moduleId, person.getPersonId());
-
-                        response.setContentType(JSON_MEDIA_TYPE);
-                        response.setStatus(HttpServletResponse.SC_OK);
-
-                        JsonGenerator generator = jsonMapper
-                            .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
-
-                        generator.writeObject(studentCourseRatingList);
-                    }
-
-                } else {
-                    logger.debug("path {} not implemented.", path);
-                    String error = "Path " + path.toString() + " not implemented.";
-
-                    response.setContentType(JSON_MEDIA_TYPE);
-                    response.setCharacterEncoding("UTF-8");
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-
-                    JsonGenerator generator = jsonMapper
-                        .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
-
-                    generator.writeObject(error);
-                }
-
-            } else {
                 response.setContentType(JSON_MEDIA_TYPE);
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setStatus(HttpServletResponse.SC_OK);
+
+                JsonGenerator generator = jsonMapper
+                    .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
+
+                generator.writeObject(studentCourseRatingList);
             }
+
+        } else {
+            logger.debug("path {} not implemented.", path);
+            String error = "Path " + path.toString() + " not implemented.";
+
+            response.setContentType(JSON_MEDIA_TYPE);
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+
+            JsonGenerator generator = jsonMapper
+                .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
+
+            generator.writeObject(error);
         }
     }
 }

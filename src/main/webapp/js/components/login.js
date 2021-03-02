@@ -29,7 +29,11 @@ function processLogin($view) {
         $('form', $view).parent().hide();
         $('div.column:last', $view).append($($('#tpl-loader')).html()).show().fadeIn(1);
     })
-    service.authenticate(user)
+    service.getModules(user)
+        .then(moduleList => {
+            initAfterLogin(user);
+            setModules(moduleList);
+        })
         .catch(jqXHR => {
             let msg =  jqXHR.status === 401
                 ? "Wrong username or password, please try again!"
@@ -37,13 +41,6 @@ function processLogin($view) {
             $('[data-field=error]', $view).html(msg);
             $('.hero.is-fullheight', $view).remove();
             $('form', $view).show();
-        }).done()
-        .then(data => {
-            initAfterLogin(data)
-            return service.getModules(user)
-        })
-        .then(moduleList => {
-            if(moduleList) setModules(moduleList)
         })
 }
 
