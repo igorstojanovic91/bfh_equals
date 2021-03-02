@@ -27,10 +27,13 @@ function initView($view, data){
         let tr = $('<tr></tr>');
         tr.append(`<td>${item.name}</td>`);
         item.courseRating.forEach(courseRating => {
-            tr.append(`<td>${courseRating.rating.successRate} %</td>`);
+            tr.append(`<td>${courseRating.rating.successRate}%</td>`);
         })
+        tr.append(`<td>${item.preliminaryGrade}%</td>`);
+        tr.append(`<td>${item.overallGrade}%</td>`);
         $('tbody', $view).append(tr);
     })
+    createFooter($view, firstElement.courseRating);
 }
 
 function createHeader($view, courseRating){
@@ -38,4 +41,11 @@ function createHeader($view, courseRating){
         $('thead tr', $view).prepend($(`<th><abbr title="${item.course.name}">${item.course.shortName}</abbr></th>`));
     })
     $('thead tr', $view).prepend($('<th>Student</th>'));
+}
+
+function createFooter($view, courseRating){
+    courseRating.forEach(item => {
+        $('tfoot tr:last', $view).prepend($(`<th><abbr title="${item.course.name}">${item.course.shortName}</abbr></th>`));
+    })
+    $('tfoot tr:last', $view).prepend($('<th>&nbsp;</th>'));
 }
