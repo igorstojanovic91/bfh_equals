@@ -86,6 +86,7 @@
 
     <!-- C A R D I T E M-->
     <template id="tpl-module-item">
+        <a data-action="overview" href="#">
                 <div class="card">
                     <div class="card-image">
                         <figure class="image is-4by3">
@@ -106,6 +107,7 @@
                         </div>
                     </div>
                 </div>
+        </a>
     </template>
 
     <!-- L O A D E R -->
@@ -117,7 +119,86 @@
         </section>
     </template>
 
+    <!-- C O U R S E S-->
+    <template id="tpl-courses">
+        <div class="container pt-6 has-text-centered">
+            <form>
+                <div class="table-container">
+                    <table class="table is-striped is-hoverable is-fullwidth">
+                        <thead>
+                        <tr>
+                            <th>?</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr class="has-background-info-light">
+                            <th>?</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="level pt-6 is-mobile">
+                    <div class="level-left">
+                        <button class="button is-info">Back to Modules</button>
+                    </div>
+                    <div class="level-right">
+                        <button class="button is-success">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </template>
 
+    <!-- C O U R S E S - T A B L E - H E A D-->
+    <template id="tpl-courses-table-head">
+        <th>?</th>
+        <th><abbr title="Preliminary grade">Prelim</abbr></th>
+        <th><abbr title="Overall grade">Overall</abbr></th>
+    </template>
 
+    <!-- C O U R S E - S T A T I S T I C S-->
+    <template id="tpl-course-statistics">
+        <div class="container pt-6 has-text-centered">
+            <h1 class="title" data-field="module-title">?</h1>
+
+            <nav class="level mt-6 mb-6 is-hidden-mobile">
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading"># Students</p>
+                        <p class="title" data-field="students-counter">?</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading"># Passed</p>
+                        <p class="title" data-field="students-passed">?</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">Average grade</p>
+                        <p class="title" data-field="average-grade">?</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">Best grade</p>
+                        <p class="title" data-field="best-grade">?</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">Worst grade</p>
+                        <p class="title" data-field="worst-grade">?</p>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </template>
 </body>
 </html>
