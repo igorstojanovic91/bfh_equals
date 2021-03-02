@@ -2,9 +2,9 @@
 export default {
     showAuthContent: function(visible) {
         if (visible) {
-            $('[data-auth=true]').fadeIn(400);
+            $('[data-auth=true]').fadeIn(500);
         } else {
-            $('[data-auth=true]').fadeOut(400);
+            $('[data-auth=true]').fadeOut(500);
         }
     },
 
