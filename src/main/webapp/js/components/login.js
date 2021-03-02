@@ -12,9 +12,9 @@ export default {
 
     render: function() {
         const $view = $($('#tpl-login').html());
-
-        $('[data-action=login]', $view).click(e => {
+        $('[data-action=login]', $view).on('click', e => {
             e.preventDefault();
+            console.log("got here");
             $('[data-field=error]', $view).empty();
             processLogin($view);
         });
@@ -35,8 +35,8 @@ function processLogin($view) {
             let msg =  jqXHR.status === 401
                 ? "Wrong username or password, please try again!"
                 : "Ups, something failed!"
+            //router.go('/')
             const $template = $($('#tpl-login').html());
-
             $('div.column:last', $view).empty().append($($('div.column:last', $template)).html()).fadeIn(300)
             $('[data-field=error]', $view).html(msg);
         }).done()

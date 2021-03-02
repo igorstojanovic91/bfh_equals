@@ -4,6 +4,7 @@ const $main = $('main');
 
 const routes = Object.create(null);
 
+
 function replaceView($view) {
     $main.fadeOut(200, function() {$main.empty().append($view).fadeIn(300);});
 }

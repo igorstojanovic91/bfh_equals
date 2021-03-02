@@ -21,11 +21,8 @@ export default {
 
         for(let i = 0; i < modules.length; i++) {
             const module = modules[i];
-            let j = 0;
-            // TODO: BETTER SOLUTION HERE
-            if (i > 2) j = 1;
-            if (i > 5) j = 2;
-            renderCardItem($view[j], module)
+            const row = Math.floor(i / 3);
+            renderCardItem($view[row], module);
         }
 
         return $view;
@@ -33,7 +30,7 @@ export default {
 };
 
 
-function renderCardItem($view, module, i) {
+function renderCardItem($view, module) {
     const $item = $($('#tpl-module-item').html());
     const imgName = "img/" + module.shortName.split("-")[0].toLowerCase() + ".jpg"
 
@@ -52,10 +49,10 @@ function renderCardItem($view, module, i) {
 
     $('span.tag', $item).addClass(tag);
     $('span.tag', $item).text(capitalize(module.role));
-    $('date', $item).first().text(module.startDate.join("-"))
-    $('date', $item).first().attr("datetime",module.startDate.join("-"))
-    $('date', $item).last().text(module.endDate.join("-"))
-    $('date', $item).last().attr("datetime",module.endDate.join("-"))
+    $('date', $item).first().text(module.startDate.join("-"));
+    $('date', $item).first().attr("datetime",module.startDate.join("-"));
+    $('date', $item).last().text(module.endDate.join("-"));
+    $('date', $item).last().attr("datetime",module.endDate.join("-"));
 
     $('div:empty:first', $view).append($item);
 }
