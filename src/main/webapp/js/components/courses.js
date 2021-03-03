@@ -2,6 +2,7 @@ import service from '../service.js';
 import router from '../router.js';
 import store from '../store.js';
 
+let moduleIdentifier;
 export default {
     getTitle: function () {
         return "Courses"; //TODO: dynamic title
@@ -11,6 +12,7 @@ export default {
         let $statistics = $($('#tpl-course-statistics').html());
         let $table = $($('#tpl-courses').html());
         let $view = $statistics.add($table)
+        moduleIdentifier = moduleId;
         if (!moduleId) {
             return $('<p>Invalid parameter! Expecting moduleId.</p>'); //TODO: define error class
         }
@@ -34,17 +36,34 @@ function initStatics($view, data) {
     let worstGrade = 100;
     let gradeCounter = 0;
     let passedStudents = 0;
-    data.forEach(student => {
-        if(student.overallGrade > bestGrade) bestGrade = student.overallGrade;
-        if(student.overallGrade < worstGrade) worstGrade = student.overallGrade;
-        if(student.overallGrade >= 50) passedStudents++;
-        console.log(student.overallGrade)
-        gradeCounter+=student.overallGrade;
-    })
+    let averageGrade;
+    if(!(store.getModule(moduleIdentifier).role === "PROFESSOR")) {
+        data.forEach(student => {
+            if(student.overallGrade > bestGrade) bestGrade = student.overallGrade;
+            if(student.overallGrade < worstGrade) worstGrade = student.overallGrade;
+            if(student.overallGrade >= 50) passedStudents++;
+            console.log(student.overallGrade)
+            gradeCounter+=student.overallGrade;
+        })
+    } else {
+        let grades = 0;
+        let divider = data[0].courseRating.length * data.length;
+        data.forEach(student => {
+            let singleGrades = 0;
+            student.courseRating.forEach(courseRating => {
+                grades += courseRating.rating.successRate
+                if(courseRating.rating.successRate > bestGrade) bestGrade = courseRating.rating.successRate;
+                if(courseRating.rating.successRate < worstGrade) worstGrade = courseRating.rating.successRate;
+            })
+            passedStudents = (singleGrades / student.courseRating.length >= 50) ? passedStudents++ : passedStudents+=0;
+        })
+        averageGrade = grades / divider;
+    }
     $('[data-field=students-passed]', $view).html(passedStudents) // TODO
-    $('[data-field=average-grade]', $view).html(gradeCounter / data.length) // TODO
+    $('[data-field=average-grade]', $view).html(averageGrade ? averageGrade : gradeCounter / data.length) // TODO
     $('[data-field=best-grade]', $view).html(bestGrade) // TODO
     $('[data-field=worst-grade]', $view).html(worstGrade) // TODO
+
 }
 
 function initView($view, data) {
