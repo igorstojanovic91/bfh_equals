@@ -123,10 +123,23 @@ function createHeader($view, courseRating) {
 
 function createFooter($view, courseRating) {
     courseRating.forEach( (item, index) => {
-        $('tfoot tr:first', $view).prepend($(`<th>${index}</th>`));
+        $('tfoot tr:first', $view).prepend($(`<th>${calcCourseAverage(index+2, $view)}</th>`));
         $('tfoot tr:last', $view).prepend($(`<th><abbr title="${item.course.name}">${item.course.shortName}</abbr></th>`));
     })
     $('tfoot tr:last', $view).prepend($('<th>&nbsp;</th>'));
     $('tfoot tr:first', $view).prepend($('<th>Average</th>'))
 
+}
+
+function calcCourseAverage(columnIndex, $view) {
+    let avg = 0, amount = 0;
+    console.log($(`tr td:nth-of-type(${columnIndex})`, $view))
+    $(`tr td:nth-of-type(${columnIndex})`, $view).each(function(){
+        let value = $(this).find('input').attr("value") || parseInt($(this).text())
+        console.log(value)
+        avg += value;
+        amount++;
+    });
+    console.log(avg)
+    return avg / amount;
 }
