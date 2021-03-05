@@ -85,6 +85,7 @@ function initView($view, data) {
     initStatics($($view[0]), data);
     const firstElement = data[0];
     createHeader($view, firstElement.courseRating);
+
     data.forEach(item => {
         let tr = $('<tr></tr>');
         tr.append(`<td>${item.name}</td>`);
@@ -100,7 +101,25 @@ function initView($view, data) {
         tr.append(`<td>${item.overallGrade}%</td>`);
         $('tbody', $view).append(tr);
     })
+
     createFooter($view, firstElement.courseRating);
+    console.log($('table', $view)[0].rows[0].cells);
+    //REMOVING COLUMNS FOR PROFESSOR
+    if(store.getModule(moduleIdentifier).role === "PROFESSOR") {
+        var toRemoveColumns = ['Prelim', 'Overall']
+        var tble = $('table', $view)[0];
+        var row = tble.rows;
+
+
+        for (var i = 0; i <= row[0].cells.length; i++) {
+            var str = row[0].cells[i].innerText;
+            if (toRemoveColumns.includes(str)) {
+                for (var j = 0; j <= row.length; j++) {
+                    row[j].deleteCell(i);
+                }
+            }
+        }
+    }
 }
 
 function createHeader($view, courseRating) {
@@ -111,9 +130,11 @@ function createHeader($view, courseRating) {
 }
 
 function createFooter($view, courseRating) {
-
-    courseRating.forEach(item => {
+    courseRating.forEach( (item, index) => {
+        $('tfoot tr:first', $view).prepend($(`<th>${index}</th>`));
         $('tfoot tr:last', $view).prepend($(`<th><abbr title="${item.course.name}">${item.course.shortName}</abbr></th>`));
     })
     $('tfoot tr:last', $view).prepend($('<th>&nbsp;</th>'));
+    $('tfoot tr:first', $view).prepend($('<th>Average</th>'))
+
 }
