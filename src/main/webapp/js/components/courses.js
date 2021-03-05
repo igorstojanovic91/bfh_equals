@@ -25,18 +25,33 @@ export default {
         }
         service.getModulesOverall(store.getUser(), moduleId)
             .then(data => initView($view, data))
+
+        $("[data-action=save]").click(function () {
+            //TODO
+        })
+
+        $("[data-action=cancel]").click(function () {
+            //TODO implement reading modules from store
+            e.preventDefault()
+            router.go("/modules")
+        })
+
+
+
         return $view;
     }
 };
 
+let bestGrade = 0;
+let worstGrade = 100;
+let gradeCounter = 0;
+let passedStudents = 0;
+let averageGrade;
+
 function initStatics($view, data) {
     console.log($view)
     $('[data-field=students-counter]', $view).html(data.length)
-    let bestGrade = 0;
-    let worstGrade = 100;
-    let gradeCounter = 0;
-    let passedStudents = 0;
-    let averageGrade;
+
     if(!(store.getModule(moduleIdentifier).role === "PROFESSOR")) {
         data.forEach(student => {
             if(student.overallGrade > bestGrade) bestGrade = student.overallGrade;
@@ -67,16 +82,19 @@ function initStatics($view, data) {
 }
 
 function initView($view, data) {
-    console.log($view)
     initStatics($($view[0]), data);
     const firstElement = data[0];
     createHeader($view, firstElement.courseRating);
     data.forEach(item => {
-
         let tr = $('<tr></tr>');
         tr.append(`<td>${item.name}</td>`);
         item.courseRating.forEach(courseRating => {
-            tr.append(`<td>${courseRating.rating.successRate}%</td>`);
+            if(store.getModule(moduleIdentifier).role === "PROFESSOR" || store.getModule(moduleIdentifier).role === "HEAD" ) {
+                tr.append(`<td><input class="input-grade" type="number" min="0" max="100" value="${courseRating.rating.successRate}" maxlength="3">%</td>`);
+            } else {
+                tr.append(`<td>${courseRating.rating.successRate}%</td>`);
+            }
+
         })
         tr.append(`<td>${item.preliminaryGrade}%</td>`);
         tr.append(`<td>${item.overallGrade}%</td>`);
@@ -93,6 +111,7 @@ function createHeader($view, courseRating) {
 }
 
 function createFooter($view, courseRating) {
+
     courseRating.forEach(item => {
         $('tfoot tr:last', $view).prepend($(`<th><abbr title="${item.course.name}">${item.course.shortName}</abbr></th>`));
     })
