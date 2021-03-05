@@ -42,22 +42,21 @@ export default {
     }
 };
 
-let bestGrade = 0;
-let worstGrade = 100;
-let gradeCounter = 0;
-let passedStudents = 0;
-let averageGrade;
 
 function initStatics($view, data) {
-    console.log($view)
     $('[data-field=students-counter]', $view).html(data.length)
+
+    let bestGrade = 0;
+    let worstGrade = 100;
+    let gradeCounter = 0;
+    let passedStudents = 0;
+    let averageGrade;
 
     if(!(store.getModule(moduleIdentifier).role === "PROFESSOR")) {
         data.forEach(student => {
             if(student.overallGrade > bestGrade) bestGrade = student.overallGrade;
             if(student.overallGrade < worstGrade) worstGrade = student.overallGrade;
             if(student.overallGrade >= 50) passedStudents++;
-            console.log(student.overallGrade)
             gradeCounter+=student.overallGrade;
         })
     } else {
@@ -106,19 +105,12 @@ function initView($view, data) {
     console.log($('table', $view)[0].rows[0].cells);
     //REMOVING COLUMNS FOR PROFESSOR
     if(store.getModule(moduleIdentifier).role === "PROFESSOR") {
-        var toRemoveColumns = ['Prelim', 'Overall']
-        var tble = $('table', $view)[0];
-        var row = tble.rows;
+        const table = $('table', $view)[0]
+        const columnLength = table.rows[0].cells.length;
 
+        $('table tr', $view).find(`td:eq(${columnLength-1}),th:eq(${columnLength-1})`).remove();
+        $('table tr', $view).find(`td:eq(${columnLength-2}),th:eq(${columnLength-2})`).remove();
 
-        for (var i = 0; i <= row[0].cells.length; i++) {
-            var str = row[0].cells[i].innerText;
-            if (toRemoveColumns.includes(str)) {
-                for (var j = 0; j <= row.length; j++) {
-                    row[j].deleteCell(i);
-                }
-            }
-        }
     }
 }
 
