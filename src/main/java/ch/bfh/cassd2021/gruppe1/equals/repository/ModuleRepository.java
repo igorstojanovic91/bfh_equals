@@ -74,7 +74,7 @@ public class ModuleRepository {
         List<StudentCourseRating> studentCourseRatingList = new ArrayList<>();
 
         String query = "SELECT re.studentID, p.lastName, p.firstName,"
-            + " c.id as courseId, c.name, c.shortName, c.weight,"
+            + " c.id as courseId, c.name, c.shortName, c.moduleId, c.professorId, c.weight,"
             + " ra.successRate, ra.version"
             + " FROM Registration re"
             + " INNER JOIN Person p ON re.studentId = p.id"
@@ -118,10 +118,13 @@ public class ModuleRepository {
                 course.setCourseId(resultSet.getInt("courseId"));
                 course.setName(resultSet.getString("name"));
                 course.setShortName(resultSet.getString("shortName"));
+                course.setModuleId(resultSet.getInt("moduleId"));
+                course.setProfessorId(resultSet.getInt("professorId"));
                 course.setWeight(resultSet.getDouble("weight"));
 
                 Rating rating = new Rating();
                 rating.setStudentId(studentId);
+                rating.setCourseId(resultSet.getInt("courseId"));
                 rating.setSuccessRate(resultSet.getInt("successRate"));
                 rating.setVersion(resultSet.getInt("version"));
 

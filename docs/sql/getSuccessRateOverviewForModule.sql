@@ -1,5 +1,5 @@
 SELECT  re.studentID, p.lastName, p.firstName,
-        c.id as courseId, c.name, c.shortName, c.weight,
+        c.id as courseId, c.name, c.shortName, c.moduleId, c.professorId, c.weight,
         ra.successRate, ra.version
 FROM    Registration re
         INNER JOIN Person p ON re.studentId = p.id

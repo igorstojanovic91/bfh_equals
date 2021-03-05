@@ -1,6 +1,7 @@
 import store from '../store.js';
 
 export default {
+    requiresAuth: true,
 
     getTitle: function () {
         return "Modules";

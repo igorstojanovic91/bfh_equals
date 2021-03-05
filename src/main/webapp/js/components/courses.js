@@ -3,7 +3,12 @@ import router from '../router.js';
 import store from '../store.js';
 
 let moduleIdentifier;
+let averagePreliminaryGrade = 0;
+let averageOverallGrade = 0;
+
 export default {
+    requiresAuth: true,
+
     getTitle: function () {
         return "Courses"; //TODO: dynamic title
     },
@@ -43,7 +48,7 @@ export default {
 };
 
 
-function initStatics($view, data) {
+function initStatistics($view, data) {
     $('[data-field=students-counter]', $view).html(data.length)
 
     let bestGrade = 0;
@@ -81,7 +86,7 @@ function initStatics($view, data) {
 }
 
 function initView($view, data) {
-    initStatics($($view[0]), data);
+    initStatistics($($view[0]), data);
     const firstElement = data[0];
     createHeader($view, firstElement.courseRating);
 
@@ -90,16 +95,21 @@ function initView($view, data) {
         tr.append(`<td>${item.name}</td>`);
         item.courseRating.forEach(courseRating => {
             if(store.getModule(moduleIdentifier).role === "PROFESSOR" || store.getModule(moduleIdentifier).role === "HEAD" ) {
-                tr.append(`<td><input class="input-grade" type="number" min="0" max="100" value="${courseRating.rating.successRate}" maxlength="3">%</td>`);
+                tr.append(`<td><input name="grade-${courseRating.rating.studentId}-${courseRating.rating.courseId}" class="input-grade" type="number" min="0" max="100" value="${courseRating.rating.successRate}" maxlength="3">%</td>`);
             } else {
                 tr.append(`<td>${courseRating.rating.successRate}%</td>`);
             }
-
+            console.log(courseRating)
         })
         tr.append(`<td>${item.preliminaryGrade}%</td>`);
         tr.append(`<td>${item.overallGrade}%</td>`);
         $('tbody', $view).append(tr);
+        averagePreliminaryGrade += item.preliminaryGrade;
+        averageOverallGrade += item.overallGrade;
     })
+
+    averagePreliminaryGrade /= data.length;
+    averageOverallGrade /= data.length;
 
     createFooter($view, firstElement.courseRating);
     console.log($('table', $view)[0].rows[0].cells);
@@ -123,12 +133,13 @@ function createHeader($view, courseRating) {
 
 function createFooter($view, courseRating) {
     courseRating.forEach( (item, index) => {
-        $('tfoot tr:first', $view).prepend($(`<th>${calcCourseAverage(index+2, $view)}</th>`));
+        $('tfoot tr:first', $view).prepend($(`<th>${calcCourseAverage(index+2, $view)}%</th>`));
         $('tfoot tr:last', $view).prepend($(`<th><abbr title="${item.course.name}">${item.course.shortName}</abbr></th>`));
     })
+    $('tfoot tr:first', $view).prepend($('<th>Average</th>'));
+    $('tfoot tr:first', $view).append($(`<th>${averagePreliminaryGrade}%</th>`));
+    $('tfoot tr:first', $view).append($(`<th>${averageOverallGrade}%</th>`));
     $('tfoot tr:last', $view).prepend($('<th>&nbsp;</th>'));
-    $('tfoot tr:first', $view).prepend($('<th>Average</th>'))
-
 }
 
 function calcCourseAverage(columnIndex, $view) {
