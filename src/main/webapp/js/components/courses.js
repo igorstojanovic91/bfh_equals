@@ -32,12 +32,25 @@ export default {
                 initView($view, data);
             })
 
-        $("[data-action=save]").click(function () {
+        $("[data-action=save]", $view).click(function (event) {
             //TODO
+            event.preventDefault();
+            const data = []
+            $('input').each(function () {
+                data.push({
+                    studentId: Number($(this).attr("data-student")),
+                    courseId: Number($(this).attr("data-course")),
+                    successRate: Number($(this).val()),
+                    version: Number($(this).attr("data-version"))
+                })
+            })
+
+            console.log(JSON.stringify(data));
+
         })
 
-        $("[data-action=cancel]").click(function () {
-            e.preventDefault()
+        $("[data-action=cancel]").click(function (event) {
+            event.preventDefault()
             router.go("/modules")
         })
 
@@ -116,6 +129,7 @@ function initView($view, data) {
 
     // TODO: Change to focusout??
     $('input', $view).on('input', function() {
+        $("[data-action=save]", $view).prop('disabled', false)
         updateAllStatistics($view, $(this));
     })
 }
