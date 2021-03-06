@@ -6,6 +6,13 @@ let moduleIdentifier;
 let averagePreliminaryGrade = 0;
 let averageOverallGrade = 0;
 
+/*
+$('input').each(function() {
+	console.log($(this).attr('name'));
+	console.log($(this).val());
+})
+ */
+
 export default {
     requiresAuth: true,
 
@@ -26,22 +33,26 @@ export default {
             $('[data-field=title]').empty()
             $('[data-field=module-title]', $view).html(module.name)
         } else {
+            // TODO: Flash Message, Module does not exist
             router.go('/modules');
         }
         service.getModulesOverall(store.getUser(), moduleId)
-            .then(data => initView($view, data))
+            .then(data => {
+                initView($view, data);
+            })
 
         $("[data-action=save]").click(function () {
             //TODO
         })
 
         $("[data-action=cancel]").click(function () {
-            //TODO implement reading modules from store
             e.preventDefault()
             router.go("/modules")
         })
 
-
+        $('input').on('change', function() {
+            console.log($(this))
+        })
 
         return $view;
     }
@@ -95,7 +106,7 @@ function initView($view, data) {
         tr.append(`<td>${item.name}</td>`);
         item.courseRating.forEach(courseRating => {
             if(store.getModule(moduleIdentifier).role === "PROFESSOR" || store.getModule(moduleIdentifier).role === "HEAD" ) {
-                tr.append(`<td><input name="grade-${courseRating.rating.studentId}-${courseRating.rating.courseId}" class="input-grade" type="number" min="0" max="100" value="${courseRating.rating.successRate}" maxlength="3">%</td>`);
+                tr.append(`<td><input name="${courseRating.rating.studentId}-${courseRating.rating.courseId}-${courseRating.rating.version}" class="input-grade" type="number" min="0" max="100" value="${courseRating.rating.successRate}" maxlength="3">%</td>`);
             } else {
                 tr.append(`<td>${courseRating.rating.successRate}%</td>`);
             }
