@@ -35,6 +35,8 @@ export default {
         $("[data-action=save]", $view).click(function (event) {
             //TODO
             event.preventDefault();
+            // CODE FOR FADE OUT AND SHOWING LOADING BUTTON
+            //$($view[1]).fadeOut(200).hide().parent().append($($('#tpl-loader')).html()).show().fadeIn(200);
             const data = []
             $('input').each(function () {
                 data.push({
