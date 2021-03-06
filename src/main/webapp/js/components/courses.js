@@ -3,15 +3,6 @@ import router from '../router.js';
 import store from '../store.js';
 
 let moduleIdentifier;
-let averagePreliminaryGrade = 0;
-let averageOverallGrade = 0;
-
-/*
-$('input').each(function() {
-	console.log($(this).attr('name'));
-	console.log($(this).val());
-})
- */
 
 export default {
     requiresAuth: true,
@@ -48,10 +39,6 @@ export default {
         $("[data-action=cancel]").click(function () {
             e.preventDefault()
             router.go("/modules")
-        })
-
-        $('input').on('change', function() {
-            console.log($(this))
         })
 
         return $view;
@@ -106,62 +93,134 @@ function initView($view, data) {
         tr.append(`<td>${item.name}</td>`);
         item.courseRating.forEach(courseRating => {
             if(store.getModule(moduleIdentifier).role === "PROFESSOR" || store.getModule(moduleIdentifier).role === "HEAD" ) {
-                tr.append(`<td><input name="${courseRating.rating.studentId}-${courseRating.rating.courseId}-${courseRating.rating.version}" class="input-grade" type="number" min="0" max="100" value="${courseRating.rating.successRate}" maxlength="3">%</td>`);
+                tr.append(`<td><input data-student="${courseRating.rating.studentId}" data-course="${courseRating.rating.courseId}" data-version="${courseRating.rating.version}" data-weight="${courseRating.course.weight}" class="input-grade" type="number" min="0" max="100" value="${courseRating.rating.successRate}" maxlength="3">%</td>`);
             } else {
                 tr.append(`<td>${courseRating.rating.successRate}%</td>`);
             }
-            console.log(courseRating)
         })
-        tr.append(`<td>${item.preliminaryGrade}%</td>`);
-        tr.append(`<td>${item.overallGrade}%</td>`);
+        tr.append(`<td data-field="prelim-grade">${item.preliminaryGrade}%</td>`);
+        tr.append(`<td data-field="overall-grade">${item.overallGrade}%</td>`);
         $('tbody', $view).append(tr);
-        averagePreliminaryGrade += item.preliminaryGrade;
-        averageOverallGrade += item.overallGrade;
     })
 
-    averagePreliminaryGrade /= data.length;
-    averageOverallGrade /= data.length;
-
     createFooter($view, firstElement.courseRating);
-    console.log($('table', $view)[0].rows[0].cells);
     //REMOVING COLUMNS FOR PROFESSOR
     if(store.getModule(moduleIdentifier).role === "PROFESSOR") {
         const table = $('table', $view)[0]
         const columnLength = table.rows[0].cells.length;
 
-        $('table tr', $view).find(`td:eq(${columnLength-1}),th:eq(${columnLength-1})`).remove();
-        $('table tr', $view).find(`td:eq(${columnLength-2}),th:eq(${columnLength-2})`).remove();
+        $('table tr', $view).find(`td:eq(${columnLength-1}),th:eq(${columnLength-1})`).hide();
+        $('table tr', $view).find(`td:eq(${columnLength-2}),th:eq(${columnLength-2})`).hide();
 
     }
+
+    // TODO: Change to focusout??
+    $('input', $view).on('input', function() {
+        updateAllStatistics($view, $(this));
+    })
 }
 
 function createHeader($view, courseRating) {
-    courseRating.reverse().forEach(item => {
+    const courseRatingReversed = [...courseRating].reverse();
+    courseRatingReversed.forEach(item => {
         $('thead tr', $view).prepend($(`<th><abbr title="${item.course.name}">${item.course.shortName}</abbr></th>`));
     })
     $('thead tr', $view).prepend($('<th>Student</th>'));
 }
 
 function createFooter($view, courseRating) {
-    courseRating.forEach( (item, index) => {
-        $('tfoot tr:first', $view).prepend($(`<th>${calcCourseAverage(index+2, $view)}%</th>`));
+    const courseRatingReversed = [...courseRating].reverse();
+    courseRatingReversed.forEach( (item, index) => {
+        $('tfoot tr:first', $view).prepend($(`<th data-average="${item.course.courseId}">${calcCourseAverage(index+2, $view)}%</th>`));
         $('tfoot tr:last', $view).prepend($(`<th><abbr title="${item.course.name}">${item.course.shortName}</abbr></th>`));
     })
     $('tfoot tr:first', $view).prepend($('<th>Average</th>'));
-    $('tfoot tr:first', $view).append($(`<th>${averagePreliminaryGrade}%</th>`));
-    $('tfoot tr:first', $view).append($(`<th>${averageOverallGrade}%</th>`));
+    $('tfoot tr:first', $view).append($(`<th data-average="prelim">${calcCourseAverage(courseRating.length + 1, $view)}%</th>`));
+    $('tfoot tr:first', $view).append($(`<th data-average="overall">${calcCourseAverage(courseRating.length + 2, $view)}%</th>`));
     $('tfoot tr:last', $view).prepend($('<th>&nbsp;</th>'));
+}
+
+function updateAllStatistics($view, $field) {
+    const $row = $field.parent().parent();
+
+    // x-axis
+    let preliminaryWeight = 0;
+    let overallWeight = 0;
+    let preliminaryGrade = 0;
+    let overallGrade = 0;
+    $('input', $row).each(function() {
+        if (Number($(this).val()) > 0) {
+            preliminaryWeight += Number($(this).attr('data-weight'));
+            preliminaryGrade += (Number($(this).val()) * Number($(this).attr('data-weight')));
+        }
+        overallWeight += Number($(this).attr('data-weight'));
+        overallGrade += (Number($(this).val()) * Number($(this).attr('data-weight')));
+    });
+
+    const finalPreliminaryGrade = Math.ceil((preliminaryGrade / preliminaryWeight)) || 0;
+    const finalOverallGrade = Math.ceil((overallGrade / overallWeight)) || 0;
+
+    $('[data-field=prelim-grade]', $row).html(finalPreliminaryGrade  + '%');
+    $('[data-field=overall-grade]', $row).html(finalOverallGrade + '%');
+    (finalOverallGrade >= 50)
+        ? $('[data-field=overall-grade]', $row).addClass('has-background-success-light').parent().removeClass('has-background-warning-light')
+        : $('[data-field=overall-grade]', $row).removeClass('has-background-success-light').parent().addClass('has-background-warning-light');
+
+
+    // y-axis
+    const courseId = $field.attr('data-course');
+    const numberOfStudents = $(`[data-course=${courseId}]`, $view).length;
+    let sumOfCourseGrades = 0;
+    $(`[data-course=${courseId}]`, $view).each(function() {
+        sumOfCourseGrades += Number($(this).val()) || 0;
+    });
+    const averageGrade = Math.ceil(sumOfCourseGrades / numberOfStudents);
+    $(`[data-average=${courseId}]`, $view).html(averageGrade + '%');
+
+    // Average Prelim
+    let sumOfPrelimGrades = 0;
+    $('[data-field=prelim-grade]', $view).each(function() {
+        sumOfPrelimGrades += parseInt($(this).html());
+    });
+    const averagePrelim = Math.ceil(sumOfPrelimGrades / numberOfStudents);
+    $('[data-average=prelim]', $view).html(averagePrelim + '%');
+
+
+    // Average Overall & Top Statistics
+    let sumOfOverallGrades = 0;
+    let studentsPassed = 0;
+    let bestGrade = 0;
+    let worstGrade = 100;
+
+    $('[data-field=overall-grade]', $view).each(function() {
+        let thisValue = parseInt($(this).html());
+        sumOfOverallGrades += thisValue;
+        if (thisValue >= 50) studentsPassed++;
+        if (thisValue > bestGrade) bestGrade = thisValue;
+        if (thisValue < worstGrade && thisValue > 0) worstGrade = thisValue;
+    });
+    const averageOverall = Math.ceil(sumOfOverallGrades / numberOfStudents);
+    $('[data-average=overall]', $view).html(averageOverall + '%');
+    $('[data-field=students-passed]').html(studentsPassed);
+    $('[data-field=average-grade]').html(averageOverall + '%');
+    $('[data-field=best-grade]').html(bestGrade + '%');
+    $('[data-field=worst-grade]').html(worstGrade + '%');
 }
 
 function calcCourseAverage(columnIndex, $view) {
     let avg = 0, amount = 0;
-    console.log($(`tr td:nth-of-type(${columnIndex})`, $view))
     $(`tr td:nth-of-type(${columnIndex})`, $view).each(function(){
         let value = $(this).find('input').attr("value") || parseInt($(this).text())
-        console.log(value)
         avg += value;
         amount++;
     });
-    console.log(avg)
     return avg / amount;
+}
+
+function calcPreliminary() {
+
+}
+
+function calcOverall() {
+
 }
