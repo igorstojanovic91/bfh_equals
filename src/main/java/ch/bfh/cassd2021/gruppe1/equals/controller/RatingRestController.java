@@ -35,15 +35,27 @@ public class RatingRestController extends HttpServlet {
         //SECURITY WISE WE NED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
         String contentType = request.getContentType();
         if(contentType.matches(JSON_MEDIA_TYPE)) {
-            String body = request.getReader()
-                    .lines()
-                    .reduce("", (String::concat));
-            Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
 
-            for(Rating rating: ratings) {
-                System.out.println(rating);
+            try {
+                String body = request.getReader()
+                        .lines()
+                        .reduce("", (String::concat));
+                Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
+
+                for (Rating rating : ratings) {
+                    System.out.println(rating);
+                }
+
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+
+            } catch (Exception e) {
+                logger.debug("Content does not match Rating object");
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
 
+        } else {
+            logger.debug("Media tye not accepted");
+            response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
         }
 
     }
