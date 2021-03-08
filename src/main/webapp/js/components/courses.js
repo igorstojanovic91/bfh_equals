@@ -7,8 +7,9 @@ let moduleIdentifier;
 export default {
     requiresAuth: true,
 
-    getTitle: function () {
-        return "Courses"; //TODO: dynamic title
+    getTitle: function (moduleId) {
+        const module = store.getModule(moduleId || 0);
+        return module ? module.name : 'Module Overview';
     },
 
     render: function (moduleId) {
