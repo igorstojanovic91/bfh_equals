@@ -61,45 +61,9 @@ export default {
 };
 
 
-function initStatistics($view, data) {
-    $('[data-field=students-counter]', $view).html(data.length)
 
-    let bestGrade = 0;
-    let worstGrade = 100;
-    let gradeCounter = 0;
-    let passedStudents = 0;
-    let averageGrade;
-
-    if(!(store.getModule(moduleIdentifier).role === "PROFESSOR")) {
-        data.forEach(student => {
-            if(student.overallGrade > bestGrade) bestGrade = student.overallGrade;
-            if(student.overallGrade < worstGrade) worstGrade = student.overallGrade;
-            if(student.overallGrade >= 50) passedStudents++;
-            gradeCounter+=student.overallGrade;
-        })
-    } else {
-        let grades = 0;
-        let divider = data[0].courseRating.length * data.length;
-        data.forEach(student => {
-            let singleGrades = 0;
-            student.courseRating.forEach(courseRating => {
-                grades += courseRating.rating.successRate
-                if(courseRating.rating.successRate > bestGrade) bestGrade = courseRating.rating.successRate;
-                if(courseRating.rating.successRate < worstGrade) worstGrade = courseRating.rating.successRate;
-            })
-            passedStudents = (singleGrades / student.courseRating.length >= 50) ? passedStudents++ : passedStudents+=0;
-        })
-        averageGrade = grades / divider;
-    }
-    $('[data-field=students-passed]', $view).html(passedStudents) // TODO
-    $('[data-field=average-grade]', $view).html(averageGrade ? averageGrade : gradeCounter / data.length) // TODO
-    $('[data-field=best-grade]', $view).html(bestGrade) // TODO
-    $('[data-field=worst-grade]', $view).html(worstGrade) // TODO
-
-}
 
 function initView($view, data) {
-    initStatistics($($view[0]), data);
     const firstElement = data[0];
     createHeader($view, firstElement.courseRating);
 
@@ -134,6 +98,13 @@ function initView($view, data) {
         $("[data-action=save]", $view).prop('disabled', false)
         updateAllStatistics($view, $(this));
     })
+
+    $('[data-field=students-counter]', $view).html(data.length)
+
+    $('input', $view).each(function () {
+        updateAllStatistics($view, $(this))
+    })
+
 }
 
 function createHeader($view, courseRating) {
@@ -157,6 +128,7 @@ function createFooter($view, courseRating) {
 }
 
 function updateAllStatistics($view, $field) {
+
     const $row = $field.parent().parent();
 
     // x-axis
@@ -217,10 +189,10 @@ function updateAllStatistics($view, $field) {
     });
     const averageOverall = Math.ceil(sumOfOverallGrades / numberOfStudents);
     $('[data-average=overall]', $view).html(averageOverall + '%');
-    $('[data-field=students-passed]').html(studentsPassed);
-    $('[data-field=average-grade]').html(averageOverall + '%');
-    $('[data-field=best-grade]').html(bestGrade + '%');
-    $('[data-field=worst-grade]').html(worstGrade + '%');
+    $('[data-field=students-passed]', $view).html(studentsPassed);
+    $('[data-field=average-grade]', $view).html(averageOverall + '%');
+    $('[data-field=best-grade]', $view).html(bestGrade + '%');
+    $('[data-field=worst-grade]', $view).html(worstGrade + '%');
 }
 
 function calcCourseAverage(columnIndex, $view) {
@@ -233,10 +205,3 @@ function calcCourseAverage(columnIndex, $view) {
     return avg / amount;
 }
 
-function calcPreliminary() {
-
-}
-
-function calcOverall() {
-
-}
