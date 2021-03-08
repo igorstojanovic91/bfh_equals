@@ -33,6 +33,18 @@ export default {
                 'accept': 'application/json'
             }
         }).fail(jqXHR => console.log(`An error occurred: (${jqXHR.status}) ${jqXHR.responseText}`));
+    },
+
+    updateRatings: function (user, data) {
+        return $.ajax({
+            url: BASE_URL + 'ratings',
+            type: 'PUT',
+            headers: {
+                'Authorization': getAuthHeader(user)
+            },
+            data: data,
+            contentType: 'application/json'
+        }).fail(jqXHR => console.log(`An error occurred: (${jqXHR.status}) ${jqXHR.responseText}`));
     }
 
 }
