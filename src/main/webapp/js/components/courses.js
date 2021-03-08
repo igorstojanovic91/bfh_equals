@@ -178,9 +178,10 @@ function updateAllStatistics($view, $field) {
     let sumOfOverallGrades = 0;
     let studentsPassed = 0;
     let bestGrade = 0;
-    let worstGrade = 100;
+    let worstGrade = 0;
 
-    $('[data-field=overall-grade]', $view).each(function() {
+    $('[data-field=overall-grade]', $view).each(function(index) {
+        index === 0 ? worstGrade = parseInt($(this).html()) : 0;
         let thisValue = parseInt($(this).html());
         sumOfOverallGrades += thisValue;
         if (thisValue >= 50) studentsPassed++;
