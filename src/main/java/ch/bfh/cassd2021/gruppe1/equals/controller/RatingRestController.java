@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 
 @WebServlet(urlPatterns = "/api/ratings")
 public class RatingRestController extends HttpServlet {
@@ -42,9 +43,37 @@ public class RatingRestController extends HttpServlet {
                         .reduce("", (String::concat));
                 Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
 
-                for (Rating rating : ratings) {
-                    System.out.println(rating);
-                }
+                ratingRepository.updateRatings(ratings);
+
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+
+            } catch (Exception e) {
+                logger.debug("Content does not match Rating object");
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
+
+        } else {
+            logger.debug("Media tye not accepted");
+            response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
+        }
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        logger.debug("Entering /api/ratings");
+
+        //SECURITY WISE WE NED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
+        String contentType = request.getContentType();
+        if(contentType.matches(JSON_MEDIA_TYPE)) {
+
+            try {
+                String body = request.getReader()
+                        .lines()
+                        .reduce("", (String::concat));
+                Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
+
+                ratingRepository.insertRatings(ratings);
 
                 response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 
