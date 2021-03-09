@@ -57,13 +57,26 @@ export default {
             if(data.update.length > 0) promises.push(service.updateRatings(store.getUser(), JSON.stringify(data.update)));
             if(data.insert.length > 0) promises.push(service.insertRatings(store.getUser(), JSON.stringify(data.insert)));
 
+            // TODO: Flash message for success & failure
             Promise.all(promises)
                 .then(function () {
-                    $('.hero').fadeOut(200).detach();
+                    $('.hero .is-fullheight').fadeOut(200).detach();
                     $($view[1]).fadeIn(200).show();
                     $("[data-action=save]", $view).prop('disabled', true);
+                    increaseVersions();
                 })
-                .catch(jqXHR => console.log(jqXHR.status))
+                .catch(jqXHR => function() {
+                    console.log(jqXHR.status);
+                    $('.hero .is-fullheight').fadeOut(200).detach();
+                    $($view[1]).fadeIn(200).show();
+                    // Refetch Data with http error 400, the service then re-inits the data
+                    if (jqXHR.status === 400) {
+                        service.getModulesOverall(store.getUser(), moduleId)
+                            .then(data => {
+                                initView($view, data);
+                            })
+                    }
+                })
         })
 
         $("[data-action=cancel]").click(function (event) {
@@ -235,3 +248,10 @@ function getValue($this){
     return Number($this.val()) || Number($this.html());
 }
 
+function increaseVersions() {
+    $('input').each(function () {
+        let currentVersion = Number($(this).attr('data-version')) + 1;
+        console.log('currentVersion: ' + currentVersion)
+        $(this).attr('data-version', currentVersion);
+    });
+}
