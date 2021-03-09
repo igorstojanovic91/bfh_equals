@@ -84,7 +84,7 @@ function initView($view, data) {
             if(store.getModule(moduleIdentifier).role === "PROFESSOR" || store.getModule(moduleIdentifier).role === "HEAD" ) {
                 tr.append(`<td><input data-student="${courseRating.rating.studentId}" data-course="${courseRating.rating.courseId}" data-version="${courseRating.rating.version}" data-weight="${courseRating.course.weight}" class="input-grade" type="number" min="0" max="100" value="${courseRating.rating.successRate}" maxlength="3">%</td>`);
             } else {
-                tr.append(`<td>${courseRating.rating.successRate}%</td>`);
+                tr.append(`<td><span data-student="${courseRating.rating.studentId}" data-course="${courseRating.rating.courseId}" data-version="${courseRating.rating.version}" data-weight="${courseRating.course.weight}">${courseRating.rating.successRate}</span>%</td>`);
             }
         })
         tr.append(`<td data-field="prelim-grade">${item.preliminaryGrade}%</td>`);
@@ -118,7 +118,8 @@ function initView($view, data) {
 
     $('[data-field=students-counter]', $view).html(data.length)
 
-    $('input', $view).each(function () {
+    const $fields = ($('input', $view).length > 0) ? $('input', $view) : $('span', $view);
+    $fields.each(function () {
         updateAllStatistics($view, $(this))
     })
 
@@ -147,21 +148,24 @@ function createFooter($view, courseRating) {
 function updateAllStatistics($view, $field) {
 
     const $row = $field.parent().parent();
+    const $fields = ($('input', $row).length > 0) ? $('input', $row) : $('span', $row);
 
     // x-axis
     let preliminaryWeight = 0;
     let overallWeight = 0;
     let preliminaryGrade = 0;
     let overallGrade = 0;
-    $('input', $row).each(function() {
-        if (Number($(this).val()) > 0) {
+
+    $fields.each(function() {
+
+        if (getValue($(this)) > 0) {
             preliminaryWeight += Number($(this).attr('data-weight'));
-            preliminaryGrade += (Number($(this).val()) * Number($(this).attr('data-weight')));
+            preliminaryGrade += (getValue($(this)) * Number($(this).attr('data-weight')));
         }
         overallWeight += Number($(this).attr('data-weight'));
-        overallGrade += (Number($(this).val()) * Number($(this).attr('data-weight')));
+        overallGrade += (getValue($(this)) * Number($(this).attr('data-weight')));
     });
-
+    console.log("weight " +overallWeight + " grade" + overallGrade);
     const finalPreliminaryGrade = Math.ceil((preliminaryGrade / preliminaryWeight)) || 0;
     const finalOverallGrade = Math.ceil((overallGrade / overallWeight)) || 0;
 
@@ -177,7 +181,7 @@ function updateAllStatistics($view, $field) {
     const numberOfStudents = $(`[data-course=${courseId}]`, $view).length;
     let sumOfCourseGrades = 0;
     $(`[data-course=${courseId}]`, $view).each(function() {
-        sumOfCourseGrades += Number($(this).val()) || 0;
+        sumOfCourseGrades += getValue($(this)) || 0;
     });
     const averageGrade = Math.ceil(sumOfCourseGrades / numberOfStudents);
     $(`[data-average=${courseId}]`, $view).html(averageGrade + '%');
@@ -221,5 +225,9 @@ function calcCourseAverage(columnIndex, $view) {
         amount++;
     });
     return avg / amount;
+}
+
+function getValue($this){
+    return Number($this.val()) || Number($this.html());
 }
 
