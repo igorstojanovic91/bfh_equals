@@ -61,7 +61,7 @@ export default {
                 .then(function () {
                     $('.hero').fadeOut(200).detach();
                     $($view[1]).fadeIn(200).show();
-                    $("[data-action=save]", $view).prop('disabled', false);
+                    $("[data-action=save]", $view).prop('disabled', true);
                 })
                 .catch(jqXHR => console.log(jqXHR.status))
         })
@@ -70,7 +70,6 @@ export default {
             event.preventDefault()
             router.go("/modules")
         })
-
         return $view;
     }
 };
@@ -82,14 +81,19 @@ function initView($view, data) {
     const firstElement = data[0];
     createHeader($view, firstElement.courseRating);
 
+    let coursesToNotify = [];
     data.forEach(item => {
         let tr = $('<tr></tr>');
         tr.append(`<td>${item.name}</td>`);
-        item.courseRating.forEach(courseRating => {
+        item.courseRating.forEach((courseRating, index) => {
             if(store.getModule(moduleIdentifier).role === "PROFESSOR" || store.getModule(moduleIdentifier).role === "HEAD" ) {
                 tr.append(`<td><input data-student="${courseRating.rating.studentId}" data-course="${courseRating.rating.courseId}" data-version="${courseRating.rating.version}" data-weight="${courseRating.course.weight}" class="input-grade" type="number" min="0" max="100" value="${courseRating.rating.successRate}" maxlength="3">%</td>`);
             } else {
-                tr.append(`<td><span data-student="${courseRating.rating.studentId}" data-course="${courseRating.rating.courseId}" data-version="${courseRating.rating.version}" data-weight="${courseRating.course.weight}">${courseRating.rating.successRate}</span>%</td>`);
+                const notifyClass = courseRating.rating.successRate === 0 ? "has-background-danger-light" : "";
+                tr.append(`<td class="${notifyClass}"><span data-student="${courseRating.rating.studentId}" data-course="${courseRating.rating.courseId}" data-version="${courseRating.rating.version}" data-weight="${courseRating.course.weight}">${courseRating.rating.successRate}</span>%</td>`);
+                if(notifyClass){
+                    !coursesToNotify.includes(index) ? coursesToNotify.push(index) : "";
+                }
             }
         })
         tr.append(`<td data-field="prelim-grade">${item.preliminaryGrade}%</td>`);
@@ -97,7 +101,7 @@ function initView($view, data) {
         $('tbody', $view).append(tr);
     })
 
-    createFooter($view, firstElement.courseRating);
+    createFooter($view, firstElement.courseRating, coursesToNotify);
     //REMOVING COLUMNS FOR PROFESSOR
     if(store.getModule(moduleIdentifier).role === "PROFESSOR") {
         const table = $('table', $view)[0]
@@ -138,11 +142,17 @@ function createHeader($view, courseRating) {
     $('thead tr', $view).prepend($('<th>Student</th>'));
 }
 
-function createFooter($view, courseRating) {
+function createFooter($view, courseRating, coursesToNotify) {
     const courseRatingReversed = [...courseRating].reverse();
     courseRatingReversed.forEach( (item, index) => {
+        // append notifying Row for assistant
+        let notifyButton = "";
+        if(coursesToNotify.length && coursesToNotify.includes(courseRatingReversed.length - index -1)){
+            notifyButton = $('<br><a class="button is-danger is-light mt-2" title="Notify Professor by Mail">Notify</a>');
+        }
         $('tfoot tr:first', $view).prepend($(`<th data-average="${item.course.courseId}">${calcCourseAverage(index+2, $view)}%</th>`));
-        $('tfoot tr:last', $view).prepend($(`<th><abbr title="${item.course.name}">${item.course.shortName}</abbr></th>`));
+        $('tfoot tr:last', $view).prepend($(`<th><abbr title="${item.course.name}">${item.course.shortName}</abbr></th>`).append(notifyButton));
+
     })
     $('tfoot tr:first', $view).prepend($('<th>Average</th>'));
     $('tfoot tr:first', $view).append($(`<th data-average="prelim">${calcCourseAverage(courseRating.length + 1, $view)}%</th>`));
@@ -170,7 +180,6 @@ function updateAllStatistics($view, $field) {
         overallWeight += Number($(this).attr('data-weight'));
         overallGrade += (getValue($(this)) * Number($(this).attr('data-weight')));
     });
-    console.log("weight " +overallWeight + " grade" + overallGrade);
     const finalPreliminaryGrade = Math.ceil((preliminaryGrade / preliminaryWeight)) || 0;
     const finalOverallGrade = Math.ceil((overallGrade / overallWeight)) || 0;
 
