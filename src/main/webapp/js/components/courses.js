@@ -37,7 +37,7 @@ export default {
             //TODO
             event.preventDefault();
             // CODE FOR FADE OUT AND SHOWING LOADING BUTTON
-            //$($view[1]).fadeOut(200).hide().parent().append($($('#tpl-loader')).html()).show().fadeIn(200);
+            $($view[1]).fadeOut(200).hide().parent().append($($('#tpl-loader')).html()).show().fadeIn(200);
             const data = {};
             data.update = [];
             data.insert = []
@@ -58,6 +58,10 @@ export default {
             if(data.insert.length > 0) promises.push(service.insertRatings(store.getUser(), JSON.stringify(data.insert)));
 
             Promise.all(promises)
+                .then(function () {
+                    $('.hero').fadeOut(200).detach()
+                    $($view[1]).fadeIn(200).show()
+                })
                 .catch(jqXHR => console.log(jqXHR.status))
         })
 
