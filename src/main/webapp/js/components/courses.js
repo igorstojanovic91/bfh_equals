@@ -59,8 +59,9 @@ export default {
 
             Promise.all(promises)
                 .then(function () {
-                    $('.hero').fadeOut(200).detach()
-                    $($view[1]).fadeIn(200).show()
+                    $('.hero').fadeOut(200).detach();
+                    $($view[1]).fadeIn(200).show();
+                    $("[data-action=save]", $view).prop('disabled', false);
                 })
                 .catch(jqXHR => console.log(jqXHR.status))
         })
