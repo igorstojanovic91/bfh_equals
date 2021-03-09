@@ -27,7 +27,7 @@ function render() {
     const param = hash.length > 1 ? hash[1] : null;
     const $view = component.render(param);
     replaceView($view);
-    document.title = "EQualS" + (component.getTitle ? " - " + component.getTitle() : "");
+    document.title = "EQualS" + (component.getTitle ? " - " + component.getTitle(param) : "");
 }
 
 $(window).on('hashchange', render);
