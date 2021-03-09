@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 @WebServlet(urlPatterns = "/api/ratings")
@@ -75,9 +76,12 @@ public class RatingRestController extends HttpServlet {
 
                 ratingRepository.insertRatings(ratings);
 
-                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            //    response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 
-            } catch (Exception e) {
+           // } catch(SQLException sqlException){
+
+            }
+            catch (Exception e) {
                 logger.debug("Content does not match Rating object");
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }

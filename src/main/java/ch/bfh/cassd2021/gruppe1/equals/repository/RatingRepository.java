@@ -55,6 +55,7 @@ public class RatingRepository {
         catch (SQLException sqlException) {
             try {
                 connection.rollback(); // ROLL BACK IF NOT ALL ROWS ARE UPDATED
+                //throw new SQLException("Not all rows affected");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }

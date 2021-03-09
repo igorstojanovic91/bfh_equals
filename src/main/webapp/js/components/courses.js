@@ -38,18 +38,27 @@ export default {
             event.preventDefault();
             // CODE FOR FADE OUT AND SHOWING LOADING BUTTON
             //$($view[1]).fadeOut(200).hide().parent().append($($('#tpl-loader')).html()).show().fadeIn(200);
-            const data = []
+            const data = {};
+            data.update = [];
+            data.insert = []
             $('input').each(function () {
-                data.push({
+                const versionNumber = Number($(this).attr("data-version"));
+                const rating = {
                     studentId: Number($(this).attr("data-student")),
                     courseId: Number($(this).attr("data-course")),
                     successRate: Number($(this).val()),
-                    version: Number($(this).attr("data-version"))
-                })
+                    version: versionNumber
+                }
+                versionNumber > 0 ? data.update.push(rating) : data.insert.push(rating);
             })
+            const promises = [];
+            console.log(data)
 
-            console.log(JSON.stringify(data));
+            if(data.update.length > 0) promises.push(service.updateRatings(store.getUser(), JSON.stringify(data.update)));
+            if(data.insert.length > 0) promises.push(service.insertRatings(store.getUser(), JSON.stringify(data.insert)));
 
+            Promise.all(promises)
+                .catch(jqXHR => console.log(jqXHR.status))
         })
 
         $("[data-action=cancel]").click(function (event) {
@@ -96,8 +105,15 @@ function initView($view, data) {
 
     // TODO: Change to focusout??
     $('input', $view).on('input', function() {
-        $("[data-action=save]", $view).prop('disabled', false)
-        updateAllStatistics($view, $(this));
+        const value = $(this).val();
+        if(!$.isNumeric(value) || value > 100 || value < 0){
+            $("[data-action=save]", $view).prop('disabled', true)
+            $(this).parent().addClass('has-background-danger-light');
+        } else {
+            $("[data-action=save]", $view).prop('disabled', false);
+            $(this).parent().removeClass('has-background-danger-light');
+            updateAllStatistics($view, $(this));
+        }
     })
 
     $('[data-field=students-counter]', $view).html(data.length)

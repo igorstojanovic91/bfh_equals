@@ -45,8 +45,19 @@ export default {
             data: data,
             contentType: 'application/json; charset=UTF-8'
         }).fail(jqXHR => console.log(`An error occurred: (${jqXHR.status}) ${jqXHR.responseText}`));
-    }
+    },
 
+    insertRatings: function (user, data) {
+        return $.ajax({
+            url: BASE_URL + 'ratings',
+            type: 'POST',
+            headers: {
+                'Authorization': getAuthHeader(user)
+            },
+            data: data,
+            contentType: 'application/json; charset=UTF-8'
+        }).fail(jqXHR => console.log(`An error occurred: (${jqXHR.status}) ${jqXHR.responseText}`));
+    }
 }
 
 function getAuthHeader(user) {
