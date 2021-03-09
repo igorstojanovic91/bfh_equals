@@ -2,6 +2,7 @@ package ch.bfh.cassd2021.gruppe1.equals.controller;
 
 import ch.bfh.cassd2021.gruppe1.equals.business.model.Rating;
 import ch.bfh.cassd2021.gruppe1.equals.repository.RatingRepository;
+import ch.bfh.cassd2021.gruppe1.equals.repository.RepositoryException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
@@ -76,16 +77,12 @@ public class RatingRestController extends HttpServlet {
 
                 ratingRepository.insertRatings(ratings);
 
-            //    response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 
-           // } catch(SQLException sqlException){
-
-            }
-            catch (Exception e) {
+            } catch(Exception exception){
                 logger.debug("Content does not match Rating object");
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
-
         } else {
             logger.debug("Media tye not accepted");
             response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
