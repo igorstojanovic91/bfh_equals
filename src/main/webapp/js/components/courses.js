@@ -22,8 +22,8 @@ export default {
         }
         const module = store.getModule(moduleId);
         if (module) {
-            $('[data-field=title]').empty()
-            $('[data-field=module-title]', $view).html(module.name)
+            $('[data-field=title]').html(module.name)
+            $('[data-field=sub-title]').html(module.shortName)
         } else {
             // TODO: Flash Message, Module does not exist
             router.go('/modules');
@@ -150,13 +150,13 @@ function createFooter($view, courseRating, coursesToNotify) {
         if(coursesToNotify.length && coursesToNotify.includes(courseRatingReversed.length - index -1)){
             notifyButton = $('<br><a class="button is-danger is-light mt-2" title="Notify Professor by Mail">Notify</a>');
         }
-        $('tfoot tr:first', $view).prepend($(`<th data-average="${item.course.courseId}">${calcCourseAverage(index+2, $view)}%</th>`));
+        $('tfoot tr:first', $view).prepend($(`<th data-average="${item.course.courseId}">&nbsp;</th>`));
         $('tfoot tr:last', $view).prepend($(`<th><abbr title="${item.course.name}">${item.course.shortName}</abbr></th>`).append(notifyButton));
 
     })
     $('tfoot tr:first', $view).prepend($('<th>Average</th>'));
-    $('tfoot tr:first', $view).append($(`<th data-average="prelim">${calcCourseAverage(courseRating.length + 1, $view)}%</th>`));
-    $('tfoot tr:first', $view).append($(`<th data-average="overall">${calcCourseAverage(courseRating.length + 2, $view)}%</th>`));
+    $('tfoot tr:first', $view).append($(`<th data-average="prelim">&nbsp;</th>`));
+    $('tfoot tr:first', $view).append($(`<th data-average="overall">&nbsp;</th>`));
     $('tfoot tr:last', $view).prepend($('<th>&nbsp;</th>'));
 }
 
@@ -180,8 +180,8 @@ function updateAllStatistics($view, $field) {
         overallWeight += Number($(this).attr('data-weight'));
         overallGrade += (getValue($(this)) * Number($(this).attr('data-weight')));
     });
-    const finalPreliminaryGrade = Math.ceil((preliminaryGrade / preliminaryWeight)) || 0;
-    const finalOverallGrade = Math.ceil((overallGrade / overallWeight)) || 0;
+    const finalPreliminaryGrade = Math.round((preliminaryGrade / preliminaryWeight)) || 0;
+    const finalOverallGrade = Math.round((overallGrade / overallWeight)) || 0;
 
     $('[data-field=prelim-grade]', $row).html(finalPreliminaryGrade  + '%');
     $('[data-field=overall-grade]', $row).html(finalOverallGrade + '%');
@@ -197,7 +197,7 @@ function updateAllStatistics($view, $field) {
     $(`[data-course=${courseId}]`, $view).each(function() {
         sumOfCourseGrades += getValue($(this)) || 0;
     });
-    const averageGrade = Math.ceil(sumOfCourseGrades / numberOfStudents);
+    const averageGrade = Math.round(sumOfCourseGrades / numberOfStudents);
     $(`[data-average=${courseId}]`, $view).html(averageGrade + '%');
 
     // Average Prelim
@@ -205,7 +205,7 @@ function updateAllStatistics($view, $field) {
     $('[data-field=prelim-grade]', $view).each(function() {
         sumOfPrelimGrades += parseInt($(this).html());
     });
-    const averagePrelim = Math.ceil(sumOfPrelimGrades / numberOfStudents);
+    const averagePrelim = Math.round(sumOfPrelimGrades / numberOfStudents);
     $('[data-average=prelim]', $view).html(averagePrelim + '%');
 
 
@@ -223,22 +223,12 @@ function updateAllStatistics($view, $field) {
         if (thisValue > bestGrade) bestGrade = thisValue;
         if (thisValue < worstGrade && thisValue > 0) worstGrade = thisValue;
     });
-    const averageOverall = Math.ceil(sumOfOverallGrades / numberOfStudents);
+    const averageOverall = Math.round(sumOfOverallGrades / numberOfStudents);
     $('[data-average=overall]', $view).html(averageOverall + '%');
     $('[data-field=students-passed]', $view).html(studentsPassed);
     $('[data-field=average-grade]', $view).html(averageOverall + '%');
     $('[data-field=best-grade]', $view).html(bestGrade + '%');
     $('[data-field=worst-grade]', $view).html(worstGrade + '%');
-}
-
-function calcCourseAverage(columnIndex, $view) {
-    let avg = 0, amount = 0;
-    $(`tr td:nth-of-type(${columnIndex})`, $view).each(function(){
-        let value = $(this).find('input').attr("value") || parseInt($(this).text())
-        avg += value;
-        amount++;
-    });
-    return avg / amount;
 }
 
 function getValue($this){
