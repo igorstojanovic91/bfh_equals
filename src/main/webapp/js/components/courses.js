@@ -66,7 +66,7 @@ export default {
                     increaseVersions();
                     $('div .notification').toggleClass('is-hidden').addClass("is-success").append("<p>Thank you! We saved all grades in the database!</p>")
                 })
-                .catch(jqXHR => function() {
+                .catch(jqXHR =>  {
                     console.log(jqXHR.status);
                     $('.hero.is-fullheight').fadeOut(200).remove();
                     $($view[1]).fadeIn(200).show();
@@ -74,6 +74,7 @@ export default {
                     if (jqXHR.status === 400) {
                         service.getModulesOverall(store.getUser(), moduleId)
                             .then(data => {
+                                $('tbody', $view).empty();
                                 initView($view, data);
                                 $('div .notification').toggleClass('is-hidden').addClass("is-warning").append("<p>Something went wrong. We reloaded the data for you. Please try again!</p>")
                             })
