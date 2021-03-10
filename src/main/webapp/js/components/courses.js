@@ -60,20 +60,22 @@ export default {
             // TODO: Flash message for success & failure
             Promise.all(promises)
                 .then(function () {
-                    $('.hero .is-fullheight').fadeOut(200).detach();
+                    $('.hero.is-fullheight').fadeOut(200).remove();
                     $($view[1]).fadeIn(200).show();
                     $("[data-action=save]", $view).prop('disabled', true);
                     increaseVersions();
+                    $('div .notification').toggleClass('is-hidden').addClass("is-success").append("<p>Thank you! We saved all grades in the database!</p>")
                 })
                 .catch(jqXHR => function() {
                     console.log(jqXHR.status);
-                    $('.hero .is-fullheight').fadeOut(200).detach();
+                    $('.hero.is-fullheight').fadeOut(200).remove();
                     $($view[1]).fadeIn(200).show();
                     // Refetch Data with http error 400, the service then re-inits the data
                     if (jqXHR.status === 400) {
                         service.getModulesOverall(store.getUser(), moduleId)
                             .then(data => {
                                 initView($view, data);
+                                $('div .notification').toggleClass('is-hidden').addClass("is-warning").append("<p>Something went wrong. We reloaded the data for you. Please try again!</p>")
                             })
                     }
                 })
@@ -83,6 +85,11 @@ export default {
             event.preventDefault()
             router.go("/modules")
         })
+
+        $('.delete', $view).on("click", function () {
+            $('div .notification').toggleClass("is-hidden").children("p").remove();
+        })
+
         return $view;
     }
 };
