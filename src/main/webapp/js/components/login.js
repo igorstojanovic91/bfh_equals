@@ -16,6 +16,11 @@ export default {
             processLogin($view);
         });
 
+        $('input', $view).on("input", function () {
+            const data = getFormData()
+            if (data.username && data.password) $('[data-action=login]', $view).prop("disabled", false)
+        })
+
         return $view;
     }
 };
