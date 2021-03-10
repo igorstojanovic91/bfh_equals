@@ -64,7 +64,9 @@ export default {
                     $($view[1]).fadeIn(200).show();
                     $("[data-action=save]", $view).prop('disabled', true);
                     increaseVersions();
-                    $('div .notification').toggleClass('is-hidden').addClass("is-success").append("<p>Thank you! We saved all grades in the database!</p>")
+                    $('div .notification').removeClass('is-hidden').removeClass("is-warning").addClass("is-success")
+                        .children("p").remove()
+                    $('div .notification').append("<p>Thank you! We saved all grades in the database!</p>")
                 })
                 .catch(jqXHR =>  {
                     console.log(jqXHR.status);
@@ -75,8 +77,24 @@ export default {
                         service.getModulesOverall(store.getUser(), moduleId)
                             .then(data => {
                                 $('tbody', $view).empty();
+
+                                const columnLength = $('thead tr th').length
+                                $(`thead tr th:nth-child(-n+${columnLength-2})`).each(function () {
+                                    $(this).remove();
+                                })
+
+                                $('tfoot tr:first').empty()
+
+                                $('tfoot tr:last').each(function () {
+                                    $(`th:nth-child(-n+${columnLength-2})`, $(this)).remove();
+                                })
+
+                                $("[data-action=save]", $view).prop('disabled', true);
+                                $('div .notification').removeClass('is-hidden').removeClass("is-success")
+                                    .addClass("is-warning").children("p").remove()
+                                $('div .notification').append("<p>Something went wrong. We reloaded the data for you. Please try again!</p>")
+
                                 initView($view, data);
-                                $('div .notification').toggleClass('is-hidden').addClass("is-warning").append("<p>Something went wrong. We reloaded the data for you. Please try again!</p>")
                             })
                     }
                 })
@@ -88,7 +106,7 @@ export default {
         })
 
         $('.delete', $view).on("click", function () {
-            $('div .notification').toggleClass("is-hidden").children("p").remove();
+            $('div .notification').addClass("is-hidden").children("p").remove();
         })
 
         return $view;
