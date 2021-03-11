@@ -125,6 +125,18 @@ function initView($view, data) {
         }
     })
 
+
+    // Highlight row and column corresponding the focused form input field
+    $('input', $view).on('focus', function() {
+        $(this).parent().parent().addClass('is-focused');
+        $(`[data-course=${$(this).attr('data-course')}]`).parent().addClass('is-focused');
+    })
+    $('input', $view).on('focusout', function() {
+        $(this).parent().parent().removeClass('is-focused');
+        $(`[data-course=${$(this).attr('data-course')}]`).parent().removeClass('is-focused');
+    })
+
+
     $('[data-field=students-counter]', $view).html(data.length)
 
     const $fields = ($('input', $view).length > 0) ? $('input', $view) : $('span', $view);
@@ -197,7 +209,7 @@ function updateAllStatistics($view, $field) {
     $(`[data-course=${courseId}]`, $view).each(function() {
         sumOfCourseGrades += getValue($(this)) || 0;
     });
-    const averageGrade = Math.round(sumOfCourseGrades / numberOfStudents);
+    const averageGrade = parseFloat(sumOfCourseGrades / numberOfStudents).toFixed(2);
     $(`[data-average=${courseId}]`, $view).html(averageGrade + '%');
 
     // Average Prelim
@@ -205,7 +217,7 @@ function updateAllStatistics($view, $field) {
     $('[data-field=prelim-grade]', $view).each(function() {
         sumOfPrelimGrades += parseInt($(this).html());
     });
-    const averagePrelim = Math.round(sumOfPrelimGrades / numberOfStudents);
+    const averagePrelim = parseFloat(sumOfPrelimGrades / numberOfStudents).toFixed(2);
     $('[data-average=prelim]', $view).html(averagePrelim + '%');
 
 
@@ -223,10 +235,10 @@ function updateAllStatistics($view, $field) {
         if (thisValue > bestGrade) bestGrade = thisValue;
         if (thisValue < worstGrade && thisValue > 0) worstGrade = thisValue;
     });
-    const averageOverall = Math.round(sumOfOverallGrades / numberOfStudents);
+    const averageOverall = parseFloat(sumOfOverallGrades / numberOfStudents).toFixed(2);
     $('[data-average=overall]', $view).html(averageOverall + '%');
     $('[data-field=students-passed]', $view).html(studentsPassed);
-    $('[data-field=average-grade]', $view).html(averageOverall + '%');
+    $('[data-field=average-grade]', $view).html(Math.round(sumOfOverallGrades / numberOfStudents) + '%');
     $('[data-field=best-grade]', $view).html(bestGrade + '%');
     $('[data-field=worst-grade]', $view).html(worstGrade + '%');
 }

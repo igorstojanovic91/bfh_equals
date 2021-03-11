@@ -40,3 +40,7 @@
 [data-auth=true] {
     display: none;
 }
+
+.is-focused {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+}
