@@ -261,5 +261,55 @@
             </form>
         </div>
     </template>
+
+    <!-- N O T I F Y -->
+    <template id="tpl-notify">
+    <section class="hero is-medium">
+        <div class="hero-body">
+            <div class="container">
+                <form>
+                <div class="field">
+                    <label class="label">Professor</label>
+                    <div class="control">
+                        <input class="input" type="text" value="?" name="professor" disabled>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Email</label>
+                    <div class="control has-icons-left has-icons-right">
+                        <input class="input" type="email" value="" name="email" disabled>
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Subject</label>
+                    <div class="control">
+                        <input class="input" type="text" name="subject" value="Missing Grades">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Message</label>
+                    <div class="control">
+                        <textarea class="textarea" name="message" placeholder="Textarea"></textarea>
+                    </div>
+                </div>
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-success" data-action="save">Submit</button>
+                    </div>
+                    <div class="control">
+                        <button class="button is-info" data-action="cancel">Cancel</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    </template>
 </body>
 </html>

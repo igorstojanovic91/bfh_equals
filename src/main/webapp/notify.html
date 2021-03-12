@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>EQualS - Modules</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+        <link href="css/styles.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    </head>
+    <body>
+
+    <section class="hero is-small is-info">
+        <div class="hero-body">
+            <nav class="level is-mobile">
+                <div class="level-left">
+                    <h1 class="title">EQualS</h1>
+                </div>
+                <div class="level-right">
+                    <p class="level-item">Username</p>
+                    <p class="level-item"><a href="logout" class="button">Logout</a></p>
+                </div>
+            </nav>
+        </div>
+    </section>
+
+    <section class="hero is-medium">
+        <div class="hero-body">
+            <div class="container">
+                <form>
+                    <div class="field">
+                        <label class="label">Professor</label>
+                        <div class="control">
+                            <input class="input" type="text" value="?" name="professor" disabled>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Email</label>
+                        <div class="control has-icons-left has-icons-right">
+                            <input class="input" type="email" value="" name="email" disabled>
+                            <span class="icon is-small is-left">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Subject</label>
+                        <div class="control">
+                            <input class="input" type="text" name="subject" value="Course: Coursename">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Message</label>
+                        <div class="control">
+                            <textarea class="textarea" name="message" placeholder="Textarea"></textarea>
+                        </div>
+                    </div>
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button class="button is-success" data-action="save">Submit</button>
+                        </div>
+                        <div class="control">
+                            <button class="button is-info" data-action="cancel">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    </body>
+</html>

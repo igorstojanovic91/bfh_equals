@@ -139,6 +139,20 @@ function initView($view, data) {
         }
     })
 
+    $('a', $view).on("click", function (event) {
+        const professorId = $(this).data("professorid")
+        console.log(professorId)
+        event.preventDefault();
+        service.getPerson(store.getUser(), professorId)
+            .then(professor => {
+                store.setPersonToNotify(professor)
+                router.go("/notify")
+            })
+            .catch( jqXHR => {
+                console.log(jqXHR)
+            })
+    })
+
     $('[data-field=students-counter]', $view).html(data.length)
 
     const $fields = ($('input', $view).length > 0) ? $('input', $view) : $('span', $view);
@@ -162,7 +176,7 @@ function createFooter($view, courseRating, coursesToNotify) {
         // append notifying Row for assistant
         let notifyButton = "";
         if(coursesToNotify.length && coursesToNotify.includes(courseRatingReversed.length - index -1)){
-            notifyButton = $(`<br><a class="button is-danger is-light mt-2" title="Notify Professor by Mail" data-professorId="${item.course.professor}" href="#/notify">Notify</a>`);
+            notifyButton = $(`<br><a class="button is-danger is-light mt-2" title="Notify Professor by Mail" data-professorId="${item.course.professorId}" href="#/notify">Notify</a>`);
         }
         $('tfoot tr:first', $view).prepend($(`<th data-average="${item.course.courseId}">&nbsp;</th>`));
         $('tfoot tr:last', $view).prepend($(`<th><abbr title="${item.course.name}">${item.course.shortName}</abbr></th>`).append(notifyButton));
