@@ -65,6 +65,10 @@ function renderCardItem($view, module) {
     $('date', $item).last().text(module.endDate.join("-"));
     $('date', $item).last().attr("datetime", module.endDate.join("-"));
 
+    if (Date.parse(module.endDate) < new Date($.now())) {
+        $item.addClass('module-has-ended');
+    }
+
     $('div:empty:first', $view).append($item);
 }
 

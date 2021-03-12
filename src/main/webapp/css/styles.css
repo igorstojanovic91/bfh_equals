@@ -28,6 +28,15 @@
 
 .card {
     cursor: pointer;
+    transition: all 0.5s ease;
+}
+
+.card:hover {
+    background-color: #e9e9e9;
+}
+
+.module-has-ended {
+    opacity: 0.4;
 }
 
 .input-grade {
