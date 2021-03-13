@@ -41,7 +41,7 @@
                     </div>
                     <div class="level-right">
                         <p class="level-item" data-field="user.userName"></p>
-                        <p class="level-item"><a href="/logout" class="button">Logout</a>
+                        <p class="level-item"><a href="#/logout" class="button">Logout</a>
                         </p>
                     </div>
                 </nav>
@@ -102,37 +102,12 @@
             <div class="column is-two-thirds p-0 background">
                 &nbsp;
             </div>
-            <div class="column">
-                <h1 class="title pl-6">
-                    Bye, hope to see you again soon on EQualS! Have a nice Day... <span><i class="fas fa-graduation-cap"></i></span>
+            <div class="column pl-6">
+                <h1 class="title">
+                    EQualS <span><i class="fas fa-graduation-cap"></i></span>
                 </h1>
-                <p> <a href="/">Back to Login</a> </p>
-                <form class="pl-6 pr-6 pb-6">
-                    <div class="field">
-                        <p class="control has-icons-left has-icons-right">
-                            <input class="input" placeholder="Username" name="username" type="text">
-                            <span class="icon is-small is-left">
-                                 <i class="fas fa-user"></i>
-                             </span>
-                        </p>
-                    </div>
-                    <div class="field">
-                        <p class="control has-icons-left">
-                            <input class="input" placeholder="Password" name="password" type="password" pattern="[0-9]+">
-                            <span class="icon is-small is-left">
-                              <i class="fas fa-lock"></i>
-                            </span>
-                        </p>
-                    </div>
-                    <p data-field="error" class="has-text-danger"></p>
-                    <div class="field">
-                        <p class="control">
-                            <button data-action="logout" class="button is-success" disabled>
-                                Logout
-                            </button>
-                        </p>
-                    </div>
-                </form>
+                <h2 class="subtitle is-5">Bye, hope to see you again! Have a nice Day... </h2>
+                <p> <a href="#/" class="button is-success">Back to Login</a> </p>
             </div>
         </div>
     </template>

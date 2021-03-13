@@ -7,7 +7,7 @@ export default {
     render: function () {
         store.clear();
         util.showAuthContent(false);
-        util.updateViewField('user.name', '');
+        util.updateViewField('user.userName', '');
         return $($('#tpl-logout').html());
 
         const $view = $($('#tpl-logut').html());
