@@ -31,7 +31,7 @@ Thank you.`)
             const form = document.forms[0];
             const emailAdress = form.email.value;
             const subject = form.subject.value;
-            const message = form.message.value;
+            const message = form.message.value.split(/(?:\r\n|\r|\n)/g).join('%0D');
             window.open(`mailto:${emailAdress}?subject=${subject}&body=${message}`);
             store.deletePersonToNoftiy();
             $('form', $view).remove();

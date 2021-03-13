@@ -54,7 +54,7 @@ export default {
                     $('div .notification').removeClass('is-hidden')
                         .removeClass("is-warning").addClass("is-success")
                         .children("p").remove()
-                        .append("<p>Thank you! We saved all grades in the database!</p>")
+                    $('div .notification').append("<p>Thank you! We saved all grades in the database!</p>")
 
                 })
                 .catch(jqXHR =>  {
@@ -68,7 +68,7 @@ export default {
                                 resetTable($view)
                                 $('div .notification').removeClass('is-hidden').removeClass("is-success")
                                     .addClass("is-warning").children("p").remove()
-                                    .append("<p>Something went wrong. We reloaded the data for you. Please try again!</p>")
+                                $('div .notification').append("<p>Something went wrong. We reloaded the data for you. Please try again!</p>")
                                 initView($view, data);
                             })
                     }
