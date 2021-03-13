@@ -139,7 +139,7 @@ function initView($view, data) {
         }
     })
 
-    $('a', $view).on("click", function (event) {
+    $('[data-action=notify]', $view).on("click", function (event) {
         const professorId = $(this).data("professorid")
         console.log(professorId)
         event.preventDefault();
@@ -176,7 +176,7 @@ function createFooter($view, courseRating, coursesToNotify) {
         // append notifying Row for assistant
         let notifyButton = "";
         if(coursesToNotify.length && coursesToNotify.includes(courseRatingReversed.length - index -1)){
-            notifyButton = $(`<br><a class="button is-danger is-light mt-2" title="Notify Professor by Mail" data-professorId="${item.course.professorId}" href="#/notify">Notify</a>`);
+            notifyButton = $(`<br><a class="button is-danger is-light mt-2" title="Notify Professor by Mail" data-professorId="${item.course.professorId}" data-action="notify" href="#/notify">Notify</a>`);
         }
         $('tfoot tr:first', $view).prepend($(`<th data-average="${item.course.courseId}">&nbsp;</th>`));
         $('tfoot tr:last', $view).prepend($(`<th><abbr title="${item.course.name}">${item.course.shortName}</abbr></th>`).append(notifyButton));
