@@ -35,14 +35,20 @@ public class PersonRestController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.debug("Entering /api/persons");
+        Person person = null;
+        String pathInfo = request.getPathInfo();
+        if (pathInfo != null && !pathInfo.isEmpty()) {
+            int personId = Integer.parseInt(pathInfo.split("/")[1]);
+            person = personRepository.getPerson(personId);
+        } else {
+            person = personRepository.getPerson((Integer) request.getAttribute("personId"));
+        }
+            response.setContentType(JSON_MEDIA_TYPE);
+            response.setStatus(HttpServletResponse.SC_OK);
 
-        Person person = personRepository.getPerson((Integer) request.getAttribute("personId"));
-        response.setContentType(JSON_MEDIA_TYPE);
-        response.setStatus(HttpServletResponse.SC_OK);
+            JsonGenerator generator = jsonMapper
+                    .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
 
-        JsonGenerator generator = jsonMapper
-            .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
-
-        generator.writeObject(person);
+            generator.writeObject(person);
+        }
     }
-}

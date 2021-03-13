@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.stream.IntStream;
 
 public class RatingRepository {
 
@@ -40,12 +41,11 @@ public class RatingRepository {
                 logger.debug("Added batch ");
             }
             int[] nbrOfModifiedRows = updateStm.executeBatch();
-            logger.debug("nbr of modifed rows ");
-            logger.debug(String.valueOf(nbrOfModifiedRows.length));
-            logger.debug("ratings length ");
-            logger.debug(String.valueOf(ratings.length));
+            System.out.println(nbrOfModifiedRows);
+            logger.debug("nbr of modified rows: " + String.valueOf(IntStream.of(nbrOfModifiedRows).sum()));
+            logger.debug("ratings length: " + String.valueOf(ratings.length));
 
-            if(nbrOfModifiedRows.length != ratings.length) {
+            if(IntStream.of(nbrOfModifiedRows).sum() != ratings.length) {
                 throw new SQLException("Not all rows affected");
             }
             connection.commit();
@@ -87,13 +87,11 @@ public class RatingRepository {
                 logger.debug("Added batch ");
             }
             int[] nbrOfModifiedRows = updateStm.executeBatch();
+            System.out.println(nbrOfModifiedRows);
+            logger.debug("nbr of modified rows: " + String.valueOf(IntStream.of(nbrOfModifiedRows).sum()));
+            logger.debug("ratings length: " + String.valueOf(ratings.length));
 
-            logger.debug("nbr of modifed rows ");
-            logger.debug(String.valueOf(nbrOfModifiedRows.length));
-            logger.debug("ratings length ");
-            logger.debug(String.valueOf(ratings.length));
-
-            if(nbrOfModifiedRows.length != ratings.length) {
+            if(IntStream.of(nbrOfModifiedRows).sum() != ratings.length) {
                 throw new SQLException("Not all rows affected");
             }
             connection.commit();

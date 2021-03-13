@@ -24,5 +24,17 @@ export default {
 
     clear: function () {
         data = {};
+    },
+
+    setPersonToNotify: function (notifyData) {
+        data.notify = notifyData;
+    },
+
+    getPersonToNotify: function () {
+        return data.notify;
+    },
+
+    deletePersonToNoftiy: function () {
+        delete data.notify;
     }
 };

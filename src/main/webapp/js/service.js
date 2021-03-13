@@ -2,9 +2,9 @@ const BASE_URL = 'http://localhost:8080/equals_war/api/';
 
 export default {
 
-    getPerson: function (user) {
+    getPerson: function (user, id) {
         return $.ajax({
-            url: BASE_URL + 'persons',
+            url: BASE_URL + 'persons' + (id ? "/" + id : ''),
             type: 'GET',
             headers: {
                 'Authorization': getAuthHeader(user),
@@ -57,7 +57,9 @@ export default {
             data: data,
             contentType: 'application/json; charset=UTF-8'
         }).fail(jqXHR => console.log(`An error occurred: (${jqXHR.status}) ${jqXHR.responseText}`));
-    }
+    },
+
+
 }
 
 function getAuthHeader(user) {
