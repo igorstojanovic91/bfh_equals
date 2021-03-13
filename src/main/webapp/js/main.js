@@ -1,6 +1,6 @@
 import router from './router.js';
 import login from './components/login.js';
-import logout from "./components/logout";
+import logout from './components/logout.js';
 import modules from './components/modules.js';
 import courses from './components/courses.js';
 import assessment from './components/assessment.js';

@@ -1,4 +1,4 @@
-import store from "../store";
+import store from "../store.js";
 import util from "../util.js";
 
 export default {
