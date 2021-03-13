@@ -41,7 +41,8 @@
                     </div>
                     <div class="level-right">
                         <p class="level-item" data-field="user.userName"></p>
-                        <p class="level-item"><a href="logout" class="button">Logout</a></p>
+                        <p class="level-item"><a href="/logout" class="button">Logout</a>
+                        </p>
                     </div>
                 </nav>
             </div>
@@ -65,6 +66,47 @@
                 <h1 class="title pl-6">
                     Welcome to EQualS! <span><i class="fas fa-graduation-cap"></i></span>
                 </h1>
+                <form class="pl-6 pr-6 pb-6">
+                    <div class="field">
+                        <p class="control has-icons-left has-icons-right">
+                            <input class="input" placeholder="Username" name="username" type="text">
+                            <span class="icon is-small is-left">
+                                 <i class="fas fa-user"></i>
+                             </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <p class="control has-icons-left">
+                            <input class="input" placeholder="Password" name="password" type="password" pattern="[0-9]+">
+                            <span class="icon is-small is-left">
+                              <i class="fas fa-lock"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <p data-field="error" class="has-text-danger"></p>
+                    <div class="field">
+                        <p class="control">
+                            <button data-action="login" class="button is-success" disabled>
+                                Login
+                            </button>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </template>
+
+    <!-- L O G O U T -->
+    <template id="tpl-logout">
+        <div class="columns is-vcentered" style="height: 100vh">
+            <div class="column is-two-thirds p-0 background">
+                &nbsp;
+            </div>
+            <div class="column">
+                <h1 class="title pl-6">
+                    Bye, hope to see you again soon on EQualS! Have a nice Day... <span><i class="fas fa-graduation-cap"></i></span>
+                </h1>
+                <p> <a href="/">Back to Login</a> </p>
                 <form class="pl-6 pr-6 pb-6">
                     <div class="field">
                         <p class="control has-icons-left has-icons-right">
