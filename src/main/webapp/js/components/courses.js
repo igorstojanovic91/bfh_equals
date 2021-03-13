@@ -36,8 +36,8 @@ export default {
         $("[data-action=save]", $view).click(function (event) {
             //TODO
             event.preventDefault();
-            // CODE FOR FADE OUT AND SHOWING LOADING BUTTON
-            $($view[1]).fadeOut(200).hide().parent().append($($('#tpl-loader')).html()).show().fadeIn(200);
+            // CODE FOR SHOWING LOADING BUTTON
+            $($view[1]).hide().parent().append($($('#tpl-loader')).html()).show();
             const data = getInputData();
             const promises = [];
 
@@ -47,28 +47,33 @@ export default {
             // TODO: Flash message for success & failure
             Promise.all(promises)
                 .then(function () {
-                    $('.hero.is-fullheight').fadeOut(200).remove();
-                    $($view[1]).fadeIn(200).show();
+                    $('.hero.is-fullheight').remove();
+                    $($view[1]).show();
                     $("[data-action=save]", $view).prop('disabled', true);
                     increaseVersions();
-                    $('div .notification').removeClass('is-hidden')
-                        .removeClass("is-warning").addClass("is-success")
-                        .children("p").remove()
-                    $('div .notification').append("<p>Thank you! We saved all grades in the database!</p>")
+                    $('.notification-message').remove();
+                    $('div .notification')
+                        .removeClass('is-hidden')
+                        .removeClass("is-warning")
+                        .addClass("is-success")
+                        .append('<p class="notification-message">Thank you! We saved all grades in the database!</p>')
 
                 })
                 .catch(jqXHR =>  {
 
-                    $('.hero.is-fullheight').fadeOut(200).remove();
-                    $($view[1]).fadeIn(0).show();
+                    $('.hero.is-fullheight').remove();
+                    $($view[1]).show();
                     // Refetch Data with http error 400, the service then re-inits the data
                     if (jqXHR.status === 400) {
                         service.getModulesOverall(store.getUser(), moduleId)
                             .then(data => {
                                 resetTable($view)
-                                $('div .notification').removeClass('is-hidden').removeClass("is-success")
-                                    .addClass("is-warning").children("p").remove()
-                                $('div .notification').append("<p>Something went wrong. We reloaded the data for you. Please try again!</p>")
+                                $('.notification-message').remove();
+                                $('div .notification')
+                                    .removeClass('is-hidden')
+                                    .removeClass("is-success")
+                                    .addClass("is-warning")
+                                    .append('<p class="notification-message">Something went wrong. We reloaded the data for you. Please try again!</p>')
                                 initView($view, data);
                             })
                     }
