@@ -34,7 +34,7 @@ public class ModuleRepository {
             + " LEFT JOIN Course c ON m.id = c.moduleId"
             + " LEFT JOIN Registration r on m.id = r.moduleId"
             + " WHERE m.headId = ? OR c.professorId = ? OR m.assistantId = ? OR r.studentId = ?"
-            + " ORDER BY m.startDate desc, m.shortName asc";
+            + " ORDER BY m.endDate desc, m.shortName asc";
 
         try (Connection connection = EqualsDataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
