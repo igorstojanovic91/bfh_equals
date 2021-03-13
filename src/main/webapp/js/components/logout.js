@@ -4,16 +4,20 @@ import util from "../util.js";
 export default {
     requiresAuth: true,
 
-    render: function () {
-        store.clear();
-        util.showAuthContent(false);
-        util.updateViewField('user.userName', '');
-        return $($('#tpl-logout').html());
+    getTitle: function () {
+        return "Logout";
+    },
 
-        const $view = $($('#tpl-logut').html());
+    render: function () {
+        const $view = $($('#tpl-logout').html());
         $('[data-action=logout]', $view).on('click', e => {
             e.preventDefault();
         });
+
+        store.clear();
+        util.showAuthContent(false);
+        util.updateViewField('user.userName', '');
+
         return $view;
     }
 }

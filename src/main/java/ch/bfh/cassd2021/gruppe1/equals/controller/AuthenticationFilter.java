@@ -39,7 +39,7 @@ public class AuthenticationFilter extends HttpFilter {
                 response.setContentType(JSON_MEDIA_TYPE);
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             } else {
-                int personId = authenticationRepository.authenticateUser(credentials[0], Integer.parseInt(credentials[1]));
+                int personId = authenticationRepository.authenticateUser(credentials[0], credentials[1]);
                 if (personId > -1) {
                     request.setAttribute("personId", personId);
                     chain.doFilter(request, response);
