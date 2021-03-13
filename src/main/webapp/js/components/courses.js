@@ -22,8 +22,8 @@ export default {
         }
         const module = store.getModule(moduleId);
         if (module) {
-            $('[data-field=title]').empty()
-            $('[data-field=module-title]', $view).html(module.name)
+            $('[data-field=title]').html(module.name)
+            $('[data-field=sub-title]').html(module.shortName)
         } else {
             // TODO: Flash Message, Module does not exist
             router.go('/modules');
@@ -37,81 +37,63 @@ export default {
             //TODO
             event.preventDefault();
             // CODE FOR FADE OUT AND SHOWING LOADING BUTTON
-            //$($view[1]).fadeOut(200).hide().parent().append($($('#tpl-loader')).html()).show().fadeIn(200);
-            const data = []
+            $($view[1]).fadeOut(200).hide().parent().append($($('#tpl-loader')).html()).show().fadeIn(200);
+            const data = {};
+            data.update = [];
+            data.insert = []
             $('input').each(function () {
-                data.push({
+                const versionNumber = Number($(this).attr("data-version"));
+                const rating = {
                     studentId: Number($(this).attr("data-student")),
                     courseId: Number($(this).attr("data-course")),
                     successRate: Number($(this).val()),
-                    version: Number($(this).attr("data-version"))
-                })
+                    version: versionNumber
+                }
+                versionNumber > 0 ? data.update.push(rating) : data.insert.push(rating);
             })
+            const promises = [];
+            console.log(data)
 
-            console.log(JSON.stringify(data));
+            if(data.update.length > 0) promises.push(service.updateRatings(store.getUser(), JSON.stringify(data.update)));
+            if(data.insert.length > 0) promises.push(service.insertRatings(store.getUser(), JSON.stringify(data.insert)));
 
+            Promise.all(promises)
+                .then(function () {
+                    $('.hero').fadeOut(200).detach();
+                    $($view[1]).fadeIn(200).show();
+                    $("[data-action=save]", $view).prop('disabled', true);
+                })
+                .catch(jqXHR => console.log(jqXHR.status))
         })
 
         $("[data-action=cancel]").click(function (event) {
             event.preventDefault()
             router.go("/modules")
         })
-
         return $view;
     }
 };
 
 
-function initStatistics($view, data) {
-    $('[data-field=students-counter]', $view).html(data.length)
 
-    let bestGrade = 0;
-    let worstGrade = 100;
-    let gradeCounter = 0;
-    let passedStudents = 0;
-    let averageGrade;
-
-    if(!(store.getModule(moduleIdentifier).role === "PROFESSOR")) {
-        data.forEach(student => {
-            if(student.overallGrade > bestGrade) bestGrade = student.overallGrade;
-            if(student.overallGrade < worstGrade) worstGrade = student.overallGrade;
-            if(student.overallGrade >= 50) passedStudents++;
-            gradeCounter+=student.overallGrade;
-        })
-    } else {
-        let grades = 0;
-        let divider = data[0].courseRating.length * data.length;
-        data.forEach(student => {
-            let singleGrades = 0;
-            student.courseRating.forEach(courseRating => {
-                grades += courseRating.rating.successRate
-                if(courseRating.rating.successRate > bestGrade) bestGrade = courseRating.rating.successRate;
-                if(courseRating.rating.successRate < worstGrade) worstGrade = courseRating.rating.successRate;
-            })
-            passedStudents = (singleGrades / student.courseRating.length >= 50) ? passedStudents++ : passedStudents+=0;
-        })
-        averageGrade = grades / divider;
-    }
-    $('[data-field=students-passed]', $view).html(passedStudents) // TODO
-    $('[data-field=average-grade]', $view).html(averageGrade ? averageGrade : gradeCounter / data.length) // TODO
-    $('[data-field=best-grade]', $view).html(bestGrade) // TODO
-    $('[data-field=worst-grade]', $view).html(worstGrade) // TODO
-
-}
 
 function initView($view, data) {
-    initStatistics($($view[0]), data);
     const firstElement = data[0];
     createHeader($view, firstElement.courseRating);
 
+    let coursesToNotify = [];
     data.forEach(item => {
         let tr = $('<tr></tr>');
         tr.append(`<td>${item.name}</td>`);
-        item.courseRating.forEach(courseRating => {
+        item.courseRating.forEach((courseRating, index) => {
             if(store.getModule(moduleIdentifier).role === "PROFESSOR" || store.getModule(moduleIdentifier).role === "HEAD" ) {
                 tr.append(`<td><input data-student="${courseRating.rating.studentId}" data-course="${courseRating.rating.courseId}" data-version="${courseRating.rating.version}" data-weight="${courseRating.course.weight}" class="input-grade" type="number" min="0" max="100" value="${courseRating.rating.successRate}" maxlength="3">%</td>`);
             } else {
-                tr.append(`<td>${courseRating.rating.successRate}%</td>`);
+                const notifyClass = courseRating.rating.successRate === 0 ? "has-background-danger-light" : "";
+                tr.append(`<td class="${notifyClass}"><span data-student="${courseRating.rating.studentId}" data-course="${courseRating.rating.courseId}" data-version="${courseRating.rating.version}" data-weight="${courseRating.course.weight}">${courseRating.rating.successRate}</span>%</td>`);
+                if(notifyClass){
+                    !coursesToNotify.includes(index) ? coursesToNotify.push(index) : "";
+                }
             }
         })
         tr.append(`<td data-field="prelim-grade">${item.preliminaryGrade}%</td>`);
@@ -119,7 +101,7 @@ function initView($view, data) {
         $('tbody', $view).append(tr);
     })
 
-    createFooter($view, firstElement.courseRating);
+    createFooter($view, firstElement.courseRating, coursesToNotify);
     //REMOVING COLUMNS FOR PROFESSOR
     if(store.getModule(moduleIdentifier).role === "PROFESSOR") {
         const table = $('table', $view)[0]
@@ -132,9 +114,36 @@ function initView($view, data) {
 
     // TODO: Change to focusout??
     $('input', $view).on('input', function() {
-        $("[data-action=save]", $view).prop('disabled', false)
-        updateAllStatistics($view, $(this));
+        const value = $(this).val();
+        if(!$.isNumeric(value) || value > 100 || value < 0){
+            $("[data-action=save]", $view).prop('disabled', true)
+            $(this).parent().addClass('has-background-danger-light');
+        } else {
+            $("[data-action=save]", $view).prop('disabled', false);
+            $(this).parent().removeClass('has-background-danger-light');
+            updateAllStatistics($view, $(this));
+        }
     })
+
+
+    // Highlight row and column corresponding the focused form input field
+    $('input', $view).on('focus', function() {
+        $(this).parent().parent().addClass('is-focused');
+        $(`[data-course=${$(this).attr('data-course')}]`).parent().addClass('is-focused');
+    })
+    $('input', $view).on('focusout', function() {
+        $(this).parent().parent().removeClass('is-focused');
+        $(`[data-course=${$(this).attr('data-course')}]`).parent().removeClass('is-focused');
+    })
+
+
+    $('[data-field=students-counter]', $view).html(data.length)
+
+    const $fields = ($('input', $view).length > 0) ? $('input', $view) : $('span', $view);
+    $fields.each(function () {
+        updateAllStatistics($view, $(this))
+    })
+
 }
 
 function createHeader($view, courseRating) {
@@ -145,37 +154,46 @@ function createHeader($view, courseRating) {
     $('thead tr', $view).prepend($('<th>Student</th>'));
 }
 
-function createFooter($view, courseRating) {
+function createFooter($view, courseRating, coursesToNotify) {
     const courseRatingReversed = [...courseRating].reverse();
     courseRatingReversed.forEach( (item, index) => {
-        $('tfoot tr:first', $view).prepend($(`<th data-average="${item.course.courseId}">${calcCourseAverage(index+2, $view)}%</th>`));
-        $('tfoot tr:last', $view).prepend($(`<th><abbr title="${item.course.name}">${item.course.shortName}</abbr></th>`));
+        // append notifying Row for assistant
+        let notifyButton = "";
+        if(coursesToNotify.length && coursesToNotify.includes(courseRatingReversed.length - index -1)){
+            notifyButton = $('<br><a class="button is-danger is-light mt-2" title="Notify Professor by Mail">Notify</a>');
+        }
+        $('tfoot tr:first', $view).prepend($(`<th data-average="${item.course.courseId}">&nbsp;</th>`));
+        $('tfoot tr:last', $view).prepend($(`<th><abbr title="${item.course.name}">${item.course.shortName}</abbr></th>`).append(notifyButton));
+
     })
     $('tfoot tr:first', $view).prepend($('<th>Average</th>'));
-    $('tfoot tr:first', $view).append($(`<th data-average="prelim">${calcCourseAverage(courseRating.length + 1, $view)}%</th>`));
-    $('tfoot tr:first', $view).append($(`<th data-average="overall">${calcCourseAverage(courseRating.length + 2, $view)}%</th>`));
+    $('tfoot tr:first', $view).append($(`<th data-average="prelim">&nbsp;</th>`));
+    $('tfoot tr:first', $view).append($(`<th data-average="overall">&nbsp;</th>`));
     $('tfoot tr:last', $view).prepend($('<th>&nbsp;</th>'));
 }
 
 function updateAllStatistics($view, $field) {
+
     const $row = $field.parent().parent();
+    const $fields = ($('input', $row).length > 0) ? $('input', $row) : $('span', $row);
 
     // x-axis
     let preliminaryWeight = 0;
     let overallWeight = 0;
     let preliminaryGrade = 0;
     let overallGrade = 0;
-    $('input', $row).each(function() {
-        if (Number($(this).val()) > 0) {
+
+    $fields.each(function() {
+
+        if (getValue($(this)) > 0) {
             preliminaryWeight += Number($(this).attr('data-weight'));
-            preliminaryGrade += (Number($(this).val()) * Number($(this).attr('data-weight')));
+            preliminaryGrade += (getValue($(this)) * Number($(this).attr('data-weight')));
         }
         overallWeight += Number($(this).attr('data-weight'));
-        overallGrade += (Number($(this).val()) * Number($(this).attr('data-weight')));
+        overallGrade += (getValue($(this)) * Number($(this).attr('data-weight')));
     });
-
-    const finalPreliminaryGrade = Math.ceil((preliminaryGrade / preliminaryWeight)) || 0;
-    const finalOverallGrade = Math.ceil((overallGrade / overallWeight)) || 0;
+    const finalPreliminaryGrade = Math.round((preliminaryGrade / preliminaryWeight)) || 0;
+    const finalOverallGrade = Math.round((overallGrade / overallWeight)) || 0;
 
     $('[data-field=prelim-grade]', $row).html(finalPreliminaryGrade  + '%');
     $('[data-field=overall-grade]', $row).html(finalOverallGrade + '%');
@@ -189,9 +207,9 @@ function updateAllStatistics($view, $field) {
     const numberOfStudents = $(`[data-course=${courseId}]`, $view).length;
     let sumOfCourseGrades = 0;
     $(`[data-course=${courseId}]`, $view).each(function() {
-        sumOfCourseGrades += Number($(this).val()) || 0;
+        sumOfCourseGrades += getValue($(this)) || 0;
     });
-    const averageGrade = Math.ceil(sumOfCourseGrades / numberOfStudents);
+    const averageGrade = parseFloat(sumOfCourseGrades / numberOfStudents).toFixed(2);
     $(`[data-average=${courseId}]`, $view).html(averageGrade + '%');
 
     // Average Prelim
@@ -199,7 +217,7 @@ function updateAllStatistics($view, $field) {
     $('[data-field=prelim-grade]', $view).each(function() {
         sumOfPrelimGrades += parseInt($(this).html());
     });
-    const averagePrelim = Math.ceil(sumOfPrelimGrades / numberOfStudents);
+    const averagePrelim = parseFloat(sumOfPrelimGrades / numberOfStudents).toFixed(2);
     $('[data-average=prelim]', $view).html(averagePrelim + '%');
 
 
@@ -207,37 +225,25 @@ function updateAllStatistics($view, $field) {
     let sumOfOverallGrades = 0;
     let studentsPassed = 0;
     let bestGrade = 0;
-    let worstGrade = 100;
+    let worstGrade = 0;
 
-    $('[data-field=overall-grade]', $view).each(function() {
+    $('[data-field=overall-grade]', $view).each(function(index) {
+        index === 0 ? worstGrade = parseInt($(this).html()) : 0;
         let thisValue = parseInt($(this).html());
         sumOfOverallGrades += thisValue;
         if (thisValue >= 50) studentsPassed++;
         if (thisValue > bestGrade) bestGrade = thisValue;
         if (thisValue < worstGrade && thisValue > 0) worstGrade = thisValue;
     });
-    const averageOverall = Math.ceil(sumOfOverallGrades / numberOfStudents);
+    const averageOverall = parseFloat(sumOfOverallGrades / numberOfStudents).toFixed(2);
     $('[data-average=overall]', $view).html(averageOverall + '%');
-    $('[data-field=students-passed]').html(studentsPassed);
-    $('[data-field=average-grade]').html(averageOverall + '%');
-    $('[data-field=best-grade]').html(bestGrade + '%');
-    $('[data-field=worst-grade]').html(worstGrade + '%');
+    $('[data-field=students-passed]', $view).html(studentsPassed);
+    $('[data-field=average-grade]', $view).html(Math.round(sumOfOverallGrades / numberOfStudents) + '%');
+    $('[data-field=best-grade]', $view).html(bestGrade + '%');
+    $('[data-field=worst-grade]', $view).html(worstGrade + '%');
 }
 
-function calcCourseAverage(columnIndex, $view) {
-    let avg = 0, amount = 0;
-    $(`tr td:nth-of-type(${columnIndex})`, $view).each(function(){
-        let value = $(this).find('input').attr("value") || parseInt($(this).text())
-        avg += value;
-        amount++;
-    });
-    return avg / amount;
+function getValue($this){
+    return Number($this.val()) || Number($this.html());
 }
 
-function calcPreliminary() {
-
-}
-
-function calcOverall() {
-
-}

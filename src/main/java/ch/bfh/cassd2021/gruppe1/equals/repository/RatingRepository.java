@@ -55,6 +55,8 @@ public class RatingRepository {
         catch (SQLException sqlException) {
             try {
                 connection.rollback(); // ROLL BACK IF NOT ALL ROWS ARE UPDATED
+                connection.setAutoCommit(true);
+                throw new RepositoryException("Data not saved to Db");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
@@ -101,6 +103,8 @@ public class RatingRepository {
         catch (SQLException sqlException) {
             try {
                 connection.rollback(); // ROLL BACK IF NOT ALL ROWS ARE UPDATED
+                connection.setAutoCommit(true);
+                throw new RepositoryException("Data not saved to Db");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }

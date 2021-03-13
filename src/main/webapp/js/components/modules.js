@@ -12,6 +12,7 @@ export default {
         let $view = $($('#tpl-module-container').html());
 
         $('[data-field=title]').html('Your Module Overview:');
+        $('[data-field=sub-title]').empty();
         let modules = store.getModules();
         let additionalRows = Math.floor(modules.length / 3);
         for (let i = 0; i < additionalRows; i++) {
@@ -31,15 +32,9 @@ export default {
 function renderCardItem($view, module) {
     const $item = $($('#tpl-module-item').html());
     const imgName = "img/" + module.shortName.split("-")[0].toLowerCase() + ".jpg"
-    const link = "#/module-overview/" + module.moduleId;
-
-    $('a', $item).attr('href', link);
-    $('img', $item).attr("src", imgName);
-    $('img', $item).attr("alt", module.name);
-
-    $('p.title', $item).text(module.name);
-    $('p.subtitle', $item).text(module.shortName);
+    let link = "#/module-overview/" + module.moduleId;
     let tag;
+
     switch (module.role) {
         case "PROFESSOR":
             tag = "is-warning";
@@ -52,8 +47,16 @@ function renderCardItem($view, module) {
             break;
         case "STUDENT" :
             tag = "is-link";
+            link = "#/assessment/" + module.moduleId;
             break;
     }
+
+    $('a', $item).attr('href', link);
+    $('img', $item).attr("src", imgName);
+    $('img', $item).attr("alt", module.name);
+
+    $('p.title', $item).text(module.name);
+    $('p.subtitle', $item).text(module.shortName);
 
     $('span.tag', $item).addClass(tag);
     $('span.tag', $item).text(capitalize(module.role));
@@ -61,6 +64,10 @@ function renderCardItem($view, module) {
     $('date', $item).first().attr("datetime", module.startDate.join("-"));
     $('date', $item).last().text(module.endDate.join("-"));
     $('date', $item).last().attr("datetime", module.endDate.join("-"));
+
+    if (Date.parse(module.endDate) < new Date($.now())) {
+        $item.addClass('module-has-ended');
+    }
 
     $('div:empty:first', $view).append($item);
 }

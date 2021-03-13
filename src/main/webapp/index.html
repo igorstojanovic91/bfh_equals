@@ -47,7 +47,8 @@
             </div>
         </section>
         <div class="container pt-6 has-text-centered">
-            <h1 class="title" data-field="title">Your Module Overview:</h1>
+            <h1 class="title" data-field="title">?</h1>
+            <h2 class="subtitle is-5" data-field="sub-title"></h2>
         </div>
     </header>
     <main>
@@ -146,7 +147,7 @@
         <div class="container pt-6 has-text-centered">
             <form>
                 <div class="table-container">
-                    <table class="table is-striped is-hoverable is-fullwidth">
+                    <table class="table is-hoverable is-fullwidth">
                         <thead>
                         <tr>
                             <th><abbr title="Preliminary grade">Prelim</abbr></th>
@@ -180,7 +181,6 @@
     <!-- C O U R S E - S T A T I S T I C S-->
     <template id="tpl-course-statistics">
         <div class="container pt-6 has-text-centered">
-            <h1 class="title" data-field="module-title">?</h1>
 
             <nav class="level mt-6 mb-6 is-hidden-mobile">
                 <div class="level-item has-text-centered">
@@ -214,6 +214,48 @@
                     </div>
                 </div>
             </nav>
+        </div>
+    </template>
+
+    <!-- A S S E S S M E N T -->
+    <template id="tpl-assessment">
+        <div class="container pt-6 has-text-centered">
+            <form>
+                <div class="table-container">
+                    <table class="table is-striped is-hoverable is-fullwidth">
+                        <thead>
+                        <tr>
+                            <th class="has-text-left">Course</th>
+                            <th>Weight</th>
+                            <th>Success</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th class="has-text-left">Prelimenary grade</th>
+                                <th></th>
+                                <th data-field="prelim-grade">?</th>
+                            </tr>
+                            <tr>
+                                <th class="has-text-left">Overall grade</th>
+                                <th></th>
+                                <th data-field="overall-grade">?</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="level pt-6 is-mobile">
+                    <div class="level-left">
+                        <a href="#/modules" class="button is-info" data-action="cancel">Back to Modules</a>
+                    </div>
+                    <div class="level-right">
+                        <button class="button is-success" data-action="print">Print</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </template>
 </body>

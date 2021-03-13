@@ -27,7 +27,11 @@ public class Rating {
     }
 
     public void setSuccessRate(int successRate) {
-        this.successRate = successRate;
+        if(successRate >= 0 && successRate <= 100){
+            this.successRate = successRate;
+        } else{
+            throw new IllegalArgumentException();
+        }
     }
 
     public int getVersion() {
