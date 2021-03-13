@@ -34,7 +34,7 @@ export default {
         return data.notify;
     },
 
-    deletePersonToNoftiy: function () {
+    deletePersonToNotify: function () {
         delete data.notify;
     }
 };
