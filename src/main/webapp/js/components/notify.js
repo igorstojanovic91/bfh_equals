@@ -15,9 +15,16 @@ export default {
 
 
         const professor = store.getPersonToNotify()
+        const moduleTitle = $('[data-field=title]').html()
 
         $('[name=professor]', $view).val(`${professor.firstName} ${professor.lastName}`)
         $('[name=email]', $view).val(`${professor.userName}@bfh.ch`)
+        $('[name=subject]', $view).val(`Missing Grades in ${moduleTitle}`)
+        $('[name=message]', $view).val(`Dear ${professor.firstName}, 
+You have some grades missing in the above mentioned module. 
+Please add the grades as soon as possible.
+Thank you.`)
+
 
         $('[data-action=save]', $view).on('click', e => {
             e.preventDefault();
