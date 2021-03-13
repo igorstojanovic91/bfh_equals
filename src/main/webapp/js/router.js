@@ -1,9 +1,10 @@
 import store from './store.js';
+import error404 from "./components/error404.js";
+import util from "./util.js";
 
 const $main = $('main');
 
 const routes = Object.create(null);
-
 
 function replaceView($view) {
     $main.fadeOut(200, function () {
@@ -14,15 +15,15 @@ function replaceView($view) {
 function render() {
     const hash = location.hash.replace('#/', '').split('/');
     const path = '/' + (hash[0] || '');
-    if (!routes[path]) {
-        replaceView($('<h2>404 Not Found</h2><p>Sorry, page not found....</p>'));
-        return;
-    }
 
-    const component = routes[path];
+    const component = routes[path] ? routes[path] : error404;
+
     if (component.requiresAuth && !store.getUser()) {
         replaceView($('<h2>401 Unauthorized</h2><p>Please login first!</p>'));
         return;
+    }
+    if (store.getUser() && component !== error404) {
+        util.showAuthContent(true);
     }
     const param = hash.length > 1 ? hash[1] : null;
     const $view = component.render(param);

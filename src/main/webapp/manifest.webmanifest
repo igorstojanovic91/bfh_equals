@@ -1,21 +1,21 @@
 {
     "short_name": "EQualS",
-    "name": "EQualS • Gruppe 1",
-    "description": "EQualS • CAS Software Development (SD-HS20) • Gruppe 1",
+    "name": "EQualS - Gruppe 1",
+    "description": "EQualS - CAS Software Development (SD-HS20) - Gruppe 1",
     "icons": [
         {
-            "src": "/favicon/icons-192.png",
+            "src": "favicon/icons-192.png",
             "type": "image/png",
             "sizes": "192x192"
         },
         {
-            "src": "/favicon/icons-512.png",
+            "src": "favicon/icons-512.png",
             "type": "image/png",
             "sizes": "512x512"
         }
     ],
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
-    "start_url": "http://localhost:8080/equals_war/",
+    "start_url": ".",
     "display": "standalone"
 }

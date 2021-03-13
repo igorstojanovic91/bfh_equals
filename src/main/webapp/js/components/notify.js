@@ -1,5 +1,3 @@
-import service from '../service.js';
-import router from '../router.js';
 import store from '../store.js';
 
 
@@ -21,7 +19,7 @@ export default {
         $('[name=email]', $view).val(`${professor.userName}@bfh.ch`)
         $('[name=subject]', $view).val(`Missing Grades in ${moduleTitle}`)
         $('[name=message]', $view).val(`Dear ${professor.firstName},
-You have some grades missing in the above mentioned module.
+You have some grades missing in the module mentioned above.
 Please add the grades as soon as possible.
 Thank you.`)
 
