@@ -58,18 +58,22 @@ function renderCardItem($view, module) {
     $('p.title', $item).text(module.name);
     $('p.subtitle', $item).text(module.shortName);
 
-    $('span.tag', $item).addClass(tag);
-    $('span.tag', $item).text(capitalize(module.role));
+    $('div.tags', $item).append(`<span class="tag is-light ${tag}">${capitalize(module.role)}</span>`);
     $('date', $item).first().text(module.startDate.join("-"));
     $('date', $item).first().attr("datetime", module.startDate.join("-"));
     $('date', $item).last().text(module.endDate.join("-"));
     $('date', $item).last().attr("datetime", module.endDate.join("-"));
 
-    if(module.hasOpenGrades){
-        $('.card', $item).addClass('module-has-openGrades');
+    if (module.role !== 'STUDENT') {
+        if(module.hasOpenGrades){
+            $('div.tags', $item).append(`<span class="tag is-danger">Missing grades</span>`);
+        } else {
+            $('div.tags', $item).append(`<span class="tag is-success">Grades completed</span>`);
+        }
     }
+
     if (Date.parse(module.endDate) < new Date($.now())) {
-        $item.addClass('module-has-ended');
+        $('.card', $item).addClass('module-has-ended');
     }
 
     $('div:empty:first', $view).append($item);

@@ -33,10 +33,7 @@
 
 .card:hover {
     background-color: #e9e9e9;
-}
-
-.module-has-openGrades {
-    background-color: #fbbfcb;
+    opacity: 1.0;
 }
 
 .module-has-ended {
