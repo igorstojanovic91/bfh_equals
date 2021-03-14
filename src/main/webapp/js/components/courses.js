@@ -131,7 +131,10 @@ function initView($view, data) {
 
         $('table tr', $view).find(`td:eq(${columnLength-1}),th:eq(${columnLength-1})`).hide();
         $('table tr', $view).find(`td:eq(${columnLength-2}),th:eq(${columnLength-2})`).hide();
+    }
 
+    if (store.getModule(moduleIdentifier).role === "ASSISTANT") {
+        $("[data-action=save]", $view).prop('disabled', true).text('Print');
     }
 
     // TODO: Change to focusout??
