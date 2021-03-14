@@ -65,6 +65,9 @@ function renderCardItem($view, module) {
     $('date', $item).last().text(module.endDate.join("-"));
     $('date', $item).last().attr("datetime", module.endDate.join("-"));
 
+    if(module.hasOpenGrades){
+        $('.card', $item).addClass('module-has-openGrades');
+    }
     if (Date.parse(module.endDate) < new Date($.now())) {
         $item.addClass('module-has-ended');
     }

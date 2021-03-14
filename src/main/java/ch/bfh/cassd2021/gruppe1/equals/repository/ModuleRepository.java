@@ -148,7 +148,7 @@ public class ModuleRepository {
         return studentCourseRatingList;
     }
 
-    public List<Integer> getModulesWithoutGrades(int assistantId) {
+    public List<Integer> getModulesWithoutGrades(int personId) {
         logger.debug("Entering getModulesWithoutGrades()...");
         List<Integer> integerList = new ArrayList<>();
 
@@ -157,12 +157,14 @@ public class ModuleRepository {
         + " LEFT JOIN Course c ON m.id = c.moduleId"
         + " LEFT JOIN Registration r on m.id = r.moduleId"
         + " LEFT JOIN Rating ra on r.studentId = ra.studentId AND c.id = ra.courseId"
-        + " WHERE m.assistantId = ? AND (ra.successRate is NULL OR ra.successRate = 0)";
+        + " WHERE (m.headId = ? OR c.professorId = ? OR m.assistantId = ?)"
+        + " AND (ra.successRate is NULL OR ra.successRate = 0)";
 
         try (Connection connection = EqualsDataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, assistantId);
-
+            statement.setInt(1, personId);
+            statement.setInt(2, personId);
+            statement.setInt(3, personId);
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {

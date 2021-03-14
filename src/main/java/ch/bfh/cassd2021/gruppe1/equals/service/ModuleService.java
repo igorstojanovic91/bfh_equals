@@ -17,7 +17,7 @@ public class ModuleService {
     public List<Module> getModulesForPerson(int personId) {
         List<Module> moduleList = moduleRepository.getModulesForPerson(personId);
         boolean isNotStudent = moduleList.stream()
-                .noneMatch(m ->Role.STUDENT.equals(m.getRole()));
+                .noneMatch(m -> Role.STUDENT.equals(m.getRole()));
         if(isNotStudent){
             List<Integer> modulesWithoutGradesList = moduleRepository.getModulesWithoutGrades(personId);
             for(Module module : moduleList){
