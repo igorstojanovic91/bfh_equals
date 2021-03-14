@@ -22,6 +22,11 @@ export default {
         return data.modules.find(module => module.moduleId === Number(id));
     },
 
+    setModuleHasOpenGrades: function(id, hasOpenGrades) {
+        let module = data.modules.find(module => module.moduleId === Number(id));
+        module.hasOpenGrades = hasOpenGrades > 0;
+    },
+
     clear: function () {
         data = {};
     },

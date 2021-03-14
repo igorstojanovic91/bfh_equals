@@ -101,6 +101,7 @@ function initView($view, data) {
     createHeader($view, firstElement.courseRating);
 
     let coursesToNotify = [];
+    let openGradesCounter = 0;
     data.forEach(item => {
         let tr = $('<tr></tr>');
         tr.append(`<td>${item.name}</td>`);
@@ -114,7 +115,9 @@ function initView($view, data) {
                     !coursesToNotify.includes(index) ? coursesToNotify.push(index) : "";
                 }
             }
+            if(courseRating.rating.successRate === 0) openGradesCounter++;
         })
+        store.setModuleHasOpenGrades(moduleIdentifier, openGradesCounter);
         tr.append(`<td data-field="prelim-grade">${item.preliminaryGrade}%</td>`);
         tr.append(`<td data-field="overall-grade">${item.overallGrade}%</td>`);
         $('tbody', $view).append(tr);
@@ -299,7 +302,8 @@ function increaseVersions() {
 function getInputData() {
     const data = {};
     data.update = [];
-    data.insert = []
+    data.insert = [];
+    let openGradesCounter = 0;
     $('input').each(function () {
         const versionNumber = Number($(this).attr("data-version"));
         const rating = {
@@ -309,7 +313,9 @@ function getInputData() {
             version: versionNumber
         }
         versionNumber > 0 ? data.update.push(rating) : data.insert.push(rating);
+        if(Number($(this).val()) === 0) openGradesCounter++;
     })
+    store.setModuleHasOpenGrades(moduleIdentifier, openGradesCounter);
     return data;
 }
 
