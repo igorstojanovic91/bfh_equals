@@ -153,12 +153,12 @@ public class ModuleRepository {
         List<Integer> integerList = new ArrayList<>();
 
         String query = "SELECT DISTINCT m.id"
-        + " FROM Module m"
-        + " LEFT JOIN Course c ON m.id = c.moduleId"
-        + " LEFT JOIN Registration r on m.id = r.moduleId"
-        + " LEFT JOIN Rating ra on r.studentId = ra.studentId AND c.id = ra.courseId"
-        + " WHERE (m.headId = ? OR c.professorId = ? OR m.assistantId = ?)"
-        + " AND (ra.successRate is NULL OR ra.successRate = 0)";
+            + " FROM Module m"
+            + " LEFT JOIN Course c ON m.id = c.moduleId"
+            + " LEFT JOIN Registration r on m.id = r.moduleId"
+            + " LEFT JOIN Rating ra on r.studentId = ra.studentId AND c.id = ra.courseId"
+            + " WHERE (m.headId = ? OR c.professorId = ? OR m.assistantId = ?)"
+            + " AND (ra.successRate is NULL OR ra.successRate = 0)";
 
         try (Connection connection = EqualsDataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);

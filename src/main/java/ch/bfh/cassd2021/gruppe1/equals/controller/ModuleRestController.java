@@ -2,9 +2,7 @@ package ch.bfh.cassd2021.gruppe1.equals.controller;
 
 import ch.bfh.cassd2021.gruppe1.equals.business.model.Module;
 import ch.bfh.cassd2021.gruppe1.equals.business.model.StudentCourseRating;
-import ch.bfh.cassd2021.gruppe1.equals.repository.AuthenticationRepository;
-import ch.bfh.cassd2021.gruppe1.equals.repository.ModuleRepository;
-import ch.bfh.cassd2021.gruppe1.equals.service.ModuleService;
+import ch.bfh.cassd2021.gruppe1.equals.business.service.ModuleService;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,13 +29,11 @@ public class ModuleRestController extends HttpServlet {
     ObjectMapper jsonMapper;
 
     ModuleService moduleService;
-    AuthenticationRepository authenticationRepository;
 
     public ModuleRestController() {
         jsonMapper = new ObjectMapper();
         jsonMapper.registerModule(new JavaTimeModule());
         moduleService = new ModuleService();
-        authenticationRepository = new AuthenticationRepository();
     }
 
     @Override
