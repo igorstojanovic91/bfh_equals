@@ -148,4 +148,31 @@ public class ModuleRepository {
         return studentCourseRatingList;
     }
 
+    public List<Integer> getModulesWithoutGrades(int assistantId) {
+        logger.debug("Entering getModulesWithoutGrades()...");
+        List<Integer> integerList = new ArrayList<>();
+
+        String query = "SELECT DISTINCT m.id"
+        + " FROM Module m"
+        + " LEFT JOIN Course c ON m.id = c.moduleId"
+        + " LEFT JOIN Registration r on m.id = r.moduleId"
+        + " LEFT JOIN Rating ra on r.studentId = ra.studentId AND c.id = ra.courseId"
+        + " WHERE m.assistantId = ? AND (ra.successRate is NULL OR ra.successRate = 0)";
+
+        try (Connection connection = EqualsDataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, assistantId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                integerList.add(resultSet.getInt("id"));
+            }
+
+        } catch (SQLException throwables) {
+            logger.error("Problem reading Database, message was {}", throwables.getMessage());
+            throw new RepositoryException(throwables.getMessage());
+        }
+        return integerList;
+    }
 }

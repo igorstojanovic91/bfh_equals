@@ -12,6 +12,7 @@ public class Module {
     private int headId;
     private int assistantId;
     private Role role;
+    private boolean hasOpenGrades;
 
     public int getModuleId() {
         return moduleId;
@@ -77,17 +78,26 @@ public class Module {
         this.role = Role.valueOf(role.toUpperCase());
     }
 
+    public boolean isHasOpenGrades() {
+        return hasOpenGrades;
+    }
+
+    public void setHasOpenGrades(boolean hasOpenGrades) {
+        this.hasOpenGrades = hasOpenGrades;
+    }
+
     @Override
     public String toString() {
         return "Module{" +
-            "moduleId=" + moduleId +
-            ", name='" + name + '\'' +
-            ", shortName='" + shortName + '\'' +
-            ", startDate=" + startDate +
-            ", endDate=" + endDate +
-            ", headId=" + headId +
-            ", assistantId=" + assistantId +
-            ", role=" + role +
-            '}';
+                "moduleId=" + moduleId +
+                ", name='" + name + '\'' +
+                ", shortName='" + shortName + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", headId=" + headId +
+                ", assistantId=" + assistantId +
+                ", role=" + role +
+                ", hasOpenGrades=" + hasOpenGrades +
+                '}';
     }
 }
