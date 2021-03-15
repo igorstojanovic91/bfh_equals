@@ -16,6 +16,8 @@ export default {
         $('[data-field=title]').html('Your Module Overview:');
         $('[data-field=sub-title]').empty();
 
+        isFilteredForMissingGrades = false;
+        isFilteredBySemester = "all"
 
         let $view = initContainers();
         const modules = store.getModules();
