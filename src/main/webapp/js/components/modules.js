@@ -1,5 +1,8 @@
 import store from '../store.js';
 
+let isFilteredForMissingGrades = false;
+let isFilteredBySemester = "all"
+
 export default {
     requiresAuth: true,
 
@@ -10,25 +13,12 @@ export default {
     render: function () {
 
 
-        let $view = $($('#tpl-module-container').html());
-
         $('[data-field=title]').html('Your Module Overview:');
         $('[data-field=sub-title]').empty();
 
 
-        let modules = store.getModules();
-        let additionalRows = Math.floor(modules.length / 3);
-        for (let i = 0; i < additionalRows; i++) {
-            $view = $view.add($($('#tpl-module-container').html()))
-        }
-
-        for (let i = 0; i < modules.length; i++) {
-            const module = modules[i];
-            const row = Math.floor(i / 3);
-            renderCardItem($view[row], module);
-        }
-
-
+        let $view = initContainers();
+        const modules = store.getModules();
         const isStudent = modules.find(mod => mod.role === "STUDENT");
 
         if(!isStudent) {
@@ -36,9 +26,19 @@ export default {
             initFilter($filter)
             $view = $filter.add($view)
 
+            $('[data-action=missing-grades]', $view).on("click", function () {
+                isFilteredForMissingGrades = !isFilteredForMissingGrades
+                $('[data-action=missing-grades]').toggleClass('is-light');
+                renderCards()
+            })
+
+            $('select', $view).on("change", function () {
+                isFilteredBySemester = $(this).val();
+                renderCards();
+            })
+
+
         }
-
-
         return $view;
     }
 };
@@ -104,4 +104,37 @@ function initFilter($view) {
     semesters.forEach(semester => {
         $('select', $view).append(`<option>${semester}</option>`)
     })
+}
+
+function renderCards() {
+    $('.columns').remove()
+    const $view = initContainers()
+    $('main').append($view);
+}
+
+
+function filterModules() {
+    let moduleList = store.getModules();
+    if(isFilteredForMissingGrades) {
+        moduleList = moduleList.filter(mod => mod.hasOpenGrades)
+    }
+    if(isFilteredBySemester !== "all") {
+        moduleList = moduleList.filter(mod => mod.shortName.split("-")[1] === isFilteredBySemester)
+    }
+    return moduleList;
+}
+
+function initContainers() {
+    const moduleList = filterModules();
+    let $view = $($('#tpl-module-container').html());
+    let additionalRows = Math.floor(moduleList.length / 3);
+    for (let i = 0; i < additionalRows; i++) {
+        $view = $view.add($($('#tpl-module-container').html()))
+    }
+    for (let i = 0; i < moduleList.length; i++) {
+        const module = moduleList[i];
+        const row = Math.floor(i / 3);
+        renderCardItem($view[row], module);
+    }
+    return $view;
 }
