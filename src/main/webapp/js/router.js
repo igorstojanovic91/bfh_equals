@@ -22,9 +22,7 @@ function render() {
         replaceView($('<h2>401 Unauthorized</h2><p>Please login first!</p>'));
         return;
     }
-    if (store.getUser() && component !== error404) {
-        util.showAuthContent(true);
-    }
+
     const param = hash.length > 1 ? hash[1] : null;
     const $view = component.render(param);
     replaceView($view);
