@@ -9,10 +9,13 @@ export default {
 
     render: function () {
 
+
         let $view = $($('#tpl-module-container').html());
 
         $('[data-field=title]').html('Your Module Overview:');
         $('[data-field=sub-title]').empty();
+
+
         let modules = store.getModules();
         let additionalRows = Math.floor(modules.length / 3);
         for (let i = 0; i < additionalRows; i++) {
@@ -24,6 +27,17 @@ export default {
             const row = Math.floor(i / 3);
             renderCardItem($view[row], module);
         }
+
+
+        const isStudent = modules.find(mod => mod.role === "STUDENT");
+
+        if(!isStudent) {
+            let $filter = $($('#tpl-filter').html())
+            initFilter($filter)
+            $view = $filter.add($view)
+
+        }
+
 
         return $view;
     }
@@ -82,4 +96,12 @@ function renderCardItem($view, module) {
 function capitalize(str) {
     const lower = str.toLowerCase();
     return str.charAt(0).toUpperCase() + lower.slice(1);
+}
+
+function initFilter($view) {
+    const modules = store.getModules();
+    const semesters = [...new Set(modules.map(item => item.shortName.split("-")[1]))];
+    semesters.forEach(semester => {
+        $('select', $view).append(`<option>${semester}</option>`)
+    })
 }
