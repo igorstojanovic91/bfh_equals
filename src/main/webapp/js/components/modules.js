@@ -21,6 +21,7 @@ export default {
 
         let $view = initContainers();
         const modules = store.getModules();
+
         const isStudent = modules.find(mod => mod.role === "STUDENT");
 
         if(!isStudent) {
@@ -39,7 +40,8 @@ export default {
                 renderCards();
             })
 
-
+            if (modules.every(mod => !mod.hasOpenGrades))
+                $('[data-action=missing-grades]', $view).prop('disabled', true).text("No missing grades")
         }
         return $view;
     }
