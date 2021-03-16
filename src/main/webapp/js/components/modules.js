@@ -40,8 +40,7 @@ export default {
                 renderCards();
             })
 
-            if (modules.every(mod => !mod.hasOpenGrades))
-                $('[data-action=missing-grades]', $view).prop('disabled', true).text("No missing grades")
+            updateButton(modules, $view)
         }
         return $view;
     }
@@ -125,6 +124,7 @@ function filterModules() {
     if(isFilteredBySemester !== "all") {
         moduleList = moduleList.filter(mod => mod.shortName.split("-")[1] === isFilteredBySemester)
     }
+    updateButton(moduleList);
     return moduleList;
 }
 
@@ -141,5 +141,13 @@ function initContainers() {
         const row = Math.floor(i / 3);
         renderCardItem($view[row], module);
     }
+
     return $view;
+}
+
+function updateButton(modules, $view) {
+    const $filterButton = $view ? $('[data-action=missing-grades]', $view) : $('[data-action=missing-grades]');
+    modules.every(mod => !mod.hasOpenGrades)
+        ? $filterButton.prop('disabled', true).text("No Missing Grades")
+        : $filterButton.prop('disabled', false).text("Missing Grades");
 }
