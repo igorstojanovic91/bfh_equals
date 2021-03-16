@@ -13,7 +13,10 @@ export default {
     render: function () {
 
 
-        if(store.getUser()) router.go("/modules")
+        if(store.getUser()) {
+            router.go("/modules")
+            return
+        }
 
         util.showAuthContent(false);
 
@@ -64,7 +67,7 @@ function initAfterLogin(userData) {
 function setModules(moduleList) {
     store.setModules(moduleList)
     util.showAuthContent(true);
-    router.go('/modules'); //TODO: REMOVE THIS
+    router.go('/modules');
 }
 
 function getFormData() {
