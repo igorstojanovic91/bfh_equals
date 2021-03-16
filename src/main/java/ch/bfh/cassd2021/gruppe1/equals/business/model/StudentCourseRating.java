@@ -1,6 +1,5 @@
 package ch.bfh.cassd2021.gruppe1.equals.business.model;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 public class StudentCourseRating {
@@ -49,11 +48,11 @@ public class StudentCourseRating {
         double preliminaryGrades = 0;
         double sumOfPreliminaryWeight = 0;
         for(CourseRating courseRatings: courseRating){
-            sumOfOverallWeight += courseRatings.getCourse().getWeight();
-            overallGrades += courseRatings.getCourse().getWeight() * (courseRatings.getRating().getSuccessRate());
-            if(courseRatings.getRating().getSuccessRate() > 0){
-                sumOfPreliminaryWeight += courseRatings.getCourse().getWeight();
-                preliminaryGrades += courseRatings.getCourse().getWeight() * (courseRatings.getRating().getSuccessRate());
+            sumOfOverallWeight += courseRatings.getCourseWeight();
+            overallGrades += courseRatings.getCourseWeight() * (courseRatings.getCourseSuccessRate());
+            if(courseRatings.getCourseSuccessRate() > 0){
+                sumOfPreliminaryWeight += courseRatings.getCourseWeight();
+                preliminaryGrades += courseRatings.getCourseWeight() * (courseRatings.getCourseSuccessRate());
             }
         }
         this.overallGrade = (int) Math.round(overallGrades/sumOfOverallWeight);

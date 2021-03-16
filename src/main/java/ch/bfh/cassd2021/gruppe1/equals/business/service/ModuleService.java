@@ -8,7 +8,7 @@ import ch.bfh.cassd2021.gruppe1.equals.repository.ModuleRepository;
 import java.util.List;
 
 public class ModuleService {
-    ModuleRepository moduleRepository;
+    final ModuleRepository moduleRepository;
 
     public ModuleService() {
         moduleRepository = new ModuleRepository();

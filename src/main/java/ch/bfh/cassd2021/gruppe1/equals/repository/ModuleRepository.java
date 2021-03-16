@@ -92,51 +92,8 @@ public class ModuleRepository {
             statement.setInt(5, personId);
 
             ResultSet resultSet = statement.executeQuery();
-            int currentStudentId = 0;
-            boolean isNewStudent = false;
 
-            StudentCourseRating studentCourseRating = null;
-            List<CourseRating> courseRatingList = null;
-
-            while (resultSet.next()) {
-                int studentId = resultSet.getInt("studentId");
-
-                if (currentStudentId != studentId) {
-                    currentStudentId = studentId;
-                    isNewStudent = true;
-
-                    studentCourseRating = new StudentCourseRating();
-                    studentCourseRating.setStudentId(studentId);
-                    studentCourseRating.setName(resultSet.getString("lastName") + " " + resultSet.getString("firstName"));
-
-                    courseRatingList = new ArrayList<>();
-                }
-
-                Course course = new Course();
-                course.setCourseId(resultSet.getInt("courseId"));
-                course.setName(resultSet.getString("name"));
-                course.setShortName(resultSet.getString("shortName"));
-                course.setModuleId(resultSet.getInt("moduleId"));
-                course.setProfessorId(resultSet.getInt("professorId"));
-                course.setWeight(resultSet.getDouble("weight"));
-
-                Rating rating = new Rating();
-                rating.setStudentId(studentId);
-                rating.setCourseId(resultSet.getInt("courseId"));
-                rating.setSuccessRate(resultSet.getInt("successRate"));
-                rating.setVersion(resultSet.getInt("version"));
-
-                CourseRating courseRating = new CourseRating(course, rating);
-                courseRatingList.add(courseRating);
-
-                studentCourseRating.setCourseRating(courseRatingList);
-
-
-                if (isNewStudent) {
-                    studentCourseRatingList.add(studentCourseRating);
-                    isNewStudent = false;
-                }
-            }
+            fillStudentCourseRatingList(studentCourseRatingList, resultSet);
 
         } catch (SQLException throwables) {
             logger.error("Problem reading Database, message was {}", throwables.getMessage());
@@ -174,5 +131,52 @@ public class ModuleRepository {
             throw new RepositoryException(throwables.getMessage());
         }
         return integerList;
+    }
+
+    private void fillStudentCourseRatingList(List<StudentCourseRating> studentCourseRatingList, ResultSet resultSet) throws SQLException {
+        int currentStudentId = 0;
+        boolean isNewStudent = false;
+
+        StudentCourseRating studentCourseRating = new StudentCourseRating();
+        List<CourseRating> courseRatingList = new ArrayList<>();
+
+        while (resultSet.next()) {
+            int studentId = resultSet.getInt("studentId");
+
+            if (currentStudentId != studentId) {
+                currentStudentId = studentId;
+                isNewStudent = true;
+
+                studentCourseRating = new StudentCourseRating();
+                studentCourseRating.setStudentId(studentId);
+                studentCourseRating.setName(resultSet.getString("lastName") + " " + resultSet.getString("firstName"));
+
+                courseRatingList = new ArrayList<>();
+            }
+
+            Course course = new Course();
+            course.setCourseId(resultSet.getInt("courseId"));
+            course.setName(resultSet.getString("name"));
+            course.setShortName(resultSet.getString("shortName"));
+            course.setModuleId(resultSet.getInt("moduleId"));
+            course.setProfessorId(resultSet.getInt("professorId"));
+            course.setWeight(resultSet.getDouble("weight"));
+
+            Rating rating = new Rating();
+            rating.setStudentId(studentId);
+            rating.setCourseId(resultSet.getInt("courseId"));
+            rating.setSuccessRate(resultSet.getInt("successRate"));
+            rating.setVersion(resultSet.getInt("version"));
+
+            CourseRating courseRating = new CourseRating(course, rating);
+            courseRatingList.add(courseRating);
+
+            studentCourseRating.setCourseRating(courseRatingList);
+
+            if (isNewStudent) {
+                studentCourseRatingList.add(studentCourseRating);
+                isNewStudent = false;
+            }
+        }
     }
 }

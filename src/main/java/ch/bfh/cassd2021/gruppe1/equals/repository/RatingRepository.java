@@ -41,9 +41,6 @@ public class RatingRepository {
                 logger.debug("Added batch ");
             }
             int[] nbrOfModifiedRows = updateStm.executeBatch();
-            System.out.println(nbrOfModifiedRows);
-            logger.debug("nbr of modified rows: " + String.valueOf(IntStream.of(nbrOfModifiedRows).sum()));
-            logger.debug("ratings length: " + String.valueOf(ratings.length));
 
             if(IntStream.of(nbrOfModifiedRows).sum() != ratings.length) {
                 throw new SQLException("Not all rows affected");
@@ -87,9 +84,6 @@ public class RatingRepository {
                 logger.debug("Added batch ");
             }
             int[] nbrOfModifiedRows = updateStm.executeBatch();
-            System.out.println(nbrOfModifiedRows);
-            logger.debug("nbr of modified rows: " + String.valueOf(IntStream.of(nbrOfModifiedRows).sum()));
-            logger.debug("ratings length: " + String.valueOf(ratings.length));
 
             if(IntStream.of(nbrOfModifiedRows).sum() != ratings.length) {
                 throw new SQLException("Not all rows affected");

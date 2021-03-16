@@ -40,8 +40,7 @@ export default {
                 renderCards();
             })
 
-            if (modules.every(mod => !mod.hasOpenGrades))
-                $('[data-action=missing-grades]', $view).prop('disabled', true).text("No missing grades")
+            updateButton(modules, $view)
         }
         return $view;
     }
@@ -76,11 +75,18 @@ function renderCardItem($view, module) {
     $('p.title', $item).text(module.name);
     $('p.subtitle', $item).text(module.shortName);
 
+    const startDate = [...module.startDate].reverse();
+    const endDate =  [...module.endDate].reverse();
+
+    if (Date.parse(module.endDate) < new Date($.now())) {
+        $('.card', $item).addClass('module-has-ended');
+    }
+
     $('div.tags', $item).append(`<span class="tag is-light ${tag}">${capitalize(module.role)}</span>`);
-    $('date', $item).first().text(module.startDate.join("-"));
-    $('date', $item).first().attr("datetime", module.startDate.join("-"));
-    $('date', $item).last().text(module.endDate.join("-"));
-    $('date', $item).last().attr("datetime", module.endDate.join("-"));
+    $('time', $item).first().text(startDate.join("."));
+    $('time', $item).first().attr("datetime", startDate.join("-"));
+    $('time', $item).last().text(endDate.join("."));
+    $('time', $item).last().attr("datetime", endDate.join("-"));
 
     if (module.role !== 'STUDENT') {
         if(module.hasOpenGrades){
@@ -90,9 +96,6 @@ function renderCardItem($view, module) {
         }
     }
 
-    if (Date.parse(module.endDate) < new Date($.now())) {
-        $('.card', $item).addClass('module-has-ended');
-    }
 
     $('div:empty:first', $view).append($item);
 }
@@ -125,20 +128,30 @@ function filterModules() {
     if(isFilteredBySemester !== "all") {
         moduleList = moduleList.filter(mod => mod.shortName.split("-")[1] === isFilteredBySemester)
     }
+    updateButton(moduleList);
     return moduleList;
 }
 
 function initContainers() {
     const moduleList = filterModules();
-    let $view = $($('#tpl-module-container').html());
+    const $template = $('#tpl-module-container');
+    let $view = $($template.html());
     let additionalRows = Math.floor(moduleList.length / 3);
     for (let i = 0; i < additionalRows; i++) {
-        $view = $view.add($($('#tpl-module-container').html()))
+        $view = $view.add($($template.html()))
     }
     for (let i = 0; i < moduleList.length; i++) {
         const module = moduleList[i];
         const row = Math.floor(i / 3);
         renderCardItem($view[row], module);
     }
+
     return $view;
+}
+
+function updateButton(modules, $view) {
+    const $filterButton = $view ? $('[data-action=missing-grades]', $view) : $('[data-action=missing-grades]');
+    modules.every(mod => !mod.hasOpenGrades)
+        ? $filterButton.prop('disabled', true).text("No Missing Grades")
+        : $filterButton.prop('disabled', false).text("Missing Grades");
 }

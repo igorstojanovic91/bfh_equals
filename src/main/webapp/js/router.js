@@ -1,6 +1,5 @@
 import store from './store.js';
 import error404 from "./components/error404.js";
-import util from "./util.js";
 
 const $main = $('main');
 

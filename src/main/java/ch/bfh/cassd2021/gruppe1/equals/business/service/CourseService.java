@@ -6,7 +6,7 @@ import ch.bfh.cassd2021.gruppe1.equals.repository.CourseRepository;
 import java.util.List;
 
 public class CourseService {
-    CourseRepository courseRepository;
+    final CourseRepository courseRepository;
 
     public CourseService() {
         courseRepository = new CourseRepository();

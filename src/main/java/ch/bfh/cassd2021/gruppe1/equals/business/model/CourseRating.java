@@ -25,4 +25,13 @@ public class CourseRating {
     public void setRating(Rating rating) {
         this.rating = rating;
     }
+
+    public int getCourseSuccessRate(){
+        return this.rating.getSuccessRate();
+    }
+
+    public double getCourseWeight(){
+        return this.course.getWeight();
+    }
+
 }

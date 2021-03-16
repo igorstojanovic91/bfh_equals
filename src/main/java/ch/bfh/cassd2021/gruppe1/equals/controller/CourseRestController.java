@@ -9,7 +9,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,9 +22,9 @@ public class CourseRestController extends HttpServlet {
 
     private final Logger logger = LoggerFactory.getLogger(CourseRestController.class);
 
-    ObjectMapper jsonMapper;
+    final ObjectMapper jsonMapper;
 
-    CourseService courseService;
+    final CourseService courseService;
 
     public CourseRestController() {
         jsonMapper = new ObjectMapper();
@@ -34,7 +33,7 @@ public class CourseRestController extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         logger.debug("Entering /api/courses");
         String pathInfo = request.getPathInfo();
         if (pathInfo != null && !pathInfo.isEmpty()) {
