@@ -22,19 +22,22 @@
     100% { transform: rotate(360deg); }
 }
 
-@media(max-width: 767px) { /* <== You can change this break point as per your  needs */
-    .column-reverse {
-        flex-direction: column-reverse;
-        display: flex;
-    }
-}
-
 .hero {
     overflow: hidden !important;
 }
 
 .card {
     cursor: pointer;
+    transition: all 0.5s ease;
+}
+
+.card:hover {
+    background-color: #e9e9e9;
+    opacity: 1.0;
+}
+
+.module-has-ended {
+    opacity: 0.4;
 }
 
 .input-grade {
@@ -42,4 +45,12 @@
     font-size: inherit;
     width: 50px;
     margin-right: 4px;
+}
+
+[data-auth=true] {
+    display: none;
+}
+
+.is-focused {
+    background-color: rgba(0, 0, 0, 0.2) !important;
 }

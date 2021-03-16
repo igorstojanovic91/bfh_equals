@@ -11,8 +11,7 @@ public class Person {
     private String placeOfOrigin;
     private String sex;
     private String userName;
-    private int password;
-    private Role role;
+    private String password;
 
     public int getPersonId() {
         return personId;
@@ -70,33 +69,24 @@ public class Person {
         this.userName = userName;
     }
 
-    public int getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(int password) {
+    public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 
     @Override
     public String toString() {
         return "Person{" +
-                "id=" + personId +
-                ", lastName='" + lastName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", placeOfOrigin='" + placeOfOrigin + '\'' +
-                ", sex='" + sex + '\'' +
-                ", userName='" + userName + '\'' +
-                ", role='" + role + '\'' +
-                '}';
+            "id=" + personId +
+            ", lastName='" + lastName + '\'' +
+            ", firstName='" + firstName + '\'' +
+            ", dateOfBirth=" + dateOfBirth +
+            ", placeOfOrigin='" + placeOfOrigin + '\'' +
+            ", sex='" + sex + '\'' +
+            ", userName='" + userName + '\'' +
+            '}';
     }
 }

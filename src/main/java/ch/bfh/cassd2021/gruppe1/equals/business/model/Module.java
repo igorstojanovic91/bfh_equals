@@ -138,6 +138,22 @@ public class Module {
 
 
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = Role.valueOf(role.toUpperCase());
+    }
+
+    public boolean isHasOpenGrades() {
+        return hasOpenGrades;
+    }
+
+    public void setHasOpenGrades(boolean hasOpenGrades) {
+        this.hasOpenGrades = hasOpenGrades;
+    }
+
     @Override
     public String toString() {
         return "Module{" +
