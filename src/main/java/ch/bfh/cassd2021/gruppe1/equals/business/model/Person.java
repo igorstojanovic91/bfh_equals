@@ -11,7 +11,6 @@ public class Person {
     private String placeOfOrigin;
     private String sex;
     private String userName;
-    private String password;
 
     public int getPersonId() {
         return personId;
@@ -67,14 +66,6 @@ public class Person {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @Override
