@@ -1,6 +1,7 @@
 import service from '../service.js';
 import router from '../router.js';
 import store from '../store.js';
+import util from "../util.js";
 
 let moduleIdentifier;
 
@@ -16,6 +17,7 @@ export default {
         let $statistics = $($('#tpl-course-statistics').html());
         let $table = $($('#tpl-courses').html());
         let $view = $statistics.add($table)
+        util.showAuthContent(true);
         moduleIdentifier = moduleId;
         if (!moduleId) {
             return $('<p>Invalid parameter! Expecting moduleId.</p>'); //TODO: define error class

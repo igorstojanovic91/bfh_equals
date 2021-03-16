@@ -1,4 +1,5 @@
 import store from '../store.js';
+import util from "../util.js";
 
 let isFilteredForMissingGrades = false;
 let isFilteredBySemester = "all"
@@ -21,6 +22,7 @@ export default {
 
         let $view = initContainers();
         const modules = store.getModules();
+        util.showAuthContent(true);
 
         const isStudent = modules.find(mod => mod.role === "STUDENT");
 
