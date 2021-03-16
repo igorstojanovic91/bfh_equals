@@ -24,8 +24,8 @@ export default {
         const modules = store.getModules();
         util.showAuthContent(true);
 
+        // Display filters
         const isStudent = modules.find(mod => mod.role === "STUDENT");
-
         if(!isStudent) {
             let $filter = $($('#tpl-filter').html())
             initFilter($filter)
@@ -44,6 +44,18 @@ export default {
 
             updateButton(modules, $view)
         }
+
+        // Display flash messages
+        if (store.getNotification()) {
+            let $notification = $($('#tpl-notification').html());
+            $('[data-field=notification]', $notification).append(`<p class="notification-message">${store.getNotification()}</p>`);
+            store.clearNotification();
+            $view = $notification.add($view);
+        }
+        $('.delete', $view).on("click", function () {
+            $('[data-field=notification]').parent().remove();
+        })
+
         return $view;
     }
 };

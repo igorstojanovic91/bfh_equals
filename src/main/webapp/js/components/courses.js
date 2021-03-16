@@ -18,17 +18,21 @@ export default {
         let $table = $($('#tpl-courses').html());
         let $view = $statistics.add($table)
         util.showAuthContent(true);
+
         moduleIdentifier = moduleId;
         if (!moduleId) {
-            return $('<p>Invalid parameter! Expecting moduleId.</p>'); //TODO: define error class
+            store.setNotification('Invalid parameter! Expecting moduleId.');
+            router.go("/modules")
+            return;
         }
         const module = store.getModule(moduleId);
         if (module) {
             $('[data-field=title]').html(module.name)
             $('[data-field=sub-title]').html(module.shortName)
         } else {
-            // TODO: Flash Message, Module does not exist
+            store.setNotification('The desired module was not found!');
             router.go('/modules');
+            return;
         }
         service.getModulesOverall(store.getUser(), moduleId)
             .then(data => {
@@ -36,9 +40,7 @@ export default {
             })
 
         $("[data-action=save]", $view).click(function (event) {
-            //TODO
             event.preventDefault();
-            // CODE FOR SHOWING LOADING BUTTON
             $($view[1]).hide().parent().append($($('#tpl-loader')).html()).show();
             const data = getInputData();
             const promises = [];
@@ -46,7 +48,6 @@ export default {
             if(data.update.length > 0) promises.push(service.updateRatings(store.getUser(), JSON.stringify(data.update)));
             if(data.insert.length > 0) promises.push(service.insertRatings(store.getUser(), JSON.stringify(data.insert)));
 
-            // TODO: Flash message for success & failure
             Promise.all(promises)
                 .then(function () {
                     $('.hero.is-fullheight').remove();
@@ -139,7 +140,6 @@ function initView($view, data) {
         $("[data-action=save]", $view).prop('disabled', true).text('Print');
     }
 
-    // TODO: Change to focusout??
     $('input', $view).on('input', function() {
         const value = $(this).val();
         if(!$.isNumeric(value) || value > 100 || value < 0){

@@ -41,5 +41,16 @@ export default {
 
     deletePersonToNotify: function () {
         delete data.notify;
+    },
+
+    setNotification: function (message) {
+        data.notification = message;
+    },
+    getNotification: function () {
+        return data.notification;
+    },
+    clearNotification: function () {
+        delete data.notification;
     }
+
 };

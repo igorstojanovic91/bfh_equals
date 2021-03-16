@@ -19,16 +19,20 @@ export default {
 
         moduleIdentifier = moduleId;
         if (!moduleId) {
-            return $('<p>Invalid parameter! Expecting moduleId.</p>'); //TODO: define error class
+            store.setNotification('Invalid parameter! Expecting moduleId.');
+            router.go("/modules")
+            return;
         }
         const module = store.getModule(moduleId);
         if (module) {
             $('[data-field=title]').html(module.name)
             $('[data-field=sub-title]').html(module.shortName)
         } else {
-            // TODO: Flash Message, Module does not exist
+            store.setNotification('The desired module was not found!');
             router.go('/modules');
+            return;
         }
+
         service.getModulesOverall(store.getUser(), moduleId)
             .then(data => {
                 initView($view, data[0]);
