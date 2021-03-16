@@ -258,39 +258,56 @@
     <!-- A S S E S S M E N T -->
     <template id="tpl-assessment">
         <div class="container pt-6 has-text-centered">
-            <form>
-                <div class="table-container">
-                    <table class="table is-striped is-hoverable is-fullwidth">
-                        <thead>
-                        <tr>
-                            <th class="has-text-left">Course</th>
-                            <th>Weight</th>
-                            <th>Success</th>
-                        </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th class="has-text-left">Prelimenary grade</th>
-                                <th></th>
-                                <th data-field="prelim-grade">?</th>
-                            </tr>
-                            <tr>
-                                <th class="has-text-left">Overall grade</th>
-                                <th></th>
-                                <th data-field="overall-grade">?</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
+            <table class="table has-text-left mb-6">
+                <tr>
+                    <th>Student</th>
+                    <td data-field="student-name"></td>
+                </tr>
+                <tr>
+                    <th>Date of birth</th>
+                    <td data-field="date-of-birth"></td>
+                </tr>
+                <tr>
+                    <th>Place of origin</th>
+                    <td data-field="place-of-origin"></td>
+                </tr>
+                <tr>
+                    <th>ECTS grade</th>
+                    <td data-field="ects-grade"></td>
+                </tr>
+            </table>
 
-                <div class="level pt-6 is-mobile">
-                    <div class="level-left">
-                        <a href="#/modules" class="button is-info" data-action="cancel">Back to Modules</a>
-                    </div>
+            <div class="table-container">
+                <table class="table is-striped is-hoverable is-fullwidth">
+                    <thead>
+                    <tr>
+                        <th class="has-text-left">Course</th>
+                        <th>Weight</th>
+                        <th>Success</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th class="has-text-left">Prelimenary grade</th>
+                            <th></th>
+                            <th data-field="prelim-grade">?</th>
+                        </tr>
+                        <tr>
+                            <th class="has-text-left">Overall grade</th>
+                            <th></th>
+                            <th data-field="overall-grade">?</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="level pt-6 is-mobile">
+                <div class="level-left">
+                    <a href="#/modules" class="button is-info" data-action="cancel">Back to Modules</a>
                 </div>
-            </form>
+            </div>
         </div>
     </template>
 
