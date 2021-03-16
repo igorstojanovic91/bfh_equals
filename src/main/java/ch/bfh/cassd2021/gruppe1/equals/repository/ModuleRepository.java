@@ -131,8 +131,6 @@ public class ModuleRepository {
 
                 studentCourseRating.setCourseRating(courseRatingList);
 
-                studentCourseRating.calculatePreliminaryGrade();
-                studentCourseRating.calculateOverallGrade();
 
                 if (isNewStudent) {
                     studentCourseRatingList.add(studentCourseRating);

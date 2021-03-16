@@ -16,6 +16,7 @@ public class ModuleService {
 
     public List<Module> getModulesForPerson(int personId) {
         List<Module> moduleList = moduleRepository.getModulesForPerson(personId);
+
         boolean isNotStudent = moduleList.stream()
             .noneMatch(m -> Role.STUDENT.equals(m.getRole()));
         if (isNotStudent) {
@@ -28,7 +29,11 @@ public class ModuleService {
     }
 
     public List<StudentCourseRating> getSuccessRateOverviewForModule(int moduleId, int personId) {
-        return moduleRepository.getSuccessRateOverviewForModule(moduleId, personId);
+        List<StudentCourseRating> studentCourseRatingList = moduleRepository.getSuccessRateOverviewForModule(moduleId, personId);
+        for(StudentCourseRating studentCourseRating : studentCourseRatingList){
+            studentCourseRating.calculateGrades();
+        }
+        return studentCourseRatingList;
     }
 
 }
