@@ -75,11 +75,18 @@ function renderCardItem($view, module) {
     $('p.title', $item).text(module.name);
     $('p.subtitle', $item).text(module.shortName);
 
+    const startDate = [...module.startDate].reverse();
+    const endDate =  [...module.endDate].reverse();
+
+    if (Date.parse(module.endDate) < new Date($.now())) {
+        $('.card', $item).addClass('module-has-ended');
+    }
+
     $('div.tags', $item).append(`<span class="tag is-light ${tag}">${capitalize(module.role)}</span>`);
-    $('date', $item).first().text(module.startDate.join("-"));
-    $('date', $item).first().attr("datetime", module.startDate.join("-"));
-    $('date', $item).last().text(module.endDate.join("-"));
-    $('date', $item).last().attr("datetime", module.endDate.join("-"));
+    $('time', $item).first().text(startDate.join("."));
+    $('time', $item).first().attr("datetime", startDate.join("-"));
+    $('time', $item).last().text(endDate.join("."));
+    $('time', $item).last().attr("datetime", endDate.join("-"));
 
     if (module.role !== 'STUDENT') {
         if(module.hasOpenGrades){
@@ -89,9 +96,6 @@ function renderCardItem($view, module) {
         }
     }
 
-    if (Date.parse(module.endDate) < new Date($.now())) {
-        $('.card', $item).addClass('module-has-ended');
-    }
 
     $('div:empty:first', $view).append($item);
 }

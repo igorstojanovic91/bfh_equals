@@ -87,7 +87,7 @@
                         @{argLine} --illegal-access=permit
                     </argLine>
                     <excludes>
-                        <exclude></exclude>
+                        <exclude/>
                     </excludes>
                 </configuration>
                 <executions>
