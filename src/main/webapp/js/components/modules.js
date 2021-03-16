@@ -130,10 +130,11 @@ function filterModules() {
 
 function initContainers() {
     const moduleList = filterModules();
-    let $view = $($('#tpl-module-container').html());
+    const $template = $('#tpl-module-container');
+    let $view = $($template.html());
     let additionalRows = Math.floor(moduleList.length / 3);
     for (let i = 0; i < additionalRows; i++) {
-        $view = $view.add($($('#tpl-module-container').html()))
+        $view = $view.add($($template.html()))
     }
     for (let i = 0; i < moduleList.length; i++) {
         const module = moduleList[i];

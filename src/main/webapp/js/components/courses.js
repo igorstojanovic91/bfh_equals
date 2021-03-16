@@ -250,7 +250,7 @@ function updateYaxis($field, $view) {
     $(`[data-course=${courseId}]`, $view).each(function() {
         sumOfCourseGrades += getValue($(this)) || 0;
     });
-    const averageGrade = parseFloat(sumOfCourseGrades / numberOfStudents).toFixed(2);
+    const averageGrade = (sumOfCourseGrades / numberOfStudents).toFixed(2);
     $(`[data-average=${courseId}]`, $view).html(averageGrade + '%');
 
     // Average Prelim
@@ -258,7 +258,7 @@ function updateYaxis($field, $view) {
     $('[data-field=prelim-grade]', $view).each(function() {
         sumOfPrelimGrades += parseInt($(this).html());
     });
-    const averagePrelim = parseFloat(sumOfPrelimGrades / numberOfStudents).toFixed(2);
+    const averagePrelim = (sumOfPrelimGrades / numberOfStudents).toFixed(2);
     $('[data-average=prelim]', $view).html(averagePrelim + '%');
 }
 
@@ -278,7 +278,7 @@ function updateStatisticsBar($field, $view) {
         if (thisValue > bestGrade) bestGrade = thisValue;
         if (thisValue < worstGrade && thisValue > 0) worstGrade = thisValue;
     });
-    const averageOverall = parseFloat(sumOfOverallGrades / numberOfStudents).toFixed(2);
+    const averageOverall = (sumOfOverallGrades / numberOfStudents).toFixed(2);
     $('[data-average=overall]', $view).html(averageOverall + '%');
     $('[data-field=students-passed]', $view).html(studentsPassed);
     $('[data-field=average-grade]', $view).html(Math.round(sumOfOverallGrades / numberOfStudents) + '%');
