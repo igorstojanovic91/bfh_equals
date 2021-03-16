@@ -114,17 +114,17 @@
         </div>
     </template>
 
-    <!-- 4 0 4   -   P A G E   N O T   F O U N D -->
-    <template id="tpl-404">
+    <!-- E R R O R   P A G E -->
+    <template id="tpl-error">
         <div class="columns is-vcentered" style="height: 100vh">
             <div class="column is-two-thirds p-0 background">
                 &nbsp;
             </div>
             <div class="column pl-6">
                 <h1 class="title">
-                    404 Not found <span><i class="fas fa-exclamation-triangle"></i></span>
+                    <span data-field="error-title">?</span> <span><i class="fas fa-exclamation-triangle"></i></span>
                 </h1>
-                <h2 class="subtitle is-5">Oh no! The desired page could not be found :-(</h2>
+                <h2 class="subtitle is-5" data-field="error-message">?</h2>
                 <p> <button data-action="go-back" class="button is-success">Go Back</button> </p>
             </div>
         </div>
