@@ -1,8 +1,7 @@
 package ch.bfh.cassd2021.gruppe1.equals.controller;
 
 import ch.bfh.cassd2021.gruppe1.equals.business.model.Course;
-import ch.bfh.cassd2021.gruppe1.equals.repository.AuthenticationRepository;
-import ch.bfh.cassd2021.gruppe1.equals.repository.CourseRepository;
+import ch.bfh.cassd2021.gruppe1.equals.business.service.CourseService;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,21 +20,17 @@ import java.util.List;
 @WebServlet(urlPatterns = "/api/courses/*")
 public class CourseRestController extends HttpServlet {
     private static final String JSON_MEDIA_TYPE = "application/json; charset=UTF-8";
-    private static final String ROOT_PATH = "/";
-    private static final String COURSES_PATH = "/courses";
 
     private final Logger logger = LoggerFactory.getLogger(CourseRestController.class);
 
     ObjectMapper jsonMapper;
 
-    CourseRepository courseRepository;
-    AuthenticationRepository authenticationRepository;
+    CourseService courseService;
 
     public CourseRestController() {
         jsonMapper = new ObjectMapper();
         jsonMapper.registerModule(new JavaTimeModule());
-        courseRepository = new CourseRepository();
-        authenticationRepository = new AuthenticationRepository();
+        courseService = new CourseService();
     }
 
     @Override
@@ -44,7 +39,7 @@ public class CourseRestController extends HttpServlet {
         String pathInfo = request.getPathInfo();
         if (pathInfo != null && !pathInfo.isEmpty()) {
             int moduleId = Integer.parseInt(pathInfo.split("/")[1]);
-            List<Course> courseList = courseRepository.getCoursesForModule(moduleId, (Integer) request.getAttribute("personId"));
+            List<Course> courseList = courseService.getCoursesForModule(moduleId, (Integer) request.getAttribute("personId"));
 
             response.setContentType(JSON_MEDIA_TYPE);
             response.setStatus(HttpServletResponse.SC_OK);

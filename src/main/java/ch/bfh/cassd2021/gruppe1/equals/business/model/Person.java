@@ -11,7 +11,7 @@ public class Person {
     private String placeOfOrigin;
     private String sex;
     private String userName;
-    private int password;
+    private String password;
 
     public int getPersonId() {
         return personId;
@@ -69,11 +69,11 @@ public class Person {
         this.userName = userName;
     }
 
-    public int getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(int password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 

@@ -2,8 +2,7 @@ package ch.bfh.cassd2021.gruppe1.equals.controller;
 
 import ch.bfh.cassd2021.gruppe1.equals.business.model.Module;
 import ch.bfh.cassd2021.gruppe1.equals.business.model.StudentCourseRating;
-import ch.bfh.cassd2021.gruppe1.equals.repository.AuthenticationRepository;
-import ch.bfh.cassd2021.gruppe1.equals.repository.ModuleRepository;
+import ch.bfh.cassd2021.gruppe1.equals.business.service.ModuleService;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,14 +28,12 @@ public class ModuleRestController extends HttpServlet {
 
     ObjectMapper jsonMapper;
 
-    ModuleRepository moduleRepository;
-    AuthenticationRepository authenticationRepository;
+    ModuleService moduleService;
 
     public ModuleRestController() {
         jsonMapper = new ObjectMapper();
         jsonMapper.registerModule(new JavaTimeModule());
-        moduleRepository = new ModuleRepository();
-        authenticationRepository = new AuthenticationRepository();
+        moduleService = new ModuleService();
     }
 
     @Override
@@ -47,7 +44,7 @@ public class ModuleRestController extends HttpServlet {
         if (path.matches(ROOT_PATH)) {
             logger.debug("Entering /api/modules.");
 
-            List<Module> moduleList = moduleRepository.getModulesForPerson(personId);
+            List<Module> moduleList = moduleService.getModulesForPerson(personId);
 
             response.setContentType(JSON_MEDIA_TYPE);
             response.setStatus(HttpServletResponse.SC_OK);
@@ -63,7 +60,7 @@ public class ModuleRestController extends HttpServlet {
             String pathInfo = request.getPathInfo();
             if (pathInfo != null && !pathInfo.isEmpty()) {
                 int moduleId = Integer.parseInt(pathInfo.split("/")[2]);
-                List<StudentCourseRating> studentCourseRatingList = moduleRepository.getSuccessRateOverviewForModule(moduleId, personId);
+                List<StudentCourseRating> studentCourseRatingList = moduleService.getSuccessRateOverviewForModule(moduleId, personId);
 
                 response.setContentType(JSON_MEDIA_TYPE);
                 response.setStatus(HttpServletResponse.SC_OK);

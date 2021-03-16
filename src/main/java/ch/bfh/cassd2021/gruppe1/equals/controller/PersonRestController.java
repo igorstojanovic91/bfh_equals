@@ -1,7 +1,7 @@
 package ch.bfh.cassd2021.gruppe1.equals.controller;
 
 import ch.bfh.cassd2021.gruppe1.equals.business.model.Person;
-import ch.bfh.cassd2021.gruppe1.equals.repository.PersonRepository;
+import ch.bfh.cassd2021.gruppe1.equals.business.service.PersonService;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,19 +24,25 @@ public class PersonRestController extends HttpServlet {
 
     ObjectMapper jsonMapper;
 
-    PersonRepository personRepository;
+    PersonService personService;
 
     public PersonRestController() {
         jsonMapper = new ObjectMapper();
         jsonMapper.registerModule(new JavaTimeModule());
-        personRepository = new PersonRepository();
+        personService = new PersonService();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.debug("Entering /api/persons");
-
-        Person person = personRepository.getPerson((Integer) request.getAttribute("personId"));
+        Person person = null;
+        String pathInfo = request.getPathInfo();
+        if (pathInfo != null && !pathInfo.isEmpty()) {
+            int personId = Integer.parseInt(pathInfo.split("/")[1]);
+            person = personService.getPerson(personId);
+        } else {
+            person = personService.getPerson((Integer) request.getAttribute("personId"));
+        }
         response.setContentType(JSON_MEDIA_TYPE);
         response.setStatus(HttpServletResponse.SC_OK);
 

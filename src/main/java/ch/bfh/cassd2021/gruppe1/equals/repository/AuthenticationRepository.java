@@ -12,7 +12,7 @@ public class AuthenticationRepository {
 
     final Logger logger = LoggerFactory.getLogger(AuthenticationRepository.class);
 
-    public int authenticateUser(String username, int password) {
+    public int authenticateUser(String username, String password) {
         logger.debug("Entering authenticateUser()...");
         int personId = -1;
 
@@ -20,7 +20,7 @@ public class AuthenticationRepository {
             String query = "SELECT id FROM Person WHERE userName = ? AND password = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, username);
-            statement.setInt(2, password);
+            statement.setInt(2, password.hashCode());
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {

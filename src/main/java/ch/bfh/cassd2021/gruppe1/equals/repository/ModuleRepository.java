@@ -34,7 +34,7 @@ public class ModuleRepository {
             + " LEFT JOIN Course c ON m.id = c.moduleId"
             + " LEFT JOIN Registration r on m.id = r.moduleId"
             + " WHERE m.headId = ? OR c.professorId = ? OR m.assistantId = ? OR r.studentId = ?"
-            + " ORDER BY m.shortName asc, m.startDate asc";
+            + " ORDER BY m.endDate desc, m.shortName asc";
 
         try (Connection connection = EqualsDataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -73,15 +73,13 @@ public class ModuleRepository {
         logger.debug("Entering getSuccessRateOverviewForModule()...");
         List<StudentCourseRating> studentCourseRatingList = new ArrayList<>();
 
-        String query = "SELECT re.studentID, p.lastName, p.firstName,"
-            + " c.id as courseId, c.name, c.shortName, c.weight,"
-            + " ra.successRate, ra.version"
+        String query = "SELECT DISTINCT re.studentID, p.lastName, p.firstName, c.id as courseId, c.name, c.shortName, c.moduleId, c.professorId, c.weight, ra.successRate, ra.version"
             + " FROM Registration re"
-            + " INNER JOIN Person p ON re.studentId = p.id"
-            + " INNER JOIN Course c ON re.moduleId = c.moduleId"
-            + " LEFT JOIN Rating ra ON re.studentId = ra.studentId"
-            + " LEFT JOIN Module m ON c.moduleId = m.id"
-            + " WHERE re.moduleId = ?"
+            + " INNER JOIN Module m on re.moduleId = m.id"
+            + " INNER JOIN Course c on c.moduleId = m.id"
+            + " LEFT JOIN Rating ra on ra.courseId = c.id AND re.studentId = ra.studentId"
+            + " INNER JOIN Person p on p.id = re.studentId"
+            + " WHERE m.id = ?"
             + " AND (m.headId = ? OR m.assistantId = ? OR c.professorId = ? OR re.studentId = ?)"
             + " ORDER BY p.lastName asc, p.firstName asc, re.studentId asc, c.id asc";
 
@@ -118,10 +116,13 @@ public class ModuleRepository {
                 course.setCourseId(resultSet.getInt("courseId"));
                 course.setName(resultSet.getString("name"));
                 course.setShortName(resultSet.getString("shortName"));
+                course.setModuleId(resultSet.getInt("moduleId"));
+                course.setProfessorId(resultSet.getInt("professorId"));
                 course.setWeight(resultSet.getDouble("weight"));
 
                 Rating rating = new Rating();
                 rating.setStudentId(studentId);
+                rating.setCourseId(resultSet.getInt("courseId"));
                 rating.setSuccessRate(resultSet.getInt("successRate"));
                 rating.setVersion(resultSet.getInt("version"));
 
@@ -130,8 +131,6 @@ public class ModuleRepository {
 
                 studentCourseRating.setCourseRating(courseRatingList);
 
-                studentCourseRating.calculatePreliminaryGrade();
-                studentCourseRating.calculateOverallGrade();
 
                 if (isNewStudent) {
                     studentCourseRatingList.add(studentCourseRating);
@@ -147,4 +146,33 @@ public class ModuleRepository {
         return studentCourseRatingList;
     }
 
+    public List<Integer> getModulesWithoutGrades(int personId) {
+        logger.debug("Entering getModulesWithoutGrades()...");
+        List<Integer> integerList = new ArrayList<>();
+
+        String query = "SELECT DISTINCT m.id"
+            + " FROM Module m"
+            + " LEFT JOIN Course c ON m.id = c.moduleId"
+            + " LEFT JOIN Registration r on m.id = r.moduleId"
+            + " LEFT JOIN Rating ra on r.studentId = ra.studentId AND c.id = ra.courseId"
+            + " WHERE (m.headId = ? OR c.professorId = ? OR m.assistantId = ?)"
+            + " AND (ra.successRate is NULL OR ra.successRate = 0)";
+
+        try (Connection connection = EqualsDataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, personId);
+            statement.setInt(2, personId);
+            statement.setInt(3, personId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                integerList.add(resultSet.getInt("id"));
+            }
+
+        } catch (SQLException throwables) {
+            logger.error("Problem reading Database, message was {}", throwables.getMessage());
+            throw new RepositoryException(throwables.getMessage());
+        }
+        return integerList;
+    }
 }

@@ -1,6 +1,6 @@
 package ch.bfh.cassd2021.gruppe1.equals.controller;
 
-import ch.bfh.cassd2021.gruppe1.equals.repository.AuthenticationRepository;
+import ch.bfh.cassd2021.gruppe1.equals.business.service.AuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,10 +19,10 @@ public class AuthenticationFilter extends HttpFilter {
     private static final String JSON_MEDIA_TYPE = "application/json; charset=UTF-8";
     private final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
 
-    AuthenticationRepository authenticationRepository;
+    AuthenticationService authenticationService;
 
     public AuthenticationFilter() {
-        authenticationRepository = new AuthenticationRepository();
+        authenticationService = new AuthenticationService();
     }
 
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -39,7 +39,7 @@ public class AuthenticationFilter extends HttpFilter {
                 response.setContentType(JSON_MEDIA_TYPE);
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             } else {
-                int personId = authenticationRepository.authenticateUser(credentials[0], Integer.parseInt(credentials[1]));
+                int personId = authenticationService.authenticateUser(credentials[0], credentials[1]);
                 if (personId > -1) {
                     request.setAttribute("personId", personId);
                     chain.doFilter(request, response);
