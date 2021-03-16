@@ -38,7 +38,6 @@ export default {
 
 function processLogin($view) {
     const user = getFormData();
-    // TODO: check time for fade in /out
     $('form', $view).fadeOut(300, function () {
         $('form', $view).parent().hide();
         $('div.column:last', $view).append($($('#tpl-loader')).html()).show().fadeIn(150);

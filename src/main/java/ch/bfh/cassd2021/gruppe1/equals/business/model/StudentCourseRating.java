@@ -8,6 +8,7 @@ public class StudentCourseRating {
     private String name;
     private List<CourseRating> courseRating;
     private int preliminaryGrade;
+
     private int overallGrade;
 
     public int getStudentId() {

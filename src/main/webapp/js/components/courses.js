@@ -302,8 +302,6 @@ function increaseVersions() {
     });
 }
 
-//TODO MAYBE MAKE $view a global variable so we don't need to pass it as parameter every time?
-
 function getInputData() {
     const data = {};
     data.update = [];
