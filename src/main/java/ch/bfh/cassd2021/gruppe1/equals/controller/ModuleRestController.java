@@ -10,7 +10,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,9 +25,9 @@ public class ModuleRestController extends HttpServlet {
 
     private final Logger logger = LoggerFactory.getLogger(ModuleRestController.class);
 
-    ObjectMapper jsonMapper;
+    final ObjectMapper jsonMapper;
 
-    ModuleService moduleService;
+    final ModuleService moduleService;
 
     public ModuleRestController() {
         jsonMapper = new ObjectMapper();
@@ -37,7 +36,7 @@ public class ModuleRestController extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String path = request.getPathInfo() != null ? request.getPathInfo() : "/";
         int personId = (Integer) request.getAttribute("personId");
 
@@ -73,7 +72,7 @@ public class ModuleRestController extends HttpServlet {
 
         } else {
             logger.debug("path {} not implemented.", path);
-            String error = "Path " + path.toString() + " not implemented.";
+            String error = "Path " + path + " not implemented.";
 
             response.setContentType(JSON_MEDIA_TYPE);
             response.setCharacterEncoding("UTF-8");

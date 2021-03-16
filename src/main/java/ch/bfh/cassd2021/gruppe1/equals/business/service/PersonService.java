@@ -4,7 +4,7 @@ import ch.bfh.cassd2021.gruppe1.equals.business.model.Person;
 import ch.bfh.cassd2021.gruppe1.equals.repository.PersonRepository;
 
 public class PersonService {
-    PersonRepository personRepository;
+    final PersonRepository personRepository;
 
     public PersonService() {
         personRepository = new PersonRepository();

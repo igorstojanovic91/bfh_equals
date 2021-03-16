@@ -3,7 +3,7 @@ package ch.bfh.cassd2021.gruppe1.equals.business.service;
 import ch.bfh.cassd2021.gruppe1.equals.repository.AuthenticationRepository;
 
 public class AuthenticationService {
-    AuthenticationRepository authenticationRepository;
+    final AuthenticationRepository authenticationRepository;
 
     public AuthenticationService() {
         authenticationRepository = new AuthenticationRepository();

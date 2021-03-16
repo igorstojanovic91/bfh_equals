@@ -5,12 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Base64;
 
 @WebFilter(urlPatterns = "/api/*")
@@ -19,13 +17,13 @@ public class AuthenticationFilter extends HttpFilter {
     private static final String JSON_MEDIA_TYPE = "application/json; charset=UTF-8";
     private final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
 
-    AuthenticationService authenticationService;
+    final AuthenticationService authenticationService;
 
     public AuthenticationFilter() {
         authenticationService = new AuthenticationService();
     }
 
-    public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) {
         try {
             logger.debug("Entering Authentication Filter.");
             String header = request.getHeader("Authorization");

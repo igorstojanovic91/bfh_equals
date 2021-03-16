@@ -9,7 +9,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,9 +21,9 @@ public class PersonRestController extends HttpServlet {
 
     private final Logger logger = LoggerFactory.getLogger(PersonRestController.class);
 
-    ObjectMapper jsonMapper;
+    final ObjectMapper jsonMapper;
 
-    PersonService personService;
+    final PersonService personService;
 
     public PersonRestController() {
         jsonMapper = new ObjectMapper();
@@ -33,9 +32,9 @@ public class PersonRestController extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         logger.debug("Entering /api/persons");
-        Person person = null;
+        Person person;
         String pathInfo = request.getPathInfo();
         if (pathInfo != null && !pathInfo.isEmpty()) {
             int personId = Integer.parseInt(pathInfo.split("/")[1]);

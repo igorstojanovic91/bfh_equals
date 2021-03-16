@@ -7,20 +7,18 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @WebServlet(urlPatterns = "/api/ratings")
 public class RatingRestController extends HttpServlet {
     private static final String JSON_MEDIA_TYPE = "application/json; charset=UTF-8";
     private final Logger logger = LoggerFactory.getLogger(RatingRestController.class);
 
-    ObjectMapper jsonMapper;
-    RatingService ratingService;
+    final ObjectMapper jsonMapper;
+    final RatingService ratingService;
 
     public RatingRestController() {
         jsonMapper = new ObjectMapper();
@@ -29,7 +27,7 @@ public class RatingRestController extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) {
         logger.debug("Entering /api/ratings");
 
         //SECURITY WISE WE NEED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
@@ -59,7 +57,7 @@ public class RatingRestController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         logger.debug("Entering /api/ratings");
 
         //SECURITY WISE WE NEED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
