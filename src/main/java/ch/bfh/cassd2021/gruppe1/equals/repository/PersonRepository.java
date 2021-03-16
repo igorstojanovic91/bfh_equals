@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class PersonRepository {
 
-    final Logger logger = LoggerFactory.getLogger(AuthenticationRepository.class);
+    final Logger logger = LoggerFactory.getLogger(PersonRepository.class);
 
     public Person getPerson(int personId) {
         logger.debug("Entering PersonRepository.getPerson()...");

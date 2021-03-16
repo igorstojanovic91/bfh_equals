@@ -4,17 +4,25 @@ import store from '../store.js';
 import util from "../util.js";
 
 export default {
+    requiresAuth: false,
 
     getTitle: function () {
         return "Login";
     },
 
     render: function () {
+
+
+        if(store.getUser()) router.go("/modules")
+
+        util.showAuthContent(false);
+
         const $view = $($('#tpl-login').html());
         $('[data-action=login]', $view).on('click', e => {
             e.preventDefault();
             processLogin($view);
         });
+
 
         $('input', $view).on("input", function () {
             const data = getFormData()

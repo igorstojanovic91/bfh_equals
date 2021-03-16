@@ -10,6 +10,7 @@ export default {
         const $view = $($('#tpl-404').html());
         util.showAuthContent(false);
 
+
         $('[data-action=go-back]', $view).on('click', e => {
             e.preventDefault();
             window.history.back();

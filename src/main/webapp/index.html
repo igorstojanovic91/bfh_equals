@@ -156,7 +156,7 @@
                         </div>
 
                         <div class="content">
-                            <p><span class="tag is-light"></span></p>
+                            <div class="tags"></div>
                             <date datetime=""></date> &ndash;
                             <date datetime="">?</date>
                         </div>
@@ -287,9 +287,6 @@
                     <div class="level-left">
                         <a href="#/modules" class="button is-info" data-action="cancel">Back to Modules</a>
                     </div>
-                    <div class="level-right">
-                        <button class="button is-success" data-action="print">Print</button>
-                    </div>
                 </div>
             </form>
         </div>
@@ -344,5 +341,19 @@
             </div>
         </section>
     </template>
+
+
+    <!-- F I L T E R -->
+    <template id="tpl-filter">
+    <div class="container pt-6 has-text-centered">
+        <button class="button is-danger" data-action="missing-grades">Missing Grades</button>
+        <div class="select">
+            <select>
+                <option value="all" selected>All Semesters</option>
+            </select>
+        </div>
+    </div>
+    </template>
+
 </body>
 </html>

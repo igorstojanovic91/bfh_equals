@@ -1,8 +1,7 @@
 package ch.bfh.cassd2021.gruppe1.equals.controller;
 
 import ch.bfh.cassd2021.gruppe1.equals.business.model.Rating;
-import ch.bfh.cassd2021.gruppe1.equals.repository.RatingRepository;
-import ch.bfh.cassd2021.gruppe1.equals.repository.RepositoryException;
+import ch.bfh.cassd2021.gruppe1.equals.business.service.RatingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
@@ -14,8 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Arrays;
 
 @WebServlet(urlPatterns = "/api/ratings")
 public class RatingRestController extends HttpServlet {
@@ -23,29 +20,29 @@ public class RatingRestController extends HttpServlet {
     private final Logger logger = LoggerFactory.getLogger(RatingRestController.class);
 
     ObjectMapper jsonMapper;
-    RatingRepository ratingRepository;
+    RatingService ratingService;
 
     public RatingRestController() {
         jsonMapper = new ObjectMapper();
         jsonMapper.registerModule(new JavaTimeModule());
-        ratingRepository = new RatingRepository();
+        ratingService = new RatingService();
     }
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.debug("Entering /api/ratings");
 
-        //SECURITY WISE WE NED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
+        //SECURITY WISE WE NEED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
         String contentType = request.getContentType();
-        if(contentType.matches(JSON_MEDIA_TYPE)) {
+        if (contentType.matches(JSON_MEDIA_TYPE)) {
 
             try {
                 String body = request.getReader()
-                        .lines()
-                        .reduce("", (String::concat));
+                    .lines()
+                    .reduce("", (String::concat));
                 Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
 
-                ratingRepository.updateRatings(ratings);
+                ratingService.updateRatings(ratings);
 
                 response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 
@@ -65,21 +62,21 @@ public class RatingRestController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.debug("Entering /api/ratings");
 
-        //SECURITY WISE WE NED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
+        //SECURITY WISE WE NEED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
         String contentType = request.getContentType();
-        if(contentType.matches(JSON_MEDIA_TYPE)) {
+        if (contentType.matches(JSON_MEDIA_TYPE)) {
 
             try {
                 String body = request.getReader()
-                        .lines()
-                        .reduce("", (String::concat));
+                    .lines()
+                    .reduce("", (String::concat));
                 Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
 
-                ratingRepository.insertRatings(ratings);
+                ratingService.insertRatings(ratings);
 
                 response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 
-            } catch(Exception exception){
+            } catch (Exception exception) {
                 logger.debug("Content does not match Rating object");
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
