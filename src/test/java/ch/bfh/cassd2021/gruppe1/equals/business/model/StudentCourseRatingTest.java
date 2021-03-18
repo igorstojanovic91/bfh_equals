@@ -12,7 +12,7 @@ import static org.mockito.Mockito.when;
 class StudentCourseRatingTest {
 
     @Test
-    void calculateGrades_ok() {
+    void calculateGrades_85() {
         double[] weights = {1.8, 1.8, 1.6, 1.6, 1.6, 1.6};
         int[] grades = {85, 85, 85, 85, 85, 85};
         StudentCourseRating studentCourseRating = mockTestStudentCourseRating(weights, grades);
@@ -67,14 +67,14 @@ class StudentCourseRatingTest {
     }
 
     @Test
-    void calculateGrades_nok() {
-        double[] weights = {1.8, 1.8, 1.6, 1.6, 1.6, 1.6};
-        int[] grades = {74, 0, 0, 85, 77, 89};
+    void calculateGrades_emptyArrays0() {
+        double[] weights = new double[1000];
+        int[] grades = new int[1000];
         StudentCourseRating studentCourseRating = mockTestStudentCourseRating(weights, grades);
 
         studentCourseRating.calculateGrades();
-        assertEquals(81, studentCourseRating.getPreliminaryGrade());
-        assertEquals(53, studentCourseRating.getOverallGrade());
+        assertEquals(0, studentCourseRating.getPreliminaryGrade());
+        assertEquals(0, studentCourseRating.getOverallGrade());
     }
 
     private StudentCourseRating mockTestStudentCourseRating(double[] weights, int[] grades) {

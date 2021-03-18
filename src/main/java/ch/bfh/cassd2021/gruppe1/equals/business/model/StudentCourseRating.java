@@ -35,11 +35,11 @@ public class StudentCourseRating {
         this.courseRating = courseRating;
     }
 
-    public double getPreliminaryGrade() {
+    public int getPreliminaryGrade() {
         return preliminaryGrade;
     }
 
-    public double getOverallGrade() {
+    public int getOverallGrade() {
         return overallGrade;
     }
 
