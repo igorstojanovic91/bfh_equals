@@ -13,7 +13,6 @@ import java.util.Base64;
 
 @WebFilter(urlPatterns = "/api/*")
 public class AuthenticationFilter extends HttpFilter {
-
     private static final String JSON_MEDIA_TYPE = "application/json; charset=UTF-8";
     private final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
 
@@ -42,7 +41,6 @@ public class AuthenticationFilter extends HttpFilter {
                     request.setAttribute("personId", personId);
                     chain.doFilter(request, response);
                 } else {
-                    response.setContentType(JSON_MEDIA_TYPE);
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     logger.warn("Unauthorized!");
                 }

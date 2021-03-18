@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(urlPatterns = "/api/ratings")
 public class RatingRestController extends HttpServlet {
+    private static final String ACCEPT_TYPE = "application/json";
     private static final String JSON_MEDIA_TYPE = "application/json; charset=UTF-8";
     private final Logger logger = LoggerFactory.getLogger(RatingRestController.class);
 
@@ -29,59 +30,69 @@ public class RatingRestController extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {
         logger.debug("Entering /api/ratings");
+        String acceptType = request.getHeader("Accept");
 
-        //SECURITY WISE WE NEED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
-        String contentType = request.getContentType();
-        if (contentType.matches(JSON_MEDIA_TYPE)) {
-
-            try {
-                String body = request.getReader()
-                    .lines()
-                    .reduce("", (String::concat));
-                Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
-
-                ratingService.updateRatings(ratings);
-
-                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-
-            } catch (Exception e) {
-                logger.debug("Content does not match Rating object");
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            }
-
+        if (!acceptType.equalsIgnoreCase(ACCEPT_TYPE)) {
+            logger.warn("Wrong content type from request: " + acceptType);
+            response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
         } else {
-            logger.debug("Media tye not accepted");
-            response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
-        }
+            //TODO: SECURITY WISE WE NEED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
+            String contentType = request.getContentType();
+            if (contentType.matches(JSON_MEDIA_TYPE)) {
 
+                try {
+                    String body = request.getReader()
+                        .lines()
+                        .reduce("", (String::concat));
+                    Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
+
+                    ratingService.updateRatings(ratings);
+
+                    response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+
+                } catch (Exception e) {
+                    logger.debug("Content does not match Rating object");
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                }
+
+            } else {
+                logger.debug("Media tye not accepted");
+                response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
+            }
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         logger.debug("Entering /api/ratings");
+        String acceptType = request.getHeader("Accept");
 
-        //SECURITY WISE WE NEED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
-        String contentType = request.getContentType();
-        if (contentType.matches(JSON_MEDIA_TYPE)) {
-
-            try {
-                String body = request.getReader()
-                    .lines()
-                    .reduce("", (String::concat));
-                Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
-
-                ratingService.insertRatings(ratings);
-
-                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-
-            } catch (Exception exception) {
-                logger.debug("Content does not match Rating object");
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            }
+        if (!acceptType.equalsIgnoreCase(ACCEPT_TYPE)) {
+            logger.warn("Wrong content type from request: " + acceptType);
+            response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
         } else {
-            logger.debug("Media tye not accepted");
-            response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
-        }
+            //TODO: SECURITY WISE WE NEED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
+            String contentType = request.getContentType();
+            if (contentType.matches(JSON_MEDIA_TYPE)) {
 
+                try {
+                    String body = request.getReader()
+                        .lines()
+                        .reduce("", (String::concat));
+                    Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
+
+                    ratingService.insertRatings(ratings);
+
+                    response.setStatus(HttpServletResponse.SC_CREATED);
+
+                } catch (Exception exception) {
+                    logger.debug("Content does not match Rating object");
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                }
+            } else {
+                logger.debug("Media tye not accepted");
+                response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
+            }
+        }
     }
 }
