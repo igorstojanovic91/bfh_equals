@@ -2,6 +2,7 @@ package ch.bfh.cassd2021.gruppe1.equals.controller;
 
 import ch.bfh.cassd2021.gruppe1.equals.business.model.Rating;
 import ch.bfh.cassd2021.gruppe1.equals.business.service.RatingService;
+import ch.bfh.cassd2021.gruppe1.equals.repository.AuthenticationRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
@@ -20,11 +21,13 @@ public class RatingRestController extends HttpServlet {
 
     final ObjectMapper jsonMapper;
     final RatingService ratingService;
+    final AuthenticationRepository authenticationRepository;
 
     public RatingRestController() {
         jsonMapper = new ObjectMapper();
         jsonMapper.registerModule(new JavaTimeModule());
         ratingService = new RatingService();
+        authenticationRepository = new AuthenticationRepository();
     }
 
     @Override
@@ -32,34 +35,32 @@ public class RatingRestController extends HttpServlet {
         logger.debug("Entering /api/ratings");
         String acceptType = request.getHeader("Accept");
 
-        if (!acceptType.equalsIgnoreCase(ACCEPT_TYPE)) {
-            logger.warn("Wrong content type from request: " + acceptType);
-            response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-        } else {
-            //TODO: SECURITY WISE WE NEED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
-            String contentType = request.getContentType();
-            if (contentType.matches(JSON_MEDIA_TYPE)) {
+        //TODO: SECURITY WISE WE NEED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
+        String contentType = request.getContentType();
+        if (contentType.matches(JSON_MEDIA_TYPE)) {
 
-                try {
-                    String body = request.getReader()
-                        .lines()
-                        .reduce("", (String::concat));
-                    Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
+            try {
+                String body = request.getReader()
+                    .lines()
+                    .reduce("", (String::concat));
+                Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
 
+                if(isAuthorized(ratings, request)) {
                     ratingService.updateRatings(ratings);
-
                     response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-
-                } catch (Exception e) {
-                    logger.debug("Content does not match Rating object");
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                } else {
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 }
-
-            } else {
-                logger.debug("Media tye not accepted");
-                response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
+            } catch (Exception e) {
+                logger.debug("Content does not match Rating object");
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
+
+        } else {
+            logger.debug("Media tye not accepted");
+            response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
         }
+
     }
 
     @Override
@@ -67,32 +68,41 @@ public class RatingRestController extends HttpServlet {
         logger.debug("Entering /api/ratings");
         String acceptType = request.getHeader("Accept");
 
-        if (!acceptType.equalsIgnoreCase(ACCEPT_TYPE)) {
-            logger.warn("Wrong content type from request: " + acceptType);
-            response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-        } else {
-            //TODO: SECURITY WISE WE NEED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
-            String contentType = request.getContentType();
-            if (contentType.matches(JSON_MEDIA_TYPE)) {
 
-                try {
-                    String body = request.getReader()
-                        .lines()
-                        .reduce("", (String::concat));
-                    Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
+        //TODO: SECURITY WISE WE NEED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
+        String contentType = request.getContentType();
+        if (contentType.matches(JSON_MEDIA_TYPE)) {
 
+            try {
+                String body = request.getReader()
+                    .lines()
+                    .reduce("", (String::concat));
+                Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
+
+                if(isAuthorized(ratings, request)) {
                     ratingService.insertRatings(ratings);
-
                     response.setStatus(HttpServletResponse.SC_CREATED);
-
-                } catch (Exception exception) {
-                    logger.debug("Content does not match Rating object");
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                } else {
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 }
-            } else {
-                logger.debug("Media tye not accepted");
-                response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
+
+            } catch (Exception exception) {
+                logger.debug("Content does not match Rating object");
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
+        } else {
+            logger.debug("Media tye not accepted");
+            response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
         }
+        }
+
+    private boolean isAuthorized(Rating[] ratings, HttpServletRequest request) {
+        int personId = (Integer) request.getAttribute("personId");
+        for(Rating rating : ratings) {
+            boolean isAuthorzied = authenticationRepository.isAuthorized(rating.getCourseId(), personId);
+            if(!isAuthorzied) return false;
+        }
+        return true;
     }
+
 }

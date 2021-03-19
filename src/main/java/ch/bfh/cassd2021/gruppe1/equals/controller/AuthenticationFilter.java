@@ -33,7 +33,6 @@ public class AuthenticationFilter extends HttpFilter {
             byte[] decoded = Base64.getDecoder().decode(tokens[1]);
             String[] credentials = new String(decoded).split(":");
             if (credentials.length != 2) {
-                response.setContentType(JSON_MEDIA_TYPE);
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             } else {
                 int personId = authenticationService.authenticateUser(credentials[0], credentials[1]);
