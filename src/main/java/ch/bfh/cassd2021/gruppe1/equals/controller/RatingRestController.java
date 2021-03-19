@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(urlPatterns = "/api/ratings")
 public class RatingRestController extends HttpServlet {
-    private static final String ACCEPT_TYPE = "application/json";
     private static final String JSON_MEDIA_TYPE = "application/json; charset=UTF-8";
     private final Logger logger = LoggerFactory.getLogger(RatingRestController.class);
 
@@ -43,7 +42,7 @@ public class RatingRestController extends HttpServlet {
                     .reduce("", (String::concat));
                 Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
 
-                if(isAuthorized(ratings, request)) {
+                if (isAuthorized(ratings, request)) {
                     ratingService.updateRatings(ratings);
                     response.setStatus(HttpServletResponse.SC_NO_CONTENT);
                 } else {
@@ -55,7 +54,7 @@ public class RatingRestController extends HttpServlet {
             }
 
         } else {
-            logger.debug("Media tye not accepted");
+            logger.debug("Media type not accepted");
             response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
         }
 
@@ -74,7 +73,7 @@ public class RatingRestController extends HttpServlet {
                     .reduce("", (String::concat));
                 Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
 
-                if(isAuthorized(ratings, request)) {
+                if (isAuthorized(ratings, request)) {
                     ratingService.insertRatings(ratings);
                     response.setStatus(HttpServletResponse.SC_CREATED);
                 } else {
@@ -86,18 +85,18 @@ public class RatingRestController extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
         } else {
-            logger.debug("Media tye not accepted");
+            logger.debug("Media type not accepted");
             response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
         }
-        }
+    }
 
     private boolean isAuthorized(Rating[] ratings, HttpServletRequest request) {
         int personId = (Integer) request.getAttribute("personId");
-        for(Rating rating : ratings) {
-            boolean isAuthorzied = authenticationRepository.isAuthorized(rating.getCourseId(), personId);
-            if(!isAuthorzied) return false;
+        boolean userIsAuthorized = true;
+        for (Rating rating : ratings) {
+            if (!authenticationRepository.isAuthorized(rating.getCourseId(), personId)) userIsAuthorized = false;
         }
-        return true;
+        return userIsAuthorized;
     }
 
 }

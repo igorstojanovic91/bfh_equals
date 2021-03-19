@@ -36,8 +36,8 @@ public class AuthenticationRepository {
 
     public boolean isAuthorized(int courseId, int personId) {
         String query = "SELECT c.id FROM Course c" +
-                " INNER JOIN Module m on c.moduleId = m.id" +
-                " WHERE c.id = ? AND (c.professorId = ? OR m.headId = ?)";
+            " INNER JOIN Module m on c.moduleId = m.id" +
+            " WHERE c.id = ? AND (c.professorId = ? OR m.headId = ?)";
 
         try (Connection connection = EqualsDataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -47,11 +47,7 @@ public class AuthenticationRepository {
 
             ResultSet resultSet = statement.executeQuery();
 
-            if (!resultSet.next()) {
-                return false;
-            } else {
-                return true;
-            }
+            return resultSet.next();
 
         } catch (SQLException throwables) {
             logger.error("Problem reading Database, message was {}", throwables.getMessage());
