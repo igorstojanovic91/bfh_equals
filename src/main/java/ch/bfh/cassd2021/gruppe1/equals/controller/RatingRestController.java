@@ -33,9 +33,7 @@ public class RatingRestController extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {
         logger.debug("Entering /api/ratings");
-        String acceptType = request.getHeader("Accept");
 
-        //TODO: SECURITY WISE WE NEED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
         String contentType = request.getContentType();
         if (contentType.matches(JSON_MEDIA_TYPE)) {
 
@@ -66,10 +64,7 @@ public class RatingRestController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         logger.debug("Entering /api/ratings");
-        String acceptType = request.getHeader("Accept");
 
-
-        //TODO: SECURITY WISE WE NEED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
         String contentType = request.getContentType();
         if (contentType.matches(JSON_MEDIA_TYPE)) {
 
