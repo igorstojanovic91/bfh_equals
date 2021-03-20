@@ -38,7 +38,6 @@ export default {
 
 function processLogin($view) {
     const user = getFormData();
-    // TODO: check time for fade in /out
     $('form', $view).fadeOut(300, function () {
         $('form', $view).parent().hide();
         $('div.column:last', $view).append($($('#tpl-loader')).html()).show().fadeIn(150);
@@ -52,7 +51,7 @@ function processLogin($view) {
             setTimeout(function () {
                 let msg = jqXHR.status === 401
                     ? "Wrong username or password, please try again!"
-                    : "Ups, something failed!"
+                    : "Oops, an error occurred!"
                 $('[data-field=error]', $view).html(msg);
                 $('.hero.is-fullheight', $view).remove();
                 $('form', $view).fadeIn(400).show();

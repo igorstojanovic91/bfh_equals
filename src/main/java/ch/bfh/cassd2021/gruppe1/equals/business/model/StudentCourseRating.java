@@ -8,6 +8,7 @@ public class StudentCourseRating {
     private String name;
     private List<CourseRating> courseRating;
     private int preliminaryGrade;
+
     private int overallGrade;
 
     public int getStudentId() {
@@ -34,11 +35,11 @@ public class StudentCourseRating {
         this.courseRating = courseRating;
     }
 
-    public double getPreliminaryGrade() {
+    public int getPreliminaryGrade() {
         return preliminaryGrade;
     }
 
-    public double getOverallGrade() {
+    public int getOverallGrade() {
         return overallGrade;
     }
 

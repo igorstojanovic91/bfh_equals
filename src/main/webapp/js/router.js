@@ -1,5 +1,5 @@
 import store from './store.js';
-import error404 from "./components/error404.js";
+import error from "./components/error.js";
 
 const $main = $('main');
 
@@ -14,15 +14,18 @@ function replaceView($view) {
 function render() {
     const hash = location.hash.replace('#/', '').split('/');
     const path = '/' + (hash[0] || '');
+    let param;
 
-    const component = routes[path] ? routes[path] : error404;
-
-    if (component.requiresAuth && !store.getUser()) {
-        replaceView($('<h2>401 Unauthorized</h2><p>Please login first!</p>'));
-        return;
+    let component = routes[path] ? routes[path] : error;
+    if (component === error) {
+        param = {title: '404 Not found', message: 'Oh no! The desired page could not be found :-('};
+    } else if (component.requiresAuth && !store.getUser()) {
+        component = error;
+        param = {title: '401 Unauthorized', message: 'Please login first!'};
+    } else {
+        param = hash.length > 1 ? hash[1] : null;
     }
 
-    const param = hash.length > 1 ? hash[1] : null;
     const $view = component.render(param);
     replaceView($view);
     document.title = "EQualS" + (component.getTitle ? " - " + component.getTitle(param) : "");

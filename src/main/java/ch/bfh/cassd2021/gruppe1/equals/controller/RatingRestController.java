@@ -2,6 +2,7 @@ package ch.bfh.cassd2021.gruppe1.equals.controller;
 
 import ch.bfh.cassd2021.gruppe1.equals.business.model.Rating;
 import ch.bfh.cassd2021.gruppe1.equals.business.service.RatingService;
+import ch.bfh.cassd2021.gruppe1.equals.repository.AuthenticationRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
@@ -19,18 +20,19 @@ public class RatingRestController extends HttpServlet {
 
     final ObjectMapper jsonMapper;
     final RatingService ratingService;
+    final AuthenticationRepository authenticationRepository;
 
     public RatingRestController() {
         jsonMapper = new ObjectMapper();
         jsonMapper.registerModule(new JavaTimeModule());
         ratingService = new RatingService();
+        authenticationRepository = new AuthenticationRepository();
     }
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {
         logger.debug("Entering /api/ratings");
 
-        //SECURITY WISE WE NEED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
         String contentType = request.getContentType();
         if (contentType.matches(JSON_MEDIA_TYPE)) {
 
@@ -40,17 +42,19 @@ public class RatingRestController extends HttpServlet {
                     .reduce("", (String::concat));
                 Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
 
-                ratingService.updateRatings(ratings);
-
-                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-
+                if (isAuthorized(ratings, request)) {
+                    ratingService.updateRatings(ratings);
+                    response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                } else {
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                }
             } catch (Exception e) {
                 logger.debug("Content does not match Rating object");
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
 
         } else {
-            logger.debug("Media tye not accepted");
+            logger.debug("Media type not accepted");
             response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
         }
 
@@ -60,7 +64,6 @@ public class RatingRestController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         logger.debug("Entering /api/ratings");
 
-        //SECURITY WISE WE NEED TO KNOW HERE IF IT IS A PROFESSOR OR HEAD
         String contentType = request.getContentType();
         if (contentType.matches(JSON_MEDIA_TYPE)) {
 
@@ -70,18 +73,30 @@ public class RatingRestController extends HttpServlet {
                     .reduce("", (String::concat));
                 Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
 
-                ratingService.insertRatings(ratings);
-
-                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                if (isAuthorized(ratings, request)) {
+                    ratingService.insertRatings(ratings);
+                    response.setStatus(HttpServletResponse.SC_CREATED);
+                } else {
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                }
 
             } catch (Exception exception) {
                 logger.debug("Content does not match Rating object");
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
         } else {
-            logger.debug("Media tye not accepted");
+            logger.debug("Media type not accepted");
             response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
         }
-
     }
+
+    private boolean isAuthorized(Rating[] ratings, HttpServletRequest request) {
+        int personId = (Integer) request.getAttribute("personId");
+        boolean userIsAuthorized = true;
+        for (Rating rating : ratings) {
+            if (!authenticationRepository.isAuthorized(rating.getCourseId(), personId)) userIsAuthorized = false;
+        }
+        return userIsAuthorized;
+    }
+
 }

@@ -1,5 +1,5 @@
 import store from '../store.js';
-
+import util from "../util.js";
 
 export default {
     requiresAuth: true,
@@ -10,6 +10,7 @@ export default {
 
     render: function () {
         const $view = $($('#tpl-notify').html());
+        util.showAuthContent(true);
 
 
         const professor = store.getPersonToNotify()

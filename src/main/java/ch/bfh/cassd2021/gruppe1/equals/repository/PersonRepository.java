@@ -38,7 +38,6 @@ public class PersonRepository {
                 person.setPlaceOfOrigin(resultSet.getString("placeOfOrigin"));
                 person.setSex(resultSet.getString("sex"));
                 person.setUserName(resultSet.getString("userName"));
-                person.setPassword(resultSet.getString("password"));
             }
 
         } catch (SQLException throwables) {

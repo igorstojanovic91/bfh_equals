@@ -18,11 +18,11 @@ export default {
     getModules: function () {
         return data.modules;
     },
-    getModule: function(id) {
+    getModule: function (id) {
         return data.modules.find(module => module.moduleId === Number(id));
     },
 
-    setModuleHasOpenGrades: function(id, hasOpenGrades) {
+    setModuleHasOpenGrades: function (id, hasOpenGrades) {
         let module = data.modules.find(module => module.moduleId === Number(id));
         module.hasOpenGrades = hasOpenGrades > 0;
     },
@@ -41,5 +41,16 @@ export default {
 
     deletePersonToNotify: function () {
         delete data.notify;
+    },
+
+    setNotification: function (message) {
+        data.notification = message;
+    },
+    getNotification: function () {
+        return data.notification;
+    },
+    clearNotification: function () {
+        delete data.notification;
     }
+
 };

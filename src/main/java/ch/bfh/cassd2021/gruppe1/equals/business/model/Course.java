@@ -53,7 +53,11 @@ public class Course {
     }
 
     public void setWeight(double weight) {
-        this.weight = weight;
+        if(weight > 0){
+            this.weight = weight;
+        } else{
+            throw new IllegalArgumentException();
+        }
     }
 
     @Override

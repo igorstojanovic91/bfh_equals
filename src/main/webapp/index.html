@@ -1,287 +1,314 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1" name="viewport">
 
-    <title>EQualS - Login</title>
-    <meta name="description" content="EQualS • CAS Software Development (SD-HS20) • Gruppe 1">
-    <meta name="author" content="Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber">
-    <meta name="keywords" content="berner fachhochschule, bfh, cas software development, sd-hs20, herbst 2020, igor stojanovic, sabina löffel, christophe leupi, raphael gerber, bern university of applied science." />
+        <title>EQualS - Login</title>
+        <meta name="description" content="EQualS • CAS Software Development (SD-HS20) • Gruppe 1">
+        <meta name="author" content="Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber">
+        <meta name="keywords" content="berner fachhochschule, bfh, cas software development, sd-hs20, herbst 2020, igor stojanovic, sabina löffel, christophe leupi, raphael gerber, bern university of applied science."/>
 
-    <script src="./js/libraries/jquery-3.5.0.min.js"></script>
-    <link href="./css/bulma.min.css" rel="stylesheet">
-    <link href="./css/styles.css" rel="stylesheet">
-    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
-          integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
-          rel="stylesheet"/>
-    <script src="./js/main.js" type="module"></script>
+        <script src="./js/libraries/jquery-3.5.0.min.js"></script>
+        <link href="./css/bulma.min.css" rel="stylesheet">
+        <link href="./css/styles.css" rel="stylesheet">
+        <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+              integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+              rel="stylesheet"/>
+        <script src="./js/main.js" type="module"></script>
 
-    <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon-180x180.png">
-    <meta name="apple-mobile-web-app-title" content="TodoApp">
-    <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#4c9ebf">
-    <link rel="alternate icon" type="image/png" href="favicon/favicon.png">
-    <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
-    <link rel="manifest" href="manifest.webmanifest">
-    <meta name="msapplication-TileColor" content="#1d1e1f">
-    <meta name="msapplication-config" content="favicon/browserconfig.xml">
-    <meta name="theme-color" content="#1d1e1f">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-    <meta name="thumbnail" content="favicon/thumb-150x150.png">
-</head>
-<body>
-    <header data-auth="true">
-        <section class="hero is-small is-info">
-            <div class="hero-body">
-                <nav class="level is-mobile">
-                    <div class="level-left">
-                        <h1 class="title">EQualS</h1>
-                    </div>
-                    <div class="level-right">
-                        <p class="level-item" data-field="user.userName"></p>
-                        <p class="level-item"><a href="#/logout" class="button">Logout</a>
-                        </p>
-                    </div>
-                </nav>
+        <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon-180x180.png">
+        <meta name="apple-mobile-web-app-title" content="TodoApp">
+        <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#4c9ebf">
+        <link rel="alternate icon" type="image/png" href="favicon/favicon.png">
+        <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+        <link rel="manifest" href="manifest.webmanifest">
+        <meta name="msapplication-TileColor" content="#1d1e1f">
+        <meta name="msapplication-config" content="favicon/browserconfig.xml">
+        <meta name="theme-color" content="#1d1e1f">
+        <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+        <meta name="thumbnail" content="favicon/thumb-150x150.png">
+    </head>
+
+    <body>
+        <header data-auth="true">
+            <section class="hero is-small is-info">
+                <div class="hero-body">
+                    <nav class="level is-mobile">
+                        <div class="level-left">
+                            <h1 class="title">EQualS</h1>
+                        </div>
+                        <div class="level-right">
+                            <p class="level-item" data-field="user.userName"></p>
+                            <p class="level-item"><a href="#/logout" class="button">Logout</a>
+                            </p>
+                        </div>
+                    </nav>
+                </div>
+            </section>
+            <div class="container pt-6 has-text-centered">
+                <h1 class="title" data-field="title">?</h1>
+                <h2 class="subtitle is-5" data-field="sub-title"></h2>
             </div>
-        </section>
-        <div class="container pt-6 has-text-centered">
-            <h1 class="title" data-field="title">?</h1>
-            <h2 class="subtitle is-5" data-field="sub-title"></h2>
-        </div>
-    </header>
-    <main>
+        </header>
 
-    </main>
+        <main></main>
 
-    <!-- L O G I N -->
-    <template id="tpl-login">
-        <div class="columns is-vcentered" style="height: 100vh">
-            <div class="column is-two-thirds p-0 background">
-                &nbsp;
+
+        <!-- L O G I N -->
+        <template id="tpl-login">
+            <div class="columns is-vcentered" style="height: 100vh">
+                <div class="column is-two-thirds p-0 background">&nbsp;</div>
+                <div class="column">
+                    <h1 class="title pl-6">
+                        Welcome to EQualS! <span><i class="fas fa-graduation-cap"></i></span>
+                    </h1>
+                    <form class="pl-6 pr-6 pb-6">
+                        <div class="field">
+                            <p class="control has-icons-left has-icons-right">
+                                <label>
+                                    <input class="input" placeholder="Username" name="username" type="text">
+                                </label>
+                                <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
+                            </p>
+                        </div>
+                        <div class="field">
+                            <p class="control has-icons-left">
+                                <label>
+                                    <input class="input" placeholder="Password" name="password" type="password">
+                                </label>
+                                <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
+                            </p>
+                        </div>
+                        <p data-field="error" class="has-text-danger"></p>
+                        <div class="field">
+                            <p class="control">
+                                <button data-action="login" class="button is-success" disabled>Login</button>
+                            </p>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="column">
-                <h1 class="title pl-6">
-                    Welcome to EQualS! <span><i class="fas fa-graduation-cap"></i></span>
-                </h1>
-                <form class="pl-6 pr-6 pb-6">
-                    <div class="field">
-                        <p class="control has-icons-left has-icons-right">
-                            <input class="input" placeholder="Username" name="username" type="text">
-                            <span class="icon is-small is-left">
-                                 <i class="fas fa-user"></i>
-                             </span>
-                        </p>
-                    </div>
-                    <div class="field">
-                        <p class="control has-icons-left">
-                            <label>
-                                <input class="input" placeholder="Password" name="password" type="password">
-                            </label>
-                            <span class="icon is-small is-left">
-                              <i class="fas fa-lock"></i>
-                            </span>
-                        </p>
-                    </div>
-                    <p data-field="error" class="has-text-danger"></p>
+        </template>
+
+
+        <!-- L O G O U T -->
+        <template id="tpl-logout">
+            <div class="columns is-vcentered" style="height: 100vh">
+                <div class="column is-two-thirds p-0 background">&nbsp;</div>
+                <div class="column pl-6">
+                    <h1 class="title">
+                        EQualS <span><i class="fas fa-graduation-cap"></i></span>
+                    </h1>
+                    <h2 class="subtitle is-5">Bye, hope to see you again! Have a nice Day... </h2>
+                    <p><a href="#/" class="button is-success">Back to Login</a></p>
+                </div>
+            </div>
+        </template>
+
+
+        <!-- E R R O R   P A G E -->
+        <template id="tpl-error">
+            <div class="columns is-vcentered" style="height: 100vh">
+                <div class="column is-two-thirds p-0 background">&nbsp;</div>
+                <div class="column pl-6">
+                    <h1 class="title">
+                        <span data-field="error-title">?</span> <span><i class="fas fa-exclamation-triangle"></i></span>
+                    </h1>
+                    <h2 class="subtitle is-5" data-field="error-message">?</h2>
                     <div class="field">
                         <p class="control">
-                            <button data-action="login" class="button is-success" disabled>
-                                Login
-                            </button>
+                            <button data-action="go-back" class="button is-success">Go Back</button>
                         </p>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+
+        <!-- L O A D E R -->
+        <template id="tpl-loader">
+            <section class="hero is-fullheight">
+                <div class="hero-body">
+                    <div class="loader"></div>
+                </div>
+            </section>
+        </template>
+
+
+        <!-- N O T I F I C A T I O N  -->
+        <template id="tpl-notification">
+            <div class="container pt-6 has-text-centered">
+                <div data-field="notification" class="notification is-warning">
+                    <button class="delete"></button>
+                </div>
+            </div>
+        </template>
+
+
+        <!-- M O D U L E   C O N T A I N E R -->
+        <template id="tpl-module-container">
+            <div class="columns">
+                <div class="column p-6"></div>
+                <div class="column p-6"></div>
+                <div class="column p-6"></div>
+            </div>
+        </template>
+
+
+        <!-- M O D U L E   I T E M-->
+        <template id="tpl-module-item">
+            <div>
+                <a href="#">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="?" alt="?">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-content">
+                                    <p class="title is-4"></p>
+                                    <p class="subtitle is-6"></p>
+                                </div>
+                            </div>
+
+                            <div class="content">
+                                <div class="tags"></div>
+                                <time datetime=""></time> &ndash;
+                                <time datetime="">?</time>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </template>
+
+
+        <!-- C O U R S E S-->
+        <template id="tpl-courses">
+            <div class="container pt-6 has-text-centered">
+                <div class="notification is-hidden">
+                    <button class="delete"></button>
+                </div>
+                <form>
+                    <div class="table-container">
+                        <table class="table is-hoverable is-fullwidth">
+                            <thead>
+                                <tr>
+                                    <th><abbr title="Preliminary grade">Prelim</abbr></th>
+                                    <th><abbr title="Overall grade">Overall</abbr></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr class="has-background-info-light"></tr>
+                                <tr>
+                                    <th><abbr title="Preliminary grade">Prelim</abbr></th>
+                                    <th><abbr title="Overall grade">Overall</abbr></th>
+                                </tr>
+                            </tfoot>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="level pt-6 pb-6 is-mobile">
+                        <div class="level-left">
+                            <a href="#/modules" class="button is-info" data-action="cancel">Back to Modules</a>
+                        </div>
+                        <div class="level-right">
+                            <button class="button is-success" data-action="save" disabled>Save</button>
+                        </div>
                     </div>
                 </form>
             </div>
-        </div>
-    </template>
+        </template>
 
-    <!-- L O G O U T -->
-    <template id="tpl-logout">
-        <div class="columns is-vcentered" style="height: 100vh">
-            <div class="column is-two-thirds p-0 background">
-                &nbsp;
-            </div>
-            <div class="column pl-6">
-                <h1 class="title">
-                    EQualS <span><i class="fas fa-graduation-cap"></i></span>
-                </h1>
-                <h2 class="subtitle is-5">Bye, hope to see you again! Have a nice Day... </h2>
-                <p> <a href="#/" class="button is-success">Back to Login</a> </p>
-            </div>
-        </div>
-    </template>
 
-    <!-- 4 0 4   -   P A G E   N O T   F O U N D -->
-    <template id="tpl-404">
-        <div class="columns is-vcentered" style="height: 100vh">
-            <div class="column is-two-thirds p-0 background">
-                &nbsp;
-            </div>
-            <div class="column pl-6">
-                <h1 class="title">
-                    404 Not found <span><i class="fas fa-exclamation-triangle"></i></span>
-                </h1>
-                <h2 class="subtitle is-5">Oh no! The desired page could not be found :-(</h2>
-                <p> <button data-action="go-back" class="button is-success">Go Back</button> </p>
-            </div>
-        </div>
-    </template>
-
-    <!-- C A R D C O N T A I N E R -->
-    <template id="tpl-module-container">
-        <div class="columns">
-            <div class="column p-6"></div>
-            <div class="column p-6"></div>
-            <div class="column p-6"></div>
-        </div>
-    </template>
-
-    <!-- C A R D I T E M-->
-    <template id="tpl-module-item">
-        <div>
-            <a href="#">
-                <div class="card">
-                    <div class="card-image">
-                        <figure class="image is-4by3">
-                            <img src="?" alt="?">
-                        </figure>
-                    </div>
-                    <div class="card-content">
-                        <div class="media">
-                            <div class="media-content">
-                                <p class="title is-4"></p>
-                                <p class="subtitle is-6"></p>
-                            </div>
-                        </div>
-
-                        <div class="content">
-                            <div class="tags"></div>
-                            <time datetime=""></time> &ndash;
-                            <time datetime="">?</time>
+        <!-- C O U R S E - S T A T I S T I C S-->
+        <template id="tpl-course-statistics">
+            <div class="container pt-6 has-text-centered">
+                <nav class="level mt-6 mb-6 is-hidden-mobile">
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading"># Students</p>
+                            <p class="title" data-field="students-counter">?</p>
                         </div>
                     </div>
-                </div>
-            </a>
-        </div>
-    </template>
-
-    <!-- L O A D E R -->
-    <template id="tpl-loader">
-        <section class="hero is-fullheight">
-            <div class="hero-body">
-                <div class="loader"></div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading"># Passed</p>
+                            <p class="title" data-field="students-passed">?</p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Average grade</p>
+                            <p class="title" data-field="average-grade">?</p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Best grade</p>
+                            <p class="title" data-field="best-grade">?</p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Worst grade</p>
+                            <p class="title" data-field="worst-grade">?</p>
+                        </div>
+                    </div>
+                </nav>
             </div>
-        </section>
-    </template>
+        </template>
 
-    <!-- C O U R S E S-->
-    <template id="tpl-courses">
-        <div class="container pt-6 has-text-centered">
-            <div class="notification is-hidden">
-                <button class="delete"></button>
-            </div>
-            <form>
-                <div class="table-container">
-                    <table class="table is-hoverable is-fullwidth">
-                        <thead>
-                        <tr>
-                            <th><abbr title="Preliminary grade">Prelim</abbr></th>
-                            <th><abbr title="Overall grade">Overall</abbr></th>
-                        </tr>
-                        </thead>
-                        <tfoot>
-                        <tr class="has-background-info-light">
-                        </tr>
-                        <tr>
-                            <th><abbr title="Preliminary grade">Prelim</abbr></th>
-                            <th><abbr title="Overall grade">Overall</abbr></th>
-                        </tr>
-                        </tfoot>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="level pt-6 pb-6 is-mobile">
-                    <div class="level-left">
-                        <a href="#/modules" class="button is-info" data-action="cancel">Back to Modules</a>
-                    </div>
-                    <div class="level-right">
-                        <button class="button is-success" data-action="save" disabled>Save</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </template>
 
-    <!-- C O U R S E - S T A T I S T I C S-->
-    <template id="tpl-course-statistics">
-        <div class="container pt-6 has-text-centered">
+        <!-- A S S E S S M E N T -->
+        <template id="tpl-assessment">
+            <div class="container pt-6 has-text-centered">
+                <table class="table has-text-left mb-6">
+                    <tr>
+                        <th>Student</th>
+                        <td data-field="student-name"></td>
+                    </tr>
+                    <tr>
+                        <th>Date of birth</th>
+                        <td data-field="date-of-birth"></td>
+                    </tr>
+                    <tr>
+                        <th>Place of origin</th>
+                        <td data-field="place-of-origin"></td>
+                    </tr>
+                    <tr>
+                        <th>ECTS grade</th>
+                        <td data-field="ects-grade"></td>
+                    </tr>
+                </table>
 
-            <nav class="level mt-6 mb-6 is-hidden-mobile">
-                <div class="level-item has-text-centered">
-                    <div>
-                        <p class="heading"># Students</p>
-                        <p class="title" data-field="students-counter">?</p>
-                    </div>
-                </div>
-                <div class="level-item has-text-centered">
-                    <div>
-                        <p class="heading"># Passed</p>
-                        <p class="title" data-field="students-passed">?</p>
-                    </div>
-                </div>
-                <div class="level-item has-text-centered">
-                    <div>
-                        <p class="heading">Average grade</p>
-                        <p class="title" data-field="average-grade">?</p>
-                    </div>
-                </div>
-                <div class="level-item has-text-centered">
-                    <div>
-                        <p class="heading">Best grade</p>
-                        <p class="title" data-field="best-grade">?</p>
-                    </div>
-                </div>
-                <div class="level-item has-text-centered">
-                    <div>
-                        <p class="heading">Worst grade</p>
-                        <p class="title" data-field="worst-grade">?</p>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </template>
-
-    <!-- A S S E S S M E N T -->
-    <template id="tpl-assessment">
-        <div class="container pt-6 has-text-centered">
-            <form>
                 <div class="table-container">
                     <table class="table is-striped is-hoverable is-fullwidth">
                         <thead>
-                        <tr>
-                            <th class="has-text-left">Course</th>
-                            <th>Weight</th>
-                            <th>Success</th>
-                        </tr>
+                            <tr>
+                                <th class="has-text-left">Course</th>
+                                <th>Weight</th>
+                                <th>Success</th>
+                            </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th class="has-text-left">Prelimenary grade</th>
-                                <th></th>
+                                <th>&nbsp;</th>
                                 <th data-field="prelim-grade">?</th>
                             </tr>
                             <tr>
                                 <th class="has-text-left">Overall grade</th>
-                                <th></th>
+                                <th>&nbsp;</th>
                                 <th data-field="overall-grade">?</th>
                             </tr>
                         </tfoot>
-                        <tbody>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
 
@@ -290,80 +317,71 @@
                         <a href="#/modules" class="button is-info" data-action="cancel">Back to Modules</a>
                     </div>
                 </div>
-            </form>
-        </div>
-    </template>
+            </div>
+        </template>
 
-    <!-- N O T I F Y -->
-    <template id="tpl-notify">
-        <section class="hero is-medium">
-            <div class="hero-body">
-                <div class="container">
-                    <form>
-                    <div class="field">
-                        <label class="label">Professor</label>
-                        <div class="control">
-                            <label>
-                                <input class="input" type="text" value="?" name="professor" disabled>
-                            </label>
-                        </div>
-                    </div>
 
-                    <div class="field">
-                        <label class="label">Email</label>
-                        <div class="control has-icons-left has-icons-right">
-                            <label>
-                                <input class="input" type="email" value="" name="email" disabled>
-                            </label>
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-envelope"></i>
-                            </span>
-                        </div>
-                    </div>
+        <!-- N O T I F Y -->
+        <template id="tpl-notify">
+            <section class="hero is-medium">
+                <div class="hero-body">
+                    <div class="container">
+                        <form>
+                            <div class="field">
+                                <label for="professor" class="label">Professor</label>
+                                <div class="control">
+                                    <input class="input" type="text" value="?" name="professor" id="professor" disabled>
+                                </div>
+                            </div>
 
-                    <div class="field">
-                        <label class="label">Subject</label>
-                        <div class="control">
-                            <label>
-                                <input class="input" type="text" name="subject" value="Missing Grades">
-                            </label>
-                        </div>
-                    </div>
+                            <div class="field">
+                                <label for="email" class="label">Email</label>
+                                <div class="control has-icons-left has-icons-right">
+                                    <input class="input" type="email" value="" name="email" id="email" disabled>
+                                    <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+                                </div>
+                            </div>
 
-                    <div class="field">
-                        <label class="label">Message</label>
-                        <div class="control">
-                            <label>
-                                <textarea class="textarea" name="message" placeholder="Textarea"></textarea>
-                            </label>
-                        </div>
+                            <div class="field">
+                                <label for="subject" class="label">Subject</label>
+                                <div class="control">
+                                    <input class="input" type="text" name="subject" id="subject" value="Missing Grades">
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label for="message" class="label">Message</label>
+                                <div class="control">
+                                    <textarea class="textarea" name="message" id="message" placeholder="Textarea"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="field is-grouped">
+                                <div class="control">
+                                    <button class="button is-success" data-action="save">Submit</button>
+                                </div>
+                                <div class="control">
+                                    <button class="button is-info" data-action="cancel">Cancel</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="field is-grouped">
-                        <div class="control">
-                            <button class="button is-success" data-action="save">Submit</button>
-                        </div>
-                        <div class="control">
-                            <button class="button is-info" data-action="cancel">Cancel</button>
-                        </div>
-                    </div>
-                    </form>
+                </div>
+            </section>
+        </template>
+
+
+        <!-- F I L T E R -->
+        <template id="tpl-filter">
+            <div class="container pt-6 has-text-centered">
+                <button class="button is-danger" data-action="missing-grades">Missing Grades</button>
+                <div class="select">
+                    <select>
+                        <option value="all" selected>All Semesters</option>
+                    </select>
                 </div>
             </div>
-        </section>
-    </template>
+        </template>
 
-
-    <!-- F I L T E R -->
-    <template id="tpl-filter">
-    <div class="container pt-6 has-text-centered">
-        <button class="button is-danger" data-action="missing-grades">Missing Grades</button>
-        <div class="select">
-            <select>
-                <option value="all" selected>All Semesters</option>
-            </select>
-        </div>
-    </div>
-    </template>
-
-</body>
+    </body>
 </html>
