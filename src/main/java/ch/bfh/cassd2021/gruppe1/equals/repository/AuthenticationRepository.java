@@ -7,11 +7,23 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+/**
+ * Class for accessing DB to check authentication
+ *
+ * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
+ * @version 1.0
+ */
 public class AuthenticationRepository {
 
     final Logger logger = LoggerFactory.getLogger(AuthenticationRepository.class);
 
+    /**
+     * Checks wether credentials are valid and return the personId
+     * Returns -1 if credentials are invalid
+     * @param username the username
+     * @param password the password
+     * @return id of authenticated person
+     */
     public int authenticateUser(String username, String password) {
         logger.debug("Entering authenticateUser()...");
         int personId = -1;
@@ -34,6 +46,12 @@ public class AuthenticationRepository {
         return personId;
     }
 
+    /**
+     * Checks wether person is head of module or professor of course
+     * @param courseId the courseId
+     * @param personId the personID
+     * @return true if person is head of module or professor of course
+     */
     public boolean isAuthorized(int courseId, int personId) {
         String query = "SELECT c.id FROM Course c" +
             " INNER JOIN Module m on c.moduleId = m.id" +

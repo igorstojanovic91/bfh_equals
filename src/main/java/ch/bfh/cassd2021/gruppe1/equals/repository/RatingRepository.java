@@ -9,12 +9,22 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.stream.IntStream;
 
+/**
+ * Class for accessing DB to update or set Ratings
+ *
+ * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
+ * @version 1.0
+ */
 public class RatingRepository {
 
     final Logger logger = LoggerFactory.getLogger(RatingRepository.class);
 
     Connection connection = null;
 
+    /**
+     * updates the ratings on the db if input is valid
+     * @param ratings a list of Ratings
+     */
     public void updateRatings(Rating[] ratings) {
 
         String updateQuery = "UPDATE Rating SET successRate=?, version=?"
@@ -60,7 +70,10 @@ public class RatingRepository {
 
     }
 
-
+    /**
+     * Inserts the ratings on the db if input is valid
+     * @param ratings a list of Ratings
+     */
     public void insertRatings(Rating[] ratings) {
         String insertQuery = "INSERT INTO Rating VALUES (?, ?, ?, ?)";
 

@@ -14,11 +14,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Class for accessing DB to get modules for a person
+ *
+ * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
+ * @version 1.0
+ */
 public class ModuleRepository {
 
     final Logger logger = LoggerFactory.getLogger(ModuleRepository.class);
 
+    /**
+     * Gets a list of modules if the person has a role in the module.
+     *
+     * @param personId the personId
+     * @return a list of modules where the person is registred
+     */
     public List<Module> getModulesForPerson(int personId) {
         logger.debug("Entering getModulesForPerson()...");
         List<Module> moduleList = new ArrayList<>();
@@ -69,6 +80,13 @@ public class ModuleRepository {
         return moduleList;
     }
 
+    /**
+     * Gets the StudentCourseRating list for the module if the person has a role on the module
+     *
+     * @param moduleId the moduleId
+     * @param personId the personId
+     * @return a list of StudentCourseRatings
+     */
     public List<StudentCourseRating> getSuccessRateOverviewForModule(int moduleId, int personId) {
         logger.debug("Entering getSuccessRateOverviewForModule()...");
         List<StudentCourseRating> studentCourseRatingList = new ArrayList<>();
@@ -84,14 +102,7 @@ public class ModuleRepository {
             + " ORDER BY p.lastName asc, p.firstName asc, re.studentId asc, c.id asc";
 
         try (Connection connection = EqualsDataSource.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, moduleId);
-            statement.setInt(2, personId);
-            statement.setInt(3, personId);
-            statement.setInt(4, personId);
-            statement.setInt(5, personId);
-
-            ResultSet resultSet = statement.executeQuery();
+            ResultSet resultSet = CourseRepository.getResultSet(moduleId, personId, query, connection);
 
             fillStudentCourseRatingList(studentCourseRatingList, resultSet);
 
@@ -103,6 +114,13 @@ public class ModuleRepository {
         return studentCourseRatingList;
     }
 
+    /**
+     * Gets a list of moduleId's which indicates that this module at least on course on the module has missing success
+     * rate.
+     *
+     * @param personId the personId
+     * @return a list of moduleId where the person is head, professor or assistant
+     */
     public List<Integer> getModulesWithoutGrades(int personId) {
         logger.debug("Entering getModulesWithoutGrades()...");
         List<Integer> integerList = new ArrayList<>();
