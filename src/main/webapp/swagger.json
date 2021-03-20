@@ -1,547 +1,530 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "description": "EQualS (Electronic Qualification System). CAS Software Development HS20. Group 1: Gerber, Leupi, Löffel, Stojanovic",
-    "version": "1.0.0",
-    "title": "EQualS",
-    "license": {
-      "name": "Apache 2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-    }
-  },
-  "host": "localhost:8080",
-  "basePath": "/equals_war/api",
-  "tags": [
-    {
-      "name": "persons",
-      "description": "Getting user information"
+    "swagger": "2.0",
+    "info": {
+        "description": "EQualS (Electronic Qualification System). CAS Software Development HS20. Group 1: Gerber, Leupi, Löffel, Stojanovic",
+        "version": "1.0.0",
+        "title": "EQualS",
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
     },
-    {
-      "name": "modules",
-      "description": "Getting information about assigned moduels"
-    },
-    {
-      "name": "courses",
-      "description": "Getting information about courses"
-    },
-    {
-      "name": "ratings",
-      "description": "Setting or updating grades"
-    }
-  ],
-  "paths": {
-    "/persons": {
-      "get": {
-        "tags": [
-          "persons"
-        ],
-        "summary": "Get user information",
-        "description": "Get user information of the authenticated user",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "Information about user sent",
-            "schema": {
-              "$ref": "#/definitions/Persons"
+    "host": "localhost:8080",
+    "basePath": "/equals_war/api",
+    "tags": [
+        {
+            "name": "persons",
+            "description": "Information about user/person"
+        },
+        {
+            "name": "modules",
+            "description": "Information about enrolled modules"
+        },
+        {
+            "name": "courses",
+            "description": "Information about courses"
+        },
+        {
+            "name": "ratings",
+            "description": "Operations about grades"
+        }
+    ],
+    "paths": {
+        "/persons": {
+            "get": {
+                "tags": [
+                    "persons"
+                ],
+                "summary": "Get authenticated user",
+                "description": "Get information about the authenticated user/person",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Person"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "406": {
+                        "description": "Not Acceptable"
+                    }
+                },
+                "security": [
+                    {
+                        "basic_auth": []
+                    }
+                ]
             }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "406": {
-            "description": "Not Acceptable"
-          }
         },
-        "security": [
-          {
-            "basic_auth": []
-          }
-        ]
-      }
-    },
-    "/persons/{id}": {
-      "get": {
-        "tags": [
-          "persons"
-        ],
-        "summary": "Find user by Id",
-        "description": "Returns a single user",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of user to return",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Information about user sent",
-            "schema": {
-              "$ref": "#/definitions/Persons"
+        "/persons/{id}": {
+            "get": {
+                "tags": [
+                    "persons"
+                ],
+                "summary": "Find user by ID",
+                "description": "Returns a single user/person",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of user/person to return",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Person"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "406": {
+                        "description": "Not Acceptable"
+                    }
+                },
+                "security": [
+                    {
+                        "basic_auth": []
+                    }
+                ]
             }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "User not found"
-          },
-          "406": {
-            "description": "Not Acceptable"
-          }
         },
-        "security": [
-          {
-            "basic_auth": []
-          }
-        ]
-      }
-    },
-    "/modules": {
-      "get": {
-        "tags": [
-          "modules"
-        ],
-        "summary": "Get subscribed modules",
-        "description": "Get subscribed modules of the authenticated user",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "Subscribed modules sent",
-            "schema": {
-              "$ref": "#/definitions/Modules"
+        "/modules": {
+            "get": {
+                "tags": [
+                    "modules"
+                ],
+                "summary": "Get enrolled modules",
+                "description": "Get enrolled modules of the authenticated user",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ModuleList"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "No modules found"
+                    },
+                    "406": {
+                        "description": "Not Acceptable"
+                    }
+                },
+                "security": [
+                    {
+                        "basic_auth": []
+                    }
+                ]
             }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "406": {
-            "description": "Not Acceptable"
-          }
         },
-        "security": [
-          {
-            "basic_auth": []
-          }
-        ]
-      }
-    },
-    "/modules/overall/{id}": {
-      "get": {
-        "tags": [
-          "modules"
-        ],
-        "summary": "Get module with respective grades and courses by id",
-        "description": "Returns respective grades and courses by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of module to return",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Information about module sent",
-            "schema": {
-              "$ref": "#/definitions/CourseRatings"
+        "/modules/overall/{id}": {
+            "get": {
+                "tags": [
+                    "modules"
+                ],
+                "summary": "Get the students of a module with the corresponding course grades",
+                "description": "Returns the students of a module with the corresponding course grades",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of module to return",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/StudentCourseRating"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "No module found"
+                    },
+                    "406": {
+                        "description": "Not Acceptable"
+                    }
+                },
+                "security": [
+                    {
+                        "basic_auth": []
+                    }
+                ]
             }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Id invalid"
-          },
-          "406": {
-            "description": "Not Acceptable"
-          }
         },
-        "security": [
-          {
-            "basic_auth": []
-          }
-        ]
-      }
-    },
-    "/courses/{moduleId}": {
-      "get": {
-        "tags": [
-          "courses"
-        ],
-        "summary": "Gets the list of courses in respective module",
-        "description": "List of courses in respective module",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "moduleId",
-            "in": "path",
-            "description": "ID of module",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of courses sent",
-            "schema": {
-              "$ref": "#/definitions/CourseList"
+        "/courses/{moduleId}": {
+            "get": {
+                "tags": [
+                    "courses"
+                ],
+                "summary": "Get the courses of a module",
+                "description": "Returns the courses of a specific module",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "moduleId",
+                        "in": "path",
+                        "description": "ID of module",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/CourseList"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "No course found"
+                    },
+                    "406": {
+                        "description": "Not Acceptable"
+                    }
+                },
+                "security": [
+                    {
+                        "basic_auth": []
+                    }
+                ]
             }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "ModuleId invalid"
-          },
-          "406": {
-            "description": "Not Acceptable"
-          }
-        }
-      }
-    },
-    "/ratings": {
-      "post": {
-        "tags": [
-          "ratings"
-        ],
-        "summary": "Set grades of students and courses",
-        "description": "Saves grades",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Created Rating Object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/RatingObject"
+        },
+        "/ratings": {
+            "post": {
+                "tags": [
+                    "ratings"
+                ],
+                "summary": "Add students course grades",
+                "description": "Adds students course grades. The authenticated user must have the appropriate authorization.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Array of Rating objects",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RatingList"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successfully created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "415": {
+                        "description": "Unsupported Media Type"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "ratings"
+                ],
+                "summary": "Update students course grades",
+                "description": "Updates students course grades",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Array of Rating objects",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RatingList"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "415": {
+                        "description": "Unsupported Media Type"
+                    }
+                }
             }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "successful created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "415": {
-            "description": "Unsupported Media Type"
-          }
         }
-      },
-      "put": {
-        "tags": [
-          "ratings"
-        ],
-        "summary": "Update grades of students and courses",
-        "description": "Update grades",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Updating Rating Object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/RatingObject"
+    },
+    "securityDefinitions": {
+        "basic_auth": {
+            "type": "basic"
+        }
+    },
+    "definitions": {
+        "Course": {
+            "type": "object",
+            "properties": {
+                "courseId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Java"
+                },
+                "shortName": {
+                    "type": "string",
+                    "example": "Java"
+                },
+                "moduleId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "professorId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "weight": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 1.6
+                }
             }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "no content"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "415": {
-            "description": "Unsupported Media Type"
-          }
-        }
-      }
-    }
-  },
-  "securityDefinitions": {
-    "basic_auth": {
-      "type": "basic"
-    }
-  },
-  "definitions": {
-    "Persons": {
-      "type": "object",
-      "properties": {
-        "personId": {
-          "type": "integer",
-          "format": "int64"
         },
-        "lastName": {
-          "type": "string",
-          "example": "Blumenthal"
+        "CourseRating": {
+            "type": "object",
+            "properties": {
+                "course": {
+                    "$ref": "#/definitions/Course"
+                },
+                "rating": {
+                    "$ref": "#/definitions/Rating"
+                },
+                "courseWeight": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "courseSuccessRate": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
         },
-        "firstName": {
-          "type": "string",
-          "example": "Kathrin"
+        "Module": {
+            "type": "object",
+            "properties": {
+                "moduleId": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 33
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Software Development"
+                },
+                "shortName": {
+                    "type": "string",
+                    "example": "SD-HS20"
+                },
+                "startDate": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "endDate": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "headId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "assistantId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "role": {
+                    "type": "string",
+                    "description": "Role in enrolled module",
+                    "enum": [
+                        "HEAD",
+                        "PROFESSOR",
+                        "ASSISTANT",
+                        "STUDENT"
+                    ]
+                },
+                "hasOpenGrades": {
+                    "type": "boolean",
+                    "description": "A flag indicating whether all grades of this module are captured"
+                }
+            }
         },
-        "dateOfBirth": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "int64"
-          }
+        "Person": {
+            "type": "object",
+            "properties": {
+                "personId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "lastName": {
+                    "type": "string",
+                    "example": "Blumenthal"
+                },
+                "firstName": {
+                    "type": "string",
+                    "example": "Kathrin"
+                },
+                "dateOfBirth": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "placeOfOrigin": {
+                    "type": "string",
+                    "example": "Schwyz"
+                },
+                "sex": {
+                    "type": "string",
+                    "example": "w"
+                },
+                "userName": {
+                    "type": "string",
+                    "example": "blk1"
+                }
+            }
         },
-        "placeOfOrigin": {
-          "type": "string",
-          "example": "Schwyz"
+        "Rating": {
+            "type": "object",
+            "properties": {
+                "studentId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "courseId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "successRate": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "version": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
         },
-        "sex": {
-          "type": "string",
-          "example": "w"
-        },
-        "userName": {
-          "type": "string",
-          "example": "blk1"
-        }
-      }
-    },
-    "Modules": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Module"
-      }
-    },
-    "Module": {
-      "type": "object",
-      "properties": {
-        "moduleId": {
-          "type": "integer",
-          "format": "int64",
-          "example": 33
-        },
-        "name": {
-          "type": "string",
-          "example": "Software Development"
-        },
-        "shortName": {
-          "type": "string",
-          "example": "SD-HS20"
-        },
-        "startDate": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "int64"
-          }
-        },
-        "endDate": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "int64"
-          }
-        },
-        "headId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "assistantId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "role": {
-          "type": "string",
-          "description": "role in the respective module",
-          "enum": [
-            "HEAD",
-            "PROFESSOR",
-            "ASSISTANT",
-            "STUDENT"
-          ]
-        },
-        "hasOpenGrades": {
-          "type": "boolean"
-        }
-      }
-    },
-    "Course": {
-      "type": "object",
-      "properties": {
-        "courseId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "name": {
-          "type": "string",
-          "example": "Java"
-        },
-        "shortName": {
-          "type": "string",
-          "example": "Java"
-        },
-        "moduleId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "professorId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "weight": {
-          "type": "number",
-          "format": "double",
-          "example": 1.6
-        }
-      }
-    },
-    "Rating": {
-      "type": "object",
-      "properties": {
-        "studentId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "courseId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "successRate": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "version": {
-          "type": "integer",
-          "format": "int64"
-        }
-      }
-    },
-    "CourseRating": {
-      "type": "object",
-      "properties": {
-        "course": {
-          "$ref": "#/definitions/Course"
-        },
-        "rating": {
-          "$ref": "#/definitions/Rating"
-        },
-        "courseWeight": {
-          "type": "number",
-          "format": "double"
-        },
-        "courseSuccessRate": {
-          "type": "integer",
-          "format": "int64"
-        }
-      }
-    },
-    "CourseRatings": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "studentId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string",
-            "example": "Abacus Stefan"
-          },
-          "courseRatings": {
+        "StudentCourseRating": {
             "type": "array",
             "items": {
-              "$ref": "#/definitions/CourseRating"
+                "type": "object",
+                "properties": {
+                    "studentId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Abacus Stefan"
+                    },
+                    "courseRatings": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/CourseRating"
+                        }
+                    },
+                    "preliminaryGrade": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "overallGrade": {
+                        "type": "number",
+                        "format": "double"
+                    }
+                }
             }
-          },
-          "preliminaryGrade": {
-            "type": "number",
-            "format": "double"
-          },
-          "overallGrade": {
-            "type": "number",
-            "format": "double"
-          }
+        },
+        "CourseList": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Course"
+            }
+        },
+        "ModuleList": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Module"
+            }
+        },
+        "RatingList": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Rating"
+            }
         }
-      }
-    },
-    "CourseList": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "courseId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string",
-            "example": "GUI / Ergonomie"
-          },
-          "shortName": {
-            "type": "string",
-            "example": "GUI"
-          },
-          "moduleId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "professorId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "weight": {
-            "type": "number",
-            "format": "double"
-          }
-        }
-      }
-    },
-    "RatingObject": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "courseId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "studentId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "successRate": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "version": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      }
     }
-  }
 }
