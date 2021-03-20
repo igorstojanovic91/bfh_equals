@@ -18,4 +18,5 @@ A collaboration by:
 
 ## JavaDoc
 
-Generate JavaDoc files with `mvn javadoc:javadoc`
+* Generate JavaDoc files with `mvn javadoc:javadoc`
+* Find the generated files at `target / site / apidocs`
