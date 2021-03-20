@@ -14,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+
 /**
  * Class for accessing DB to get modules for a person
  *
@@ -28,7 +30,7 @@ public class ModuleRepository {
      * Gets a list of modules if the person has a role in the module.
      *
      * @param personId the personId
-     * @return a list of modules where the person is registred
+     * @return a list of modules where the person is enrolled
      */
     public List<Module> getModulesForPerson(int personId) {
         logger.debug("Entering getModulesForPerson()...");
@@ -81,11 +83,11 @@ public class ModuleRepository {
     }
 
     /**
-     * Gets the StudentCourseRating list for the module if the person has a role on the module
+     * Gets a list of students of a module with the corresponding course grades if the person has a role in the module
      *
      * @param moduleId the moduleId
      * @param personId the personId
-     * @return a list of StudentCourseRatings
+     * @return a list of students of a module with the corresponding course grades
      */
     public List<StudentCourseRating> getSuccessRateOverviewForModule(int moduleId, int personId) {
         logger.debug("Entering getSuccessRateOverviewForModule()...");
@@ -115,11 +117,10 @@ public class ModuleRepository {
     }
 
     /**
-     * Gets a list of moduleId's which indicates that this module at least on course on the module has missing success
-     * rate.
+     * Gets a list of moduleIds where not all grades are recorded yet
      *
      * @param personId the personId
-     * @return a list of moduleId where the person is head, professor or assistant
+     * @return a list of moduleIds with missing grades
      */
     public List<Integer> getModulesWithoutGrades(int personId) {
         logger.debug("Entering getModulesWithoutGrades()...");

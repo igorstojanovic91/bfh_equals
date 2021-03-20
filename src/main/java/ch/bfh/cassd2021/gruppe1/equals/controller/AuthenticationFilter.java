@@ -10,6 +10,8 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Base64;
+
+
 /**
  * Basic Authentication Filter for REST API.
  * Listens to "/api/*" path.
@@ -29,10 +31,12 @@ public class AuthenticationFilter extends HttpFilter {
     }
 
     /**
-     * Checks wether the request is valid and if it contains a valid authentication header
-     * @param request the http request
+     * Authenticates a user with Basic Authentication.
+     * Checks whether the request is valid and if it contains a valid authentication header.
+     *
+     * @param request  the http request
      * @param response the http response
-     * @param chain the filter chain
+     * @param chain    the filter chain
      */
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) {
         try {

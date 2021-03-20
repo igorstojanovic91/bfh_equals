@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+
 /**
  * Class for accessing DB to get courses for module.
  *
@@ -21,7 +23,8 @@ public class CourseRepository {
     final Logger logger = LoggerFactory.getLogger(CourseRepository.class);
 
     /**
-     * Gets all courese of a module where the person has a role.
+     * Gets all courses of a module where the person has a role.
+     *
      * @param moduleId the moduleId
      * @param personId the personId
      * @return List of courses of the module

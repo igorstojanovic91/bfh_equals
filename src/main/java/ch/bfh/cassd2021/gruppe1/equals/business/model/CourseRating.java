@@ -1,7 +1,7 @@
 package ch.bfh.cassd2021.gruppe1.equals.business.model;
 
 /**
- * The courseRating class implements a course with the corresponding rating
+ * The CourseRating class implements a course with the corresponding rating
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
  * @version 1.0
@@ -32,11 +32,11 @@ public class CourseRating {
         this.rating = rating;
     }
 
-    public int getCourseSuccessRate(){
+    public int getCourseSuccessRate() {
         return this.rating.getSuccessRate();
     }
 
-    public double getCourseWeight(){
+    public double getCourseWeight() {
         return this.course.getWeight();
     }
 

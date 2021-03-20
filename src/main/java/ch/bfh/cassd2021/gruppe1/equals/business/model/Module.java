@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.sql.Date;
 
 /**
- * The module class implements a module
+ * The Module class implements a module
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
  * @version 1.0
@@ -95,15 +95,15 @@ public class Module {
     @Override
     public String toString() {
         return "Module{" +
-                "moduleId=" + moduleId +
-                ", name='" + name + '\'' +
-                ", shortName='" + shortName + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", headId=" + headId +
-                ", assistantId=" + assistantId +
-                ", role=" + role +
-                ", hasOpenGrades=" + hasOpenGrades +
-                '}';
+            "moduleId=" + moduleId +
+            ", name='" + name + '\'' +
+            ", shortName='" + shortName + '\'' +
+            ", startDate=" + startDate +
+            ", endDate=" + endDate +
+            ", headId=" + headId +
+            ", assistantId=" + assistantId +
+            ", role=" + role +
+            ", hasOpenGrades=" + hasOpenGrades +
+            '}';
     }
 }

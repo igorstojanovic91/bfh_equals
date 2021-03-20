@@ -1,4 +1,6 @@
 package ch.bfh.cassd2021.gruppe1.equals.repository;
+
+
 /**
  * The exception RepositoryException is thrown when reading the database has failed.
  *

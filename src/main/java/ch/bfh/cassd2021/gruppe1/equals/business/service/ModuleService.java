@@ -6,6 +6,7 @@ import ch.bfh.cassd2021.gruppe1.equals.business.model.StudentCourseRating;
 import ch.bfh.cassd2021.gruppe1.equals.repository.ModuleRepository;
 
 import java.util.List;
+
 /**
  * The ModuleService class implements the service layer for modules
  *
@@ -21,7 +22,8 @@ public class ModuleService {
 
     /**
      * Returns a list of modules
-     * If person is not of role Student, for each module check for open grades is called and added to the module
+     * If person is not of role Student, a check is made for each module to see if any grades are outstanding
+     *
      * @param personId the personId
      * @return a list of Module
      */
@@ -43,13 +45,14 @@ public class ModuleService {
      * Returns a list of StudentCourseRatings
      * After getting the list, all preliminary and overall grades are calculated and added to the corresponding
      * StudentCourseRating object
+     *
      * @param moduleId the moduleId
      * @param personId the personId
      * @return a list of StudentCourseRating
      */
     public List<StudentCourseRating> getSuccessRateOverviewForModule(int moduleId, int personId) {
         List<StudentCourseRating> studentCourseRatingList = moduleRepository.getSuccessRateOverviewForModule(moduleId, personId);
-        for(StudentCourseRating studentCourseRating : studentCourseRatingList){
+        for (StudentCourseRating studentCourseRating : studentCourseRatingList) {
             studentCourseRating.calculateGrades();
         }
         return studentCourseRatingList;

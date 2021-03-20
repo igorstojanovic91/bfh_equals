@@ -7,6 +7,8 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+
 /**
  * The CorsFilter class implements the CORS-Filter
  *
@@ -15,16 +17,18 @@ import java.io.IOException;
  */
 @WebFilter(urlPatterns = "/api/*")
 public class CorsFilter extends HttpFilter {
+
     /**
      * Implements the cross-origin resource sharing
-     * @param request the http request
+     *
+     * @param request  the http request
      * @param response the http response
-     * @param chain the filter chain
-     * @throws IOException is thrown when filtering on chain went wrong
+     * @param chain    the filter chain
+     * @throws IOException      is thrown when filtering on chain went wrong
      * @throws ServletException is thrown when filtering on chain went wrong
      */
     @Override
-    public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)  throws IOException, ServletException {
+    public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String origin = request.getHeader("Origin");
         response.addHeader("Access-Control-Allow-Origin", origin == null ? "*" : origin);
         response.addHeader("Access-Control-Allow-Credentials", "true");

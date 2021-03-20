@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+
 /**
  * Class for accessing DB to check authentication
  *
@@ -18,8 +20,10 @@ public class AuthenticationRepository {
     final Logger logger = LoggerFactory.getLogger(AuthenticationRepository.class);
 
     /**
-     * Checks wether credentials are valid and return the personId
-     * Returns -1 if credentials are invalid
+     * Authenticates a user.
+     * Returns the corresponding personId if authentication is successful.
+     * eturns -1 otherwise.
+     *
      * @param username the username
      * @param password the password
      * @return id of authenticated person
@@ -47,10 +51,11 @@ public class AuthenticationRepository {
     }
 
     /**
-     * Checks wether person is head of module or professor of course
+     * Checks whether a person is either head of module or professor in a given course
+     *
      * @param courseId the courseId
      * @param personId the personID
-     * @return true if person is head of module or professor of course
+     * @return true if person is head of module or professor in course
      */
     public boolean isAuthorized(int courseId, int personId) {
         String query = "SELECT c.id FROM Course c" +

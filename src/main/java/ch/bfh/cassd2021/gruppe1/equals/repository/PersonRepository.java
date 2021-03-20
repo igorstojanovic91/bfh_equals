@@ -9,6 +9,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+
 /**
  * Class for accessing DB to get Person
  *
@@ -20,7 +22,7 @@ public class PersonRepository {
     final Logger logger = LoggerFactory.getLogger(PersonRepository.class);
 
     /**
-     * Gets a Person if the personId is found on the db.
+     * Gets a Person if the personId is found
      *
      * @param personId the personId
      * @return a Person object

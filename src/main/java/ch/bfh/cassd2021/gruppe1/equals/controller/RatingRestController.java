@@ -12,8 +12,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+
 /**
- * Sets or updates the rating via REST API.
+ * Adds or updates ratings via REST API.
  * Listens to "/api/ratings" path.
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
@@ -36,8 +38,9 @@ public class RatingRestController extends HttpServlet {
     }
 
     /**
-     * Updates the rating object
-     * @param request the http request
+     * Updates ratings
+     *
+     * @param request  the http request
      * @param response the http response
      */
     @Override
@@ -71,9 +74,11 @@ public class RatingRestController extends HttpServlet {
         }
 
     }
+
     /**
-     * Sets the rating object
-     * @param request the http request
+     * Adds ratings
+     *
+     * @param request  the http request
      * @param response the http response
      */
     @Override

@@ -19,7 +19,8 @@ public class CourseService {
     }
 
     /**
-     * Returns a list of Courses for the respective module and person
+     * Returns a list of courses for a specific module and person
+     *
      * @param moduleId the moduleId
      * @param personId the personId
      * @return a list of Courses

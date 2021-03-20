@@ -18,6 +18,7 @@ public class AuthenticationService {
     /**
      * Returns the personId if credentials are valid
      * Returns -1 if credentials are invalid
+     *
      * @param username the username
      * @param password the password
      * @return personId

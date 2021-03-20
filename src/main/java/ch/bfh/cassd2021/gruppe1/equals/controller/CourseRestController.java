@@ -15,8 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+
+
 /**
- * Returns a courseList via REST API.
+ * Returns a list of courses via REST API.
  * Listens to "/api/courses/*" path.
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
@@ -40,8 +42,9 @@ public class CourseRestController extends HttpServlet {
     }
 
     /**
-     * Get a courseList
-     * @param request the http request
+     * Get a list of courses
+     *
+     * @param request  the http request
      * @param response the http response
      * @throws IOException is thrown when JSON-Object can't be created
      */

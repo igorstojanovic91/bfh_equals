@@ -14,8 +14,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+
 /**
- * Returns person via REST API.
+ * Returns a person via REST API.
  * Listens to "/api/persons/*" path.
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
@@ -40,8 +42,9 @@ public class PersonRestController extends HttpServlet {
 
     /**
      * Returns a person Object if request is valid.
+     * Finds a user by ID or returns the authenticated user if no id is present.
      *
-     * @param request the http request
+     * @param request  the http request
      * @param response the http response
      * @throws IOException is thrown when JSON-Object can't be created
      */

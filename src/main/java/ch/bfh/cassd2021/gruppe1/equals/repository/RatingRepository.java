@@ -9,8 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.stream.IntStream;
 
+
 /**
- * Class for accessing DB to update or set Ratings
+ * Class for accessing DB to update or add Ratings
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
  * @version 1.0
@@ -22,14 +23,14 @@ public class RatingRepository {
     Connection connection = null;
 
     /**
-     * updates the ratings on the db if input is valid
-     * @param ratings a list of Ratings
+     * Updates ratings if input is valid
+     *
+     * @param ratings an array of Rating objects
      */
     public void updateRatings(Rating[] ratings) {
 
         String updateQuery = "UPDATE Rating SET successRate=?, version=?"
             + " WHERE studentId=? AND courseId=? AND version=?";
-
 
         try {
             logger.debug("ENTERING DB QUEUE");
@@ -66,13 +67,12 @@ public class RatingRepository {
                 throwables.printStackTrace();
             }
         }
-
-
     }
 
     /**
-     * Inserts the ratings on the db if input is valid
-     * @param ratings a list of Ratings
+     * Inserts ratings if input is valid
+     *
+     * @param ratings an array of Rating objects
      */
     public void insertRatings(Rating[] ratings) {
         String insertQuery = "INSERT INTO Rating VALUES (?, ?, ?, ?)";

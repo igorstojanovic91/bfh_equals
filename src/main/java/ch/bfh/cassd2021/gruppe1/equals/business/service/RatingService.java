@@ -17,16 +17,18 @@ public class RatingService {
     }
 
     /**
-     * Updates the ratings
-     * @param ratings a list of Ratings
+     * Updates ratings
+     *
+     * @param ratings an array of Rating objects
      */
     public void updateRatings(Rating[] ratings) {
         ratingRepository.updateRatings(ratings);
     }
 
     /**
-     * Inserts the ratings
-     * @param ratings a list of Ratings
+     * Inserts ratings
+     *
+     * @param ratings an array of Rating objects
      */
     public void insertRatings(Rating[] ratings) {
         ratingRepository.insertRatings(ratings);
