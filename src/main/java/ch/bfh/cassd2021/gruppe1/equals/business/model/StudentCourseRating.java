@@ -2,13 +2,18 @@ package ch.bfh.cassd2021.gruppe1.equals.business.model;
 
 import java.util.List;
 
+/**
+ * The studentCourseRating class implements the grades of a student with a list of courseRatings
+ *
+ * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
+ * @version 1.0
+ */
 public class StudentCourseRating {
 
     private int studentId;
     private String name;
     private List<CourseRating> courseRating;
     private int preliminaryGrade;
-
     private int overallGrade;
 
     public int getStudentId() {
@@ -43,6 +48,9 @@ public class StudentCourseRating {
         return overallGrade;
     }
 
+    /**
+     * This method calculates the preliminary and overallGrades of a module
+     */
     public void calculateGrades() {
         double sumOfOverallWeight = 0;
         double overallGrades = 0;

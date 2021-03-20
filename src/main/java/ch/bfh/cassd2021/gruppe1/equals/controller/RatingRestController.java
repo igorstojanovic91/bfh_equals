@@ -46,6 +46,7 @@ public class RatingRestController extends HttpServlet {
                     ratingService.updateRatings(ratings);
                     response.setStatus(HttpServletResponse.SC_NO_CONTENT);
                 } else {
+                    logger.debug("User not allowed to modify ratings");
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 }
             } catch (Exception e) {
@@ -77,6 +78,7 @@ public class RatingRestController extends HttpServlet {
                     ratingService.insertRatings(ratings);
                     response.setStatus(HttpServletResponse.SC_CREATED);
                 } else {
+                    logger.debug("User not allowed to set ratings");
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 }
 

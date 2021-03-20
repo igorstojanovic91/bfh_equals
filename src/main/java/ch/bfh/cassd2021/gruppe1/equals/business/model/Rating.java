@@ -1,5 +1,11 @@
 package ch.bfh.cassd2021.gruppe1.equals.business.model;
 
+/**
+ * The rating class implements a rating where the sucessRate of a student on the course is stored
+ *
+ * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
+ * @version 1.0
+ */
 public class Rating {
     private int studentId;
     private int courseId;
