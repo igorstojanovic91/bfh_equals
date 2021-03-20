@@ -15,7 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-
+/**
+ * Returns a courseList via REST API.
+ * Listens to "/api/courses/*" path.
+ *
+ * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
+ * @version 1.0
+ */
 @WebServlet(urlPatterns = "/api/courses/*")
 public class CourseRestController extends HttpServlet {
     private static final String ACCEPT_TYPE = "application/json";
@@ -33,6 +39,12 @@ public class CourseRestController extends HttpServlet {
         courseService = new CourseService();
     }
 
+    /**
+     * Get a courseList
+     * @param request the http request
+     * @param response the http response
+     * @throws IOException is thrown when JSON-Object can't be created
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         logger.debug("Entering /api/courses");

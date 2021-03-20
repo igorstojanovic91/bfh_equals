@@ -10,7 +10,13 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Base64;
-
+/**
+ * Basic Authentication Filter for REST API.
+ * Listens to "/api/*" path.
+ *
+ * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
+ * @version 1.0
+ */
 @WebFilter(urlPatterns = "/api/*")
 public class AuthenticationFilter extends HttpFilter {
     private static final String JSON_MEDIA_TYPE = "application/json; charset=UTF-8";
@@ -22,6 +28,12 @@ public class AuthenticationFilter extends HttpFilter {
         authenticationService = new AuthenticationService();
     }
 
+    /**
+     * Checks wether the request is valid and if it contains a valid authentication header
+     * @param request the http request
+     * @param response the http response
+     * @param chain the filter chain
+     */
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) {
         try {
             logger.debug("Entering Authentication Filter.");

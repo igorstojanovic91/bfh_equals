@@ -12,7 +12,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+/**
+ * Sets or updates the rating via REST API.
+ * Listens to "/api/ratings" path.
+ *
+ * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
+ * @version 1.0
+ */
 @WebServlet(urlPatterns = "/api/ratings")
 public class RatingRestController extends HttpServlet {
     private static final String JSON_MEDIA_TYPE = "application/json; charset=UTF-8";
@@ -29,6 +35,11 @@ public class RatingRestController extends HttpServlet {
         authenticationRepository = new AuthenticationRepository();
     }
 
+    /**
+     * Updates the rating object
+     * @param request the http request
+     * @param response the http response
+     */
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {
         logger.debug("Entering /api/ratings");
@@ -60,7 +71,11 @@ public class RatingRestController extends HttpServlet {
         }
 
     }
-
+    /**
+     * Sets the rating object
+     * @param request the http request
+     * @param response the http response
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         logger.debug("Entering /api/ratings");

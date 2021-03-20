@@ -16,7 +16,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-
+/**
+ * Returns a list of modules or a list of studentCourseRatings via REST API.
+ * Listens to "/api/modules/*" path.
+ *
+ * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
+ * @version 1.0
+ */
 @WebServlet(urlPatterns = "/api/modules/*")
 public class ModuleRestController extends HttpServlet {
     private static final String ACCEPT_TYPE = "application/json";
@@ -36,6 +42,13 @@ public class ModuleRestController extends HttpServlet {
         moduleService = new ModuleService();
     }
 
+    /**
+     * For root path list of modules is generated.
+     * For /overall paht list of StudentCourseRatings is generated.
+     * @param request the http request
+     * @param response the http response
+     * @throws IOException is thrown when JSON-Object can't be created
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String path = request.getPathInfo() != null ? request.getPathInfo() : "/";
@@ -59,7 +72,6 @@ public class ModuleRestController extends HttpServlet {
             }
         }
     }
-
 
     private void getModules(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int personId = (Integer) request.getAttribute("personId");
