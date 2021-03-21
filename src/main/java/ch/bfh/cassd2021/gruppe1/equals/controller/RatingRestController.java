@@ -2,7 +2,6 @@ package ch.bfh.cassd2021.gruppe1.equals.controller;
 
 import ch.bfh.cassd2021.gruppe1.equals.business.model.Rating;
 import ch.bfh.cassd2021.gruppe1.equals.business.service.RatingService;
-import ch.bfh.cassd2021.gruppe1.equals.repository.AuthenticationRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
@@ -28,13 +27,11 @@ public class RatingRestController extends HttpServlet {
 
     final ObjectMapper jsonMapper;
     final RatingService ratingService;
-    final AuthenticationRepository authenticationRepository;
 
     public RatingRestController() {
         jsonMapper = new ObjectMapper();
         jsonMapper.registerModule(new JavaTimeModule());
         ratingService = new RatingService();
-        authenticationRepository = new AuthenticationRepository();
     }
 
     /**
@@ -115,15 +112,7 @@ public class RatingRestController extends HttpServlet {
 
     private boolean isAuthorized(Rating[] ratings, HttpServletRequest request) {
         int personId = (Integer) request.getAttribute("personId");
-        boolean userIsAuthorized = true;
-        for (Rating rating : ratings) {
-            if (!authenticationRepository.isAuthorized(rating.getCourseId(), personId)
-                || !authenticationRepository.isStudent(rating.getCourseId(), rating.getStudentId())) {
-                userIsAuthorized = false;
-                break;
-            }
-        }
-        return userIsAuthorized;
+        return ratingService.isAuthorized(personId, ratings);
     }
 
 }
