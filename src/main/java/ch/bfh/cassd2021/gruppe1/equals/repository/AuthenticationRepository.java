@@ -79,11 +79,18 @@ public class AuthenticationRepository {
 
     }
 
+    /**
+     * Checks whether a student is enrolled in a given course
+     *
+     * @param courseId the courseId
+     * @param studentId the studentId
+     * @return true if student is enrolled in course, false otherwise
+     */
     public boolean isStudent(int courseId, int studentId) {
         String query = "SELECT c.id FROM Course c"
-                +" INNER JOIN Module m ON m.id = c.moduleId"
-                +" INNER JOIN Registration r ON r.moduleId = m.id"
-                +" WHERE c.id = ? AND r.studentId = ?;";
+            + " INNER JOIN Module m ON m.id = c.moduleId"
+            + " INNER JOIN Registration r ON r.moduleId = m.id"
+            + " WHERE c.id = ? AND r.studentId = ?;";
 
         try (Connection connection = EqualsDataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);

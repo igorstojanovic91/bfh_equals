@@ -52,8 +52,8 @@ public class RatingRestController extends HttpServlet {
 
             try {
                 String body = request.getReader()
-                        .lines()
-                        .reduce("", (String::concat));
+                    .lines()
+                    .reduce("", (String::concat));
                 Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
 
                 if (isAuthorized(ratings, request)) {
@@ -91,8 +91,8 @@ public class RatingRestController extends HttpServlet {
 
             try {
                 String body = request.getReader()
-                        .lines()
-                        .reduce("", (String::concat));
+                    .lines()
+                    .reduce("", (String::concat));
                 Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
 
                 if (isAuthorized(ratings, request)) {
@@ -118,7 +118,7 @@ public class RatingRestController extends HttpServlet {
         boolean userIsAuthorized = true;
         for (Rating rating : ratings) {
             if (!authenticationRepository.isAuthorized(rating.getCourseId(), personId)
-                    || !authenticationRepository.isStudent(rating.getCourseId(), rating.getStudentId())) {
+                || !authenticationRepository.isStudent(rating.getCourseId(), rating.getStudentId())) {
                 userIsAuthorized = false;
                 break;
             }
