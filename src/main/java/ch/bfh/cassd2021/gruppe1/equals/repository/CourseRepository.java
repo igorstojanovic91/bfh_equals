@@ -11,10 +11,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Class for accessing DB to get courses for module.
+ *
+ * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
+ * @version 1.0
+ */
 public class CourseRepository {
 
     final Logger logger = LoggerFactory.getLogger(CourseRepository.class);
 
+    /**
+     * Gets all courses of a module where the person has a role.
+     *
+     * @param moduleId the moduleId
+     * @param personId the personId
+     * @return List of courses of the module
+     */
     public List<Course> getCoursesForModule(int moduleId, int personId) {
         logger.debug("Entering getCoursesForModule()...");
         List<Course> courseList = new ArrayList<>();
@@ -28,14 +42,7 @@ public class CourseRepository {
             + " ORDER BY c.shortName asc";
 
         try (Connection connection = EqualsDataSource.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, moduleId);
-            statement.setInt(2, personId);
-            statement.setInt(3, personId);
-            statement.setInt(4, personId);
-            statement.setInt(5, personId);
-
-            ResultSet resultSet = statement.executeQuery();
+            ResultSet resultSet = getResultSet(moduleId, personId, query, connection);
 
             while (resultSet.next()) {
                 Course course = new Course();
@@ -54,5 +61,17 @@ public class CourseRepository {
         }
 
         return courseList;
+    }
+
+    protected static ResultSet getResultSet(int moduleId, int personId, String query, Connection connection) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, moduleId);
+        statement.setInt(2, personId);
+        statement.setInt(3, personId);
+        statement.setInt(4, personId);
+        statement.setInt(5, personId);
+
+        ResultSet resultSet = statement.executeQuery();
+        return resultSet;
     }
 }

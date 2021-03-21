@@ -3,6 +3,12 @@ package ch.bfh.cassd2021.gruppe1.equals.business.model;
 import java.time.LocalDate;
 import java.sql.Date;
 
+/**
+ * The Module class implements a module
+ *
+ * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
+ * @version 1.0
+ */
 public class Module {
     private int moduleId;
     private String name;
@@ -89,15 +95,15 @@ public class Module {
     @Override
     public String toString() {
         return "Module{" +
-                "moduleId=" + moduleId +
-                ", name='" + name + '\'' +
-                ", shortName='" + shortName + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", headId=" + headId +
-                ", assistantId=" + assistantId +
-                ", role=" + role +
-                ", hasOpenGrades=" + hasOpenGrades +
-                '}';
+            "moduleId=" + moduleId +
+            ", name='" + name + '\'' +
+            ", shortName='" + shortName + '\'' +
+            ", startDate=" + startDate +
+            ", endDate=" + endDate +
+            ", headId=" + headId +
+            ", assistantId=" + assistantId +
+            ", role=" + role +
+            ", hasOpenGrades=" + hasOpenGrades +
+            '}';
     }
 }

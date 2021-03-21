@@ -35,15 +35,11 @@ class RatingTest {
 
     @Test
     void setSuccessRate_negative_nok() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            rating.setSuccessRate(-1);
-        });
+        assertThrows(IllegalArgumentException.class, () -> rating.setSuccessRate(-1));
     }
 
     @Test
     void setSuccessRate_101_nok() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            rating.setSuccessRate(101);
-        });
+        assertThrows(IllegalArgumentException.class, () -> rating.setSuccessRate(101));
     }
 }

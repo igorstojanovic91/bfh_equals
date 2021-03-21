@@ -1,5 +1,11 @@
 package ch.bfh.cassd2021.gruppe1.equals.business.model;
 
+/**
+ * The Rating class implements a rating where a student's success rate in a course is stored
+ *
+ * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
+ * @version 1.0
+ */
 public class Rating {
     private int studentId;
     private int courseId;
@@ -27,9 +33,9 @@ public class Rating {
     }
 
     public void setSuccessRate(int successRate) {
-        if(successRate >= 0 && successRate <= 100){
+        if (successRate >= 0 && successRate <= 100) {
             this.successRate = successRate;
-        } else{
+        } else {
             throw new IllegalArgumentException();
         }
     }

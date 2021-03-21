@@ -17,8 +17,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+
+/**
+ * Returns a list of enrolled modules or a list of students of a module with the corresponding course grades via REST API.
+ * Listens to "/api/modules/*" path.
+ *
+ * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
+ * @version 1.0
+ */
 @WebServlet(urlPatterns = "/api/modules/*")
 public class ModuleRestController extends HttpServlet {
+    private static final String ACCEPT_TYPE = "application/json";
     private static final String JSON_MEDIA_TYPE = "application/json; charset=UTF-8";
     private static final String ROOT_PATH = "/";
     private static final String OVERALL_PATH = "/overall";
@@ -35,53 +44,77 @@ public class ModuleRestController extends HttpServlet {
         moduleService = new ModuleService();
     }
 
+    /**
+     * For root path, a list of enrolled modules is returned.
+     * For /overall path, a list students of a module with the corresponding course grades is returned.
+     *
+     * @param request  the http request
+     * @param response the http response
+     * @throws IOException is thrown when JSON-Object can't be created
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String path = request.getPathInfo() != null ? request.getPathInfo() : "/";
+        String acceptType = request.getHeader("Accept");
+
+        if (!acceptType.equalsIgnoreCase(ACCEPT_TYPE)) {
+            logger.warn("Wrong content type from request: " + acceptType);
+            response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+        } else {
+            if (path.matches(ROOT_PATH)) {
+                logger.debug("Entering /api/modules.");
+                getModules(request, response);
+
+            } else if (path.contains(OVERALL_PATH)) {
+                logger.debug("Entering /api/modules/overall.");
+                getStudentCourseRatings(request, response);
+
+            } else {
+                logger.debug("Path {} not implemented.", path);
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        }
+    }
+
+    private void getModules(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int personId = (Integer) request.getAttribute("personId");
+        List<Module> moduleList = moduleService.getModulesForPerson(personId);
 
-        if (path.matches(ROOT_PATH)) {
-            logger.debug("Entering /api/modules.");
-
-            List<Module> moduleList = moduleService.getModulesForPerson(personId);
-
+        if (moduleList != null && moduleList.size() > 0) {
             response.setContentType(JSON_MEDIA_TYPE);
             response.setStatus(HttpServletResponse.SC_OK);
+            logger.info("Modules found");
 
             JsonGenerator generator = jsonMapper
                 .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
-
             generator.writeObject(moduleList);
+        } else {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            logger.warn("No modules found");
+        }
+    }
 
-        } else if (path.contains(OVERALL_PATH)) {
-            logger.debug("Entering /api/modules/overall.");
+    private void getStudentCourseRatings(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int personId = (Integer) request.getAttribute("personId");
+        String pathInfo = request.getPathInfo();
+        if (pathInfo != null && !pathInfo.isEmpty() && pathInfo.split("/").length > 2) {
+            int moduleId = Integer.parseInt(pathInfo.split("/")[2]);
+            List<StudentCourseRating> studentCourseRatingList = moduleService.getSuccessRateOverviewForModule(moduleId, personId);
 
-            String pathInfo = request.getPathInfo();
-            if (pathInfo != null && !pathInfo.isEmpty()) {
-                int moduleId = Integer.parseInt(pathInfo.split("/")[2]);
-                List<StudentCourseRating> studentCourseRatingList = moduleService.getSuccessRateOverviewForModule(moduleId, personId);
-
+            if (studentCourseRatingList != null && studentCourseRatingList.size() > 0) {
                 response.setContentType(JSON_MEDIA_TYPE);
                 response.setStatus(HttpServletResponse.SC_OK);
+                logger.info("Student Course Ratings found");
 
                 JsonGenerator generator = jsonMapper
                     .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
-
                 generator.writeObject(studentCourseRatingList);
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                logger.warn("No Student Course Ratings found: " + pathInfo);
             }
-
         } else {
-            logger.debug("path {} not implemented.", path);
-            String error = "Path " + path + " not implemented.";
-
-            response.setContentType(JSON_MEDIA_TYPE);
-            response.setCharacterEncoding("UTF-8");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-
-            JsonGenerator generator = jsonMapper
-                .createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
-
-            generator.writeObject(error);
         }
     }
 }

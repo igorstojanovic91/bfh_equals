@@ -26,7 +26,7 @@ export default {
 
         // Display filters
         const isStudent = modules.find(mod => mod.role === "STUDENT");
-        if(!isStudent) {
+        if (!isStudent) {
             let $filter = $($('#tpl-filter').html())
             initFilter($filter)
             $view = $filter.add($view)
@@ -90,7 +90,7 @@ function renderCardItem($view, module) {
     $('p.subtitle', $item).text(module.shortName);
 
     const startDate = [...module.startDate].reverse();
-    const endDate =  [...module.endDate].reverse();
+    const endDate = [...module.endDate].reverse();
 
     if (Date.parse(module.endDate) < new Date($.now())) {
         $('.card', $item).addClass('module-has-ended');
@@ -103,7 +103,7 @@ function renderCardItem($view, module) {
     $('time', $item).last().attr("datetime", endDate.join("-"));
 
     if (module.role !== 'STUDENT') {
-        if(module.hasOpenGrades){
+        if (module.hasOpenGrades) {
             $('div.tags', $item).append(`<span class="tag is-danger">Missing grades</span>`);
         } else {
             $('div.tags', $item).append(`<span class="tag is-success">Grades completed</span>`);
@@ -136,10 +136,10 @@ function renderCards() {
 
 function filterModules() {
     let moduleList = store.getModules();
-    if(isFilteredForMissingGrades) {
+    if (isFilteredForMissingGrades) {
         moduleList = moduleList.filter(mod => mod.hasOpenGrades)
     }
-    if(isFilteredBySemester !== "all") {
+    if (isFilteredBySemester !== "all") {
         moduleList = moduleList.filter(mod => mod.shortName.split("-")[1] === isFilteredBySemester)
     }
     updateButton(moduleList);

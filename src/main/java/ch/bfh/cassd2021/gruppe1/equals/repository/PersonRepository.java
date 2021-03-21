@@ -10,10 +10,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
+/**
+ * Class for accessing DB to get Person
+ *
+ * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
+ * @version 1.0
+ */
 public class PersonRepository {
 
     final Logger logger = LoggerFactory.getLogger(PersonRepository.class);
 
+    /**
+     * Gets a Person if the personId is found
+     *
+     * @param personId the personId
+     * @return a Person object
+     */
     public Person getPerson(int personId) {
         logger.debug("Entering PersonRepository.getPerson()...");
         Person person = null;

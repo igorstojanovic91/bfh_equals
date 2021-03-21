@@ -9,17 +9,28 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.stream.IntStream;
 
+
+/**
+ * Class for accessing DB to update or add Ratings
+ *
+ * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
+ * @version 1.0
+ */
 public class RatingRepository {
 
     final Logger logger = LoggerFactory.getLogger(RatingRepository.class);
 
     Connection connection = null;
 
+    /**
+     * Updates ratings if input is valid
+     *
+     * @param ratings an array of Rating objects
+     */
     public void updateRatings(Rating[] ratings) {
 
-        String updateQuery = "UPDATE Rating SET successRate=?, version=?" +
-          " WHERE studentId=? AND courseId=? AND version=?";
-
+        String updateQuery = "UPDATE Rating SET successRate=?, version=?"
+            + " WHERE studentId=? AND courseId=? AND version=?";
 
         try {
             logger.debug("ENTERING DB QUEUE");
@@ -28,8 +39,8 @@ public class RatingRepository {
             connection.setAutoCommit(false);
             for (Rating rating : ratings) {
                 // INPUT VALIDATION FIRST
-                if(rating.getSuccessRate() < 0 || rating.getSuccessRate() > 100) {
-                    throw  new SQLException("wrong value");
+                if (rating.getSuccessRate() < 0 || rating.getSuccessRate() > 100) {
+                    throw new SQLException("wrong value");
                 }
 
                 updateStm.setInt(1, rating.getSuccessRate());
@@ -42,14 +53,12 @@ public class RatingRepository {
             }
             int[] nbrOfModifiedRows = updateStm.executeBatch();
 
-            if(IntStream.of(nbrOfModifiedRows).sum() != ratings.length) {
+            if (IntStream.of(nbrOfModifiedRows).sum() != ratings.length) {
                 throw new SQLException("Not all rows affected");
             }
             connection.commit();
             connection.setAutoCommit(true);
-        }
-
-        catch (SQLException sqlException) {
+        } catch (SQLException sqlException) {
             try {
                 connection.rollback(); // ROLL BACK IF NOT ALL ROWS ARE UPDATED
                 connection.setAutoCommit(true);
@@ -58,11 +67,13 @@ public class RatingRepository {
                 throwables.printStackTrace();
             }
         }
-
-
     }
 
-
+    /**
+     * Inserts ratings if input is valid
+     *
+     * @param ratings an array of Rating objects
+     */
     public void insertRatings(Rating[] ratings) {
         String insertQuery = "INSERT INTO Rating VALUES (?, ?, ?, ?)";
 
@@ -72,8 +83,8 @@ public class RatingRepository {
             connection.setAutoCommit(false);
             for (Rating rating : ratings) {
                 // INPUT VALIDATION FIRST
-                if(rating.getSuccessRate() < 0 || rating.getSuccessRate() > 100) {
-                    throw  new SQLException("wrong value");
+                if (rating.getSuccessRate() < 0 || rating.getSuccessRate() > 100) {
+                    throw new SQLException("wrong value");
                 }
 
                 updateStm.setInt(1, rating.getStudentId());
@@ -85,14 +96,12 @@ public class RatingRepository {
             }
             int[] nbrOfModifiedRows = updateStm.executeBatch();
 
-            if(IntStream.of(nbrOfModifiedRows).sum() != ratings.length) {
+            if (IntStream.of(nbrOfModifiedRows).sum() != ratings.length) {
                 throw new SQLException("Not all rows affected");
             }
             connection.commit();
             connection.setAutoCommit(true);
-        }
-
-        catch (SQLException sqlException) {
+        } catch (SQLException sqlException) {
             try {
                 connection.rollback(); // ROLL BACK IF NOT ALL ROWS ARE UPDATED
                 connection.setAutoCommit(true);

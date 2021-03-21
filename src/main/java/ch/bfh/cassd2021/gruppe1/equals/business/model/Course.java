@@ -1,5 +1,11 @@
 package ch.bfh.cassd2021.gruppe1.equals.business.model;
 
+/**
+ * The Course class implements a course of a module
+ *
+ * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
+ * @version 1.0
+ */
 public class Course {
     private int courseId;
     private String name;
@@ -53,9 +59,9 @@ public class Course {
     }
 
     public void setWeight(double weight) {
-        if(weight > 0){
+        if (weight > 0) {
             this.weight = weight;
-        } else{
+        } else {
             throw new IllegalArgumentException();
         }
     }

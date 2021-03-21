@@ -29,8 +29,6 @@ class CourseTest {
 
     @Test
     void setWeight_nok() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            course.setWeight(-1);
-        });
+        assertThrows(IllegalArgumentException.class, () -> course.setWeight(-1));
     }
 }

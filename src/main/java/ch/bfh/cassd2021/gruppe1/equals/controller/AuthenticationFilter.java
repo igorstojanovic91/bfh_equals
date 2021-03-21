@@ -11,10 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Base64;
 
+
+/**
+ * Basic Authentication Filter for REST API.
+ * Listens to "/api/*" path.
+ *
+ * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
+ * @version 1.0
+ */
 @WebFilter(urlPatterns = "/api/*")
 public class AuthenticationFilter extends HttpFilter {
-
-    private static final String JSON_MEDIA_TYPE = "application/json; charset=UTF-8";
     private final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
 
     final AuthenticationService authenticationService;
@@ -23,6 +29,14 @@ public class AuthenticationFilter extends HttpFilter {
         authenticationService = new AuthenticationService();
     }
 
+    /**
+     * Authenticates a user with Basic Authentication.
+     * Checks whether the request is valid and if it contains a valid authentication header.
+     *
+     * @param request  the http request
+     * @param response the http response
+     * @param chain    the filter chain
+     */
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) {
         try {
             logger.debug("Entering Authentication Filter.");
@@ -34,7 +48,6 @@ public class AuthenticationFilter extends HttpFilter {
             byte[] decoded = Base64.getDecoder().decode(tokens[1]);
             String[] credentials = new String(decoded).split(":");
             if (credentials.length != 2) {
-                response.setContentType(JSON_MEDIA_TYPE);
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             } else {
                 int personId = authenticationService.authenticateUser(credentials[0], credentials[1]);
@@ -42,7 +55,6 @@ public class AuthenticationFilter extends HttpFilter {
                     request.setAttribute("personId", personId);
                     chain.doFilter(request, response);
                 } else {
-                    response.setContentType(JSON_MEDIA_TYPE);
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     logger.warn("Unauthorized!");
                 }
