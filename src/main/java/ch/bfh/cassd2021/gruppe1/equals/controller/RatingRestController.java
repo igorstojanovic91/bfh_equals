@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(urlPatterns = "/api/ratings")
 public class RatingRestController extends HttpServlet {
-    private static final String JSON_MEDIA_TYPE = "application/json; charset=UTF-8";
+    private static final String JSON_MEDIA_TYPE = "application/json";
     private final Logger logger = LoggerFactory.getLogger(RatingRestController.class);
 
     final ObjectMapper jsonMapper;
@@ -52,11 +52,12 @@ public class RatingRestController extends HttpServlet {
 
             try {
                 String body = request.getReader()
-                    .lines()
-                    .reduce("", (String::concat));
+                        .lines()
+                        .reduce("", (String::concat));
                 Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
 
                 if (isAuthorized(ratings, request)) {
+
                     ratingService.updateRatings(ratings);
                     response.setStatus(HttpServletResponse.SC_NO_CONTENT);
                 } else {
@@ -90,8 +91,8 @@ public class RatingRestController extends HttpServlet {
 
             try {
                 String body = request.getReader()
-                    .lines()
-                    .reduce("", (String::concat));
+                        .lines()
+                        .reduce("", (String::concat));
                 Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
 
                 if (isAuthorized(ratings, request)) {
@@ -116,7 +117,11 @@ public class RatingRestController extends HttpServlet {
         int personId = (Integer) request.getAttribute("personId");
         boolean userIsAuthorized = true;
         for (Rating rating : ratings) {
-            if (!authenticationRepository.isAuthorized(rating.getCourseId(), personId)) userIsAuthorized = false;
+            if (!authenticationRepository.isAuthorized(rating.getCourseId(), personId)
+                    || !authenticationRepository.isStudent(rating.getCourseId(), rating.getStudentId())) {
+                userIsAuthorized = false;
+                break;
+            }
         }
         return userIsAuthorized;
     }

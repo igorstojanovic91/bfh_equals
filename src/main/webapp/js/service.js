@@ -43,7 +43,7 @@ export default {
                 'Authorization': getAuthHeader(user)
             },
             data: data,
-            contentType: 'application/json; charset=UTF-8'
+            contentType: 'application/json'
         }).fail(jqXHR => console.log(`An error occurred: (${jqXHR.status}) ${jqXHR.responseText}`));
     },
 
@@ -55,7 +55,7 @@ export default {
                 'Authorization': getAuthHeader(user)
             },
             data: data,
-            contentType: 'application/json; charset=UTF-8'
+            contentType: 'application/json'
         }).fail(jqXHR => console.log(`An error occurred: (${jqXHR.status}) ${jqXHR.responseText}`));
     },
 

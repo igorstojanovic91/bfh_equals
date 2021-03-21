@@ -78,4 +78,26 @@ public class AuthenticationRepository {
         }
 
     }
+
+    public boolean isStudent(int courseId, int studentId) {
+        String query = "SELECT c.id FROM Course c"
+                +" INNER JOIN Module m ON m.id = c.moduleId"
+                +" INNER JOIN Registration r ON r.moduleId = m.id"
+                +" WHERE c.id = ? AND r.studentId = ?;";
+
+        try (Connection connection = EqualsDataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, courseId);
+            statement.setInt(2, studentId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            return resultSet.next();
+
+        } catch (SQLException throwables) {
+            logger.error("Problem reading Database, message was {}", throwables.getMessage());
+            throw new RepositoryException(throwables.getMessage());
+        }
+
+    }
 }

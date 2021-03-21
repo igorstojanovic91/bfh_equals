@@ -257,6 +257,12 @@
                         }
                     }
                 ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
                 "responses": {
                     "201": {
                         "description": "Successfully created"
@@ -273,7 +279,12 @@
                     "415": {
                         "description": "Unsupported Media Type"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "basic_auth": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -292,6 +303,12 @@
                         }
                     }
                 ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
                 "responses": {
                     "204": {
                         "description": "No Content"
@@ -308,7 +325,12 @@
                     "415": {
                         "description": "Unsupported Media Type"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "basic_auth": []
+                    }
+                ]
             }
         }
     },
@@ -388,14 +410,16 @@
                     "items": {
                         "type": "integer",
                         "format": "int64"
-                    }
+                    },
+                    "example": [2020,10,1]
                 },
                 "endDate": {
                     "type": "array",
                     "items": {
                         "type": "integer",
                         "format": "int64"
-                    }
+                    },
+                    "example": [2021,3,25]
                 },
                 "headId": {
                     "type": "integer",
@@ -441,7 +465,8 @@
                     "items": {
                         "type": "integer",
                         "format": "int64"
-                    }
+                    },
+                    "example": [1990,8,23]
                 },
                 "placeOfOrigin": {
                     "type": "string",
