@@ -35,7 +35,7 @@ public class RatingRestController extends HttpServlet {
     }
 
     /**
-     * Updates ratings
+     * Updates ratings.
      *
      * @param request  the http request
      * @param response the http response
@@ -74,7 +74,7 @@ public class RatingRestController extends HttpServlet {
     }
 
     /**
-     * Adds ratings
+     * Adds ratings.
      *
      * @param request  the http request
      * @param response the http response

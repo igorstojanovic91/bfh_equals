@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.sql.Date;
 
 /**
- * The Module class implements a module
+ * The Module class implements a module.
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
  * @version 1.0

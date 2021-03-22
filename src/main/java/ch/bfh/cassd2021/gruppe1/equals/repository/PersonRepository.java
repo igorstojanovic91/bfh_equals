@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 
 /**
- * Class for accessing DB to get Person
+ * Class for accessing DB to get Person.
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
  * @version 1.0
@@ -22,7 +22,7 @@ public class PersonRepository {
     final Logger logger = LoggerFactory.getLogger(PersonRepository.class);
 
     /**
-     * Gets a Person if the personId is found
+     * Gets a Person if the personId is found in the database.
      *
      * @param personId the personId
      * @return a Person object

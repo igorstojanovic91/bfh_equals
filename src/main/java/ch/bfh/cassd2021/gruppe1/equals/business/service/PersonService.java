@@ -4,7 +4,7 @@ import ch.bfh.cassd2021.gruppe1.equals.business.model.Person;
 import ch.bfh.cassd2021.gruppe1.equals.repository.PersonRepository;
 
 /**
- * The PersonService class implements the service layer for persons
+ * The PersonService class implements the service layer for persons.
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
  * @version 1.0
@@ -17,7 +17,7 @@ public class PersonService {
     }
 
     /**
-     * Returns a Person if the personId is found
+     * Returns a Person if the personId is found in the database.
      *
      * @param personId the personId
      * @return a Person

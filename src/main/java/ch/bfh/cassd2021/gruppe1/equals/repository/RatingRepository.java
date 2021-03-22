@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 
 
 /**
- * Class for accessing DB to update or add Ratings
+ * Class for accessing DB to update or add Ratings.
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
  * @version 1.0
@@ -24,7 +24,7 @@ public class RatingRepository {
     Connection connection = null;
 
     /**
-     * Updates ratings if input is valid
+     * Updates ratings if input is valid.
      *
      * @param ratings an array of Rating objects
      */
@@ -71,7 +71,7 @@ public class RatingRepository {
     }
 
     /**
-     * Inserts ratings if input is valid
+     * Inserts ratings if input is valid.
      *
      * @param ratings an array of Rating objects
      */
@@ -114,7 +114,7 @@ public class RatingRepository {
     }
 
     /**
-     * Checks whether a person is either head of module or professor in a given course
+     * Checks whether a person is either head of module or professor in a given course.
      *
      * @param courseId the courseId
      * @param personId the personID
@@ -143,7 +143,7 @@ public class RatingRepository {
     }
 
     /**
-     * Checks whether a student is enrolled in a given course
+     * Checks whether a student is enrolled in a given course.
      *
      * @param courseId  the courseId
      * @param studentId the studentId

@@ -8,7 +8,7 @@ import ch.bfh.cassd2021.gruppe1.equals.repository.ModuleRepository;
 import java.util.List;
 
 /**
- * The ModuleService class implements the service layer for modules
+ * The ModuleService class implements the service layer for modules.
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
  * @version 1.0
@@ -21,11 +21,11 @@ public class ModuleService {
     }
 
     /**
-     * Returns a list of modules
-     * If person is not of role Student, a check is made for each module to see if any grades are outstanding
+     * Returns a list of modules.
+     * If person is not of role Student, a check is made for each module to see if any grades are outstanding.
      *
      * @param personId the personId
-     * @return a list of Module
+     * @return a list of modules
      */
     public List<Module> getModulesForPerson(int personId) {
         List<Module> moduleList = moduleRepository.getModulesForPerson(personId);
@@ -42,13 +42,13 @@ public class ModuleService {
     }
 
     /**
-     * Returns a list of StudentCourseRatings
+     * Returns a list of StudentCourseRatings.
      * After getting the list, all preliminary and overall grades are calculated and added to the corresponding
-     * StudentCourseRating object
+     * StudentCourseRating object.
      *
      * @param moduleId the moduleId
      * @param personId the personId
-     * @return a list of StudentCourseRating
+     * @return a list of StudentCourseRatings
      */
     public List<StudentCourseRating> getSuccessRateOverviewForModule(int moduleId, int personId) {
         List<StudentCourseRating> studentCourseRatingList = moduleRepository.getSuccessRateOverviewForModule(moduleId, personId);

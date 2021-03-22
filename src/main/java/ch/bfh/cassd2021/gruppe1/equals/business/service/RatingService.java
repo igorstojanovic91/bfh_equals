@@ -4,7 +4,7 @@ import ch.bfh.cassd2021.gruppe1.equals.business.model.Rating;
 import ch.bfh.cassd2021.gruppe1.equals.repository.RatingRepository;
 
 /**
- * The RatingService class implements the service layer for ratings
+ * The RatingService class implements the service layer for ratings.
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
  * @version 1.0
@@ -17,7 +17,7 @@ public class RatingService {
     }
 
     /**
-     * Checks whether a transaction is authorized
+     * Checks whether a transaction is authorized.
      *
      * @param personId the personId
      * @param ratings  an array of Rating objects
@@ -36,7 +36,7 @@ public class RatingService {
     }
 
     /**
-     * Updates ratings
+     * Updates ratings.
      *
      * @param ratings an array of Rating objects
      */
@@ -45,7 +45,7 @@ public class RatingService {
     }
 
     /**
-     * Inserts ratings
+     * Inserts ratings.
      *
      * @param ratings an array of Rating objects
      */

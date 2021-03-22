@@ -7,7 +7,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Datasource for accessing DB
+ * Datasource for accessing DB.
  *
  * provided by Peter Feuz
  */

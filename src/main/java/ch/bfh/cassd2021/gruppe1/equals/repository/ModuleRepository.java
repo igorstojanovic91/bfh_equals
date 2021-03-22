@@ -17,7 +17,7 @@ import java.util.List;
 
 
 /**
- * Class for accessing DB to get modules for a person
+ * Class for accessing DB to get modules for a person.
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
  * @version 1.0
@@ -83,7 +83,7 @@ public class ModuleRepository {
     }
 
     /**
-     * Gets a list of students of a module with the corresponding course grades if the person has a role in the module
+     * Gets a list of students of a module with the corresponding course grades if the person has a role in the module.
      *
      * @param moduleId the moduleId
      * @param personId the personId
@@ -117,7 +117,7 @@ public class ModuleRepository {
     }
 
     /**
-     * Gets a list of moduleIds where not all grades are recorded yet
+     * Gets a list of moduleIds where not all grades are recorded yet.
      *
      * @param personId the personId
      * @return a list of moduleIds with missing grades

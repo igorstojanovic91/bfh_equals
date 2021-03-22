@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 
 /**
- * Class for accessing DB to check authentication
+ * Class for accessing DB to check authentication.
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
  * @version 1.0
@@ -22,11 +22,11 @@ public class AuthenticationRepository {
     /**
      * Authenticates a user.
      * Returns the corresponding personId if authentication is successful.
-     * eturns -1 otherwise.
+     * Returns -1 otherwise.
      *
      * @param username the username
      * @param password the password
-     * @return id of authenticated person
+     * @return personId of authenticated person, -1 otherwise
      */
     public int authenticateUser(String username, String password) {
         logger.debug("Entering authenticateUser()...");

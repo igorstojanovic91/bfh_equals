@@ -1,7 +1,7 @@
 package ch.bfh.cassd2021.gruppe1.equals.business.model;
 
 /**
- * The Rating class implements a rating where a student's success rate in a course is stored
+ * The Rating class implements a rating where a student's success rate in a course is stored.
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
  * @version 1.0

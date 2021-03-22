@@ -46,7 +46,7 @@ public class PersonRestController extends HttpServlet {
      *
      * @param request  the http request
      * @param response the http response
-     * @throws IOException is thrown when JSON-Object can't be created
+     * @throws IOException is thrown if JSON-Object cannot be created
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
