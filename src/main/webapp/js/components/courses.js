@@ -45,8 +45,8 @@ export default {
             const data = getInputData();
             const promises = [];
 
-            if(data.update.length > 0) promises.push(service.updateRatings(store.getUser(), JSON.stringify(data.update)));
-            if(data.insert.length > 0) promises.push(service.insertRatings(store.getUser(), JSON.stringify(data.insert)));
+            if (data.update.length > 0) promises.push(service.updateRatings(store.getUser(), JSON.stringify(data.update)));
+            if (data.insert.length > 0) promises.push(service.insertRatings(store.getUser(), JSON.stringify(data.insert)));
 
             Promise.all(promises)
                 .then(function () {
@@ -62,7 +62,7 @@ export default {
                         .append('<p class="notification-message">Thank you! We saved all grades in the database!</p>')
 
                 })
-                .catch(jqXHR =>  {
+                .catch(jqXHR => {
 
                     $('.hero.is-fullheight').remove();
                     $($view[1]).show();
@@ -97,8 +97,6 @@ export default {
 };
 
 
-
-
 function initView($view, data) {
     const firstElement = data[0];
     createHeader($view, firstElement.courseRating);
@@ -109,16 +107,16 @@ function initView($view, data) {
         let tr = $('<tr></tr>');
         tr.append(`<td>${item.name}</td>`);
         item.courseRating.forEach((courseRating, index) => {
-            if(store.getModule(moduleIdentifier).role === "PROFESSOR" || store.getModule(moduleIdentifier).role === "HEAD" ) {
+            if (store.getModule(moduleIdentifier).role === "PROFESSOR" || store.getModule(moduleIdentifier).role === "HEAD") {
                 tr.append(`<td><input data-student="${courseRating.rating.studentId}" data-course="${courseRating.rating.courseId}" data-version="${courseRating.rating.version}" data-weight="${courseRating.course.weight}" class="input-grade" type="number" min="0" max="100" value="${courseRating.rating.successRate}" maxlength="3">%</td>`);
             } else {
                 const notifyClass = courseRating.rating.successRate === 0 ? "has-background-danger-light" : "";
                 tr.append(`<td class="${notifyClass}"><span data-student="${courseRating.rating.studentId}" data-course="${courseRating.rating.courseId}" data-version="${courseRating.rating.version}" data-weight="${courseRating.course.weight}">${courseRating.rating.successRate}</span>%</td>`);
-                if(notifyClass){
+                if (notifyClass) {
                     !coursesToNotify.includes(index) ? coursesToNotify.push(index) : "";
                 }
             }
-            if(courseRating.rating.successRate === 0) openGradesCounter++;
+            if (courseRating.rating.successRate === 0) openGradesCounter++;
         })
         store.setModuleHasOpenGrades(moduleIdentifier, openGradesCounter);
         tr.append(`<td data-field="prelim-grade">${item.preliminaryGrade}%</td>`);
@@ -128,21 +126,21 @@ function initView($view, data) {
 
     createFooter($view, firstElement.courseRating, coursesToNotify);
     //REMOVING COLUMNS FOR PROFESSOR
-    if(store.getModule(moduleIdentifier).role === "PROFESSOR") {
+    if (store.getModule(moduleIdentifier).role === "PROFESSOR") {
         const table = $('table', $view)[0]
         const columnLength = table.rows[0].cells.length;
 
-        $('table tr', $view).find(`td:eq(${columnLength-1}),th:eq(${columnLength-1})`).hide();
-        $('table tr', $view).find(`td:eq(${columnLength-2}),th:eq(${columnLength-2})`).hide();
+        $('table tr', $view).find(`td:eq(${columnLength - 1}), th:eq(${columnLength - 1})`).hide();
+        $('table tr', $view).find(`td:eq(${columnLength - 2}), th:eq(${columnLength - 2})`).hide();
     }
 
     if (store.getModule(moduleIdentifier).role === "ASSISTANT") {
         $("[data-action=save]", $view).prop('disabled', true).text('Print');
     }
 
-    $('input', $view).on('input', function() {
+    $('input', $view).on('input', function () {
         const value = $(this).val();
-        if(!$.isNumeric(value) || value > 100 || value < 0){
+        if (!$.isNumeric(value) || value > 100 || value < 0) {
             $("[data-action=save]", $view).prop('disabled', true)
             $(this).parent().addClass('has-background-danger-light');
         } else {
@@ -153,11 +151,11 @@ function initView($view, data) {
     })
 
     // Highlight row and column corresponding the focused form input field
-    $('input', $view).on('focus', function() {
+    $('input', $view).on('focus', function () {
         $(this).parent().parent().addClass('is-focused');
         $(`[data-course=${$(this).attr('data-course')}]`).parent().addClass('is-focused');
     })
-    $('input', $view).on('focusout', function() {
+    $('input', $view).on('focusout', function () {
         $(this).parent().parent().removeClass('is-focused');
         $(`[data-course=${$(this).attr('data-course')}]`).parent().removeClass('is-focused');
     })
@@ -171,7 +169,7 @@ function initView($view, data) {
                 store.setPersonToNotify(professor)
                 router.go("/notify")
             })
-            .catch( jqXHR => {
+            .catch(jqXHR => {
                 console.log(jqXHR)
             })
     })
@@ -195,10 +193,10 @@ function createHeader($view, courseRating) {
 
 function createFooter($view, courseRating, coursesToNotify) {
     const courseRatingReversed = [...courseRating].reverse();
-    courseRatingReversed.forEach( (item, index) => {
+    courseRatingReversed.forEach((item, index) => {
         // append notifying Row for assistant
         let notifyButton = "";
-        if(coursesToNotify.length && coursesToNotify.includes(courseRatingReversed.length - index -1)){
+        if (coursesToNotify.length && coursesToNotify.includes(courseRatingReversed.length - index - 1)) {
             notifyButton = $(`<br><a class="button is-danger is-light mt-2" title="Notify Professor by Mail" data-professorId="${item.course.professorId}" data-action="notify" href="#/notify">Notify</a>`);
         }
         $('tfoot tr:first', $view).prepend($(`<th data-average="${item.course.courseId}">&nbsp;</th>`));
@@ -226,7 +224,7 @@ function updateXaxis($fields, $row) {
     let preliminaryGrade = 0;
     let overallGrade = 0;
 
-    $fields.each(function() {
+    $fields.each(function () {
 
         if (getValue($(this)) > 0) {
             preliminaryWeight += Number($(this).attr('data-weight'));
@@ -238,7 +236,7 @@ function updateXaxis($fields, $row) {
     const finalPreliminaryGrade = Math.round((preliminaryGrade / preliminaryWeight)) || 0;
     const finalOverallGrade = Math.round((overallGrade / overallWeight)) || 0;
 
-    $('[data-field=prelim-grade]', $row).html(finalPreliminaryGrade  + '%');
+    $('[data-field=prelim-grade]', $row).html(finalPreliminaryGrade + '%');
     $('[data-field=overall-grade]', $row).html(finalOverallGrade + '%');
     (finalOverallGrade >= 50)
         ? $('[data-field=overall-grade]', $row).addClass('has-background-success-light').parent().removeClass('has-background-warning-light')
@@ -249,7 +247,7 @@ function updateYaxis($field, $view) {
     const courseId = $field.attr('data-course');
     const numberOfStudents = $(`[data-course=${courseId}]`, $view).length;
     let sumOfCourseGrades = 0;
-    $(`[data-course=${courseId}]`, $view).each(function() {
+    $(`[data-course=${courseId}]`, $view).each(function () {
         sumOfCourseGrades += getValue($(this)) || 0;
     });
     const averageGrade = (sumOfCourseGrades / numberOfStudents).toFixed(2);
@@ -257,7 +255,7 @@ function updateYaxis($field, $view) {
 
     // Average Prelim
     let sumOfPrelimGrades = 0;
-    $('[data-field=prelim-grade]', $view).each(function() {
+    $('[data-field=prelim-grade]', $view).each(function () {
         sumOfPrelimGrades += parseInt($(this).html());
     });
     const averagePrelim = (sumOfPrelimGrades / numberOfStudents).toFixed(2);
@@ -272,7 +270,7 @@ function updateStatisticsBar($field, $view) {
     let bestGrade = 0;
     let worstGrade = 0;
 
-    $('[data-field=overall-grade]', $view).each(function(index) {
+    $('[data-field=overall-grade]', $view).each(function (index) {
         index === 0 ? worstGrade = parseInt($(this).html()) : 0;
         let thisValue = parseInt($(this).html());
         sumOfOverallGrades += thisValue;
@@ -289,8 +287,7 @@ function updateStatisticsBar($field, $view) {
 }
 
 
-
-function getValue($this){
+function getValue($this) {
     return Number($this.val()) || Number($this.html());
 }
 
@@ -316,7 +313,7 @@ function getInputData() {
             version: versionNumber
         }
         versionNumber > 0 ? data.update.push(rating) : data.insert.push(rating);
-        if(Number($(this).val()) === 0) openGradesCounter++;
+        if (Number($(this).val()) === 0) openGradesCounter++;
     })
     store.setModuleHasOpenGrades(moduleIdentifier, openGradesCounter);
     return data;
@@ -326,14 +323,14 @@ function resetTable($view) {
     $('tbody', $view).empty();
 
     const columnLength = $('thead tr th').length
-    $(`thead tr th:nth-child(-n+${columnLength-2})`).each(function () {
+    $(`thead tr th:nth-child(-n+${columnLength - 2})`).each(function () {
         $(this).remove();
     })
 
     $('tfoot tr:first').empty()
 
     $('tfoot tr:last').each(function () {
-        $(`th:nth-child(-n+${columnLength-2})`, $(this)).remove();
+        $(`th:nth-child(-n+${columnLength - 2})`, $(this)).remove();
     })
 
     $("[data-action=save]", $view).prop('disabled', true);

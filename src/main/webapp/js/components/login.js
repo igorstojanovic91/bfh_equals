@@ -13,7 +13,7 @@ export default {
     render: function () {
 
 
-        if(store.getUser()) {
+        if (store.getUser()) {
             router.go("/modules")
             return
         }

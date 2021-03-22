@@ -5,11 +5,11 @@ let errorTitle = 'Error';
 
 export default {
 
-    getTitle: function() {
+    getTitle: function () {
         return errorTitle;
     },
 
-    render: function(error) {
+    render: function (error) {
         const $view = $($('#tpl-error').html());
         util.showAuthContent(false);
 
