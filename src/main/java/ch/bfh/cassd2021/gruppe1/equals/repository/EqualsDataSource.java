@@ -6,6 +6,11 @@ import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Datasource for accessing DB.
+ *
+ * provided by Peter Feuz
+ */
 public class EqualsDataSource {
 
     private static final HikariConfig config = new HikariConfig();

@@ -10,7 +10,7 @@ import java.io.IOException;
 
 
 /**
- * The CorsFilter class implements the CORS-Filter
+ * The CorsFilter class implements the CORS-Filter.
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
  * @version 1.0
@@ -19,7 +19,7 @@ import java.io.IOException;
 public class CorsFilter extends HttpFilter {
 
     /**
-     * Implements the cross-origin resource sharing
+     * Implements the cross-origin resource sharing.
      *
      * @param request  the http request
      * @param response the http response

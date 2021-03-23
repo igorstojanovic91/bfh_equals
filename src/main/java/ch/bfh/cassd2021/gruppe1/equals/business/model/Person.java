@@ -3,7 +3,7 @@ package ch.bfh.cassd2021.gruppe1.equals.business.model;
 import java.time.LocalDate;
 
 /**
- * The Person class implements a person
+ * The Person class implements a person.
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
  * @version 1.0

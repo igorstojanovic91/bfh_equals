@@ -6,7 +6,7 @@ import ch.bfh.cassd2021.gruppe1.equals.repository.CourseRepository;
 import java.util.List;
 
 /**
- * The CourseService class implements the service layer for courses
+ * The CourseService class implements the service layer for courses.
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
  * @version 1.0
@@ -19,7 +19,7 @@ public class CourseService {
     }
 
     /**
-     * Returns a list of courses for a specific module and person
+     * Returns a list of courses for a specific module and person.
      *
      * @param moduleId the moduleId
      * @param personId the personId

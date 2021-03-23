@@ -2,7 +2,6 @@ package ch.bfh.cassd2021.gruppe1.equals.controller;
 
 import ch.bfh.cassd2021.gruppe1.equals.business.model.Rating;
 import ch.bfh.cassd2021.gruppe1.equals.business.service.RatingService;
-import ch.bfh.cassd2021.gruppe1.equals.repository.AuthenticationRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
@@ -28,17 +27,15 @@ public class RatingRestController extends HttpServlet {
 
     final ObjectMapper jsonMapper;
     final RatingService ratingService;
-    final AuthenticationRepository authenticationRepository;
 
     public RatingRestController() {
         jsonMapper = new ObjectMapper();
         jsonMapper.registerModule(new JavaTimeModule());
         ratingService = new RatingService();
-        authenticationRepository = new AuthenticationRepository();
     }
 
     /**
-     * Updates ratings
+     * Updates ratings.
      *
      * @param request  the http request
      * @param response the http response
@@ -52,8 +49,8 @@ public class RatingRestController extends HttpServlet {
 
             try {
                 String body = request.getReader()
-                        .lines()
-                        .reduce("", (String::concat));
+                    .lines()
+                    .reduce("", (String::concat));
                 Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
 
                 if (isAuthorized(ratings, request)) {
@@ -77,7 +74,7 @@ public class RatingRestController extends HttpServlet {
     }
 
     /**
-     * Adds ratings
+     * Adds ratings.
      *
      * @param request  the http request
      * @param response the http response
@@ -91,8 +88,8 @@ public class RatingRestController extends HttpServlet {
 
             try {
                 String body = request.getReader()
-                        .lines()
-                        .reduce("", (String::concat));
+                    .lines()
+                    .reduce("", (String::concat));
                 Rating[] ratings = jsonMapper.readValue(body, Rating[].class);
 
                 if (isAuthorized(ratings, request)) {
@@ -115,15 +112,7 @@ public class RatingRestController extends HttpServlet {
 
     private boolean isAuthorized(Rating[] ratings, HttpServletRequest request) {
         int personId = (Integer) request.getAttribute("personId");
-        boolean userIsAuthorized = true;
-        for (Rating rating : ratings) {
-            if (!authenticationRepository.isAuthorized(rating.getCourseId(), personId)
-                    || !authenticationRepository.isStudent(rating.getCourseId(), rating.getStudentId())) {
-                userIsAuthorized = false;
-                break;
-            }
-        }
-        return userIsAuthorized;
+        return ratingService.isAuthorized(personId, ratings);
     }
 
 }

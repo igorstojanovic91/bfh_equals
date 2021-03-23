@@ -47,8 +47,6 @@ export default {
 };
 
 
-
-
 function initView($view, data) {
     let preliminaryWeight = 0;
     let overallWeight = 0;

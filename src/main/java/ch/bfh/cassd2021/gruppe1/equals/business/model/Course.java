@@ -1,7 +1,7 @@
 package ch.bfh.cassd2021.gruppe1.equals.business.model;
 
 /**
- * The Course class implements a course of a module
+ * The Course class implements a course of a module.
  *
  * @author Igor Stojanovic, Sabina Löffel, Christophe Leupi, Raphael Gerber
  * @version 1.0
