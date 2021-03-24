@@ -17,3 +17,19 @@ Group 1:
 * [REST API](http://localhost:8080/equals_war/api)
 * [Swagger API Documentation & Interaction](http://localhost:8080/equals_war/swagger)
 * JavaDoc: `docs/javadoc/index.html`
+
+
+## Installation
+
+Initialize the MySQL database using the supplied [SQL scripts](https://moodle.bfh.ch/mod/resource/view.php?id=1227593) and the following settings:
+
+* Database Name: `equalsdb`
+* Username: `root`
+* Password: `root`
+* Port: `3306`
+
+
+In order to run the application with Tomcat, the following settings must be made in IntelliJ:
+
+![IntelliJ Configuration Server](docs/images/intellij_01.png)
+![IntelliJ Configuration Deployment](docs/images/intellij_02.png)
